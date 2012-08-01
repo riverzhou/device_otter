@@ -1317,10 +1317,10 @@ omap4_hwc_s3d_hdmi_enable(omap4_hwc_device_t *hwc_dev, bool enable)
 
         switch(hwc_dev->ext.s3d_type) {
             case eSideBySide:
-                snprintf(type, sizeof(type), "%d", HDMI_SIDE_BY_SIDE_HALF);
+                //snprintf(type, sizeof(type), "%d", HDMI_SIDE_BY_SIDE_HALF);
                 break;
             case eTopBottom:
-                snprintf(type, sizeof(type), "%d", HDMI_TOPBOTTOM);
+                //snprintf(type, sizeof(type), "%d", HDMI_TOPBOTTOM);
                 break;
             default:
                 return;
