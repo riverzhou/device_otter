@@ -1,0 +1,42 @@
+#!/system/bin/sh
+
+LOG_INFO="log -p i -t tweaks";
+LOG_ERROR="log -p e -t tweaks";
+
+echo "Starting $0"
+
+adj_current=`cat /sys/module/lowmemorykiller/parameters/adj`;
+minfree_current=`cat /sys/module/lowmemorykiller/parameters/minfree`
+
+$LOG_INFO "/sys/module/lowmemorykiller/parameters/adj = $adj_current"
+$LOG_INFO "/sys/module/lowmemorykiller/parameters/minfree = $minfree_current"
+
+adj_modified="0,3,6,10,12,15";
+minfree_modified="2048,3072,11776,14080,16128,18432";
+
+if [ "$adj_current" != "$adj_modified" ]; then
+  chmod 777 /sys/module/lowmemorykiller/parameters/adj;
+  echo $adj_modified > /sys/module/lowmemorykiller/parameters/adj;
+  if [ $? -ne 0 ]; then
+    $LOG_ERROR "Failed to modify /sys/module/lowmemorykiller/parameters/adj";
+  else
+    $LOG_INFO "Successfully set /sys/module/lowmemorykiller/parameters/adj to $adj_modified";
+  fi
+else
+  $LOG_INFO "/sys/module/lowmemorykiller/parameters/adj already set to $adj_modified";
+fi
+
+if [ "$minfree_current" != "$minfree_modified" ]; then
+  chmod 777 /sys/module/lowmemorykiller/parameters/minfree;
+  echo $minfree_modified > /sys/module/lowmemorykiller/parameters/minfree;
+  if [ $? -ne 0 ]; then
+    $LOG_ERROR "Failed to modify /sys/module/lowmemorykiller/parameters/minfree";
+  else
+    $LOG_INFO "Successfully set /sys/module/lowmemorykiller/parameters/minfree to $minfree_modified";
+  fi
+else
+  $LOG_INFO "/sys/module/lowmemorykiller/parameters/minfree already set to $minfree_modified";
+fi
+
+$LOG_INFO "/sys/module/lowmemorykiller/parameters/adj = `cat /sys/module/lowmemorykiller/parameters/adj`";
+$LOG_INFO "/sys/module/lowmemorykiller/parameters/minfree = `cat /sys/module/lowmemorykiller/parameters/minfree`";
