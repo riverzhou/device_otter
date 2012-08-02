@@ -33,7 +33,6 @@ PRODUCT_PACKAGES += \
     lights.otter \
     audio.primary.otter\
     audio_policy.default \
-    audio.usb.default \
     hwcomposer.otter \
 
 PRODUCT_PACKAGES += \
