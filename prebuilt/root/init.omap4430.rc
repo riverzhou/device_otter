@@ -210,10 +210,10 @@ service fixmac /system/bin/fix-mac.sh
     group root
     oneshot
 
-#service hwprops /sbin/hwprops
-#    critical
-#    disabled
-#    oneshot
+service hwprops /sbin/hwprops
+    critical
+    disabled
+    oneshot
 
 # Initialize the SGX driver
 service pvrsrvinit /system/bin/pvrsrvinit
@@ -223,8 +223,8 @@ service pvrsrvinit /system/bin/pvrsrvinit
     oneshot
 
 # WLAN Related services
-service wpa_supplicant /system/bin/wpa_supplicant -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -dd
-#service p2p_supplicant /system/bin/wpa_supplicant -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -dd
+#service wpa_supplicant /system/bin/wpa_supplicant -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -dd
+service p2p_supplicant /system/bin/wpa_supplicant -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -dd
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
