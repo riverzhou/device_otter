@@ -213,10 +213,10 @@ service fixmac /system/bin/fix-mac.sh
     group root
     oneshot
 
-#service hwprops /sbin/hwprops
-#    critical
-#    disabled
-#    oneshot
+service hwprops /sbin/hwprops
+    critical
+    disabled
+    oneshot
 
 # Initialize the SGX driver
 service pvrsrvinit /system/bin/pvrsrvinit
