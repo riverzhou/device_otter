@@ -55,6 +55,7 @@ PRODUCT_PACKAGES += \
 
 # Misc
 PRODUCT_PACKAGES += \
+    hwprops \
     librs_jni \
     com.android.future.usb.accessory \
     libjni_pinyinime \
@@ -179,7 +180,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     omap.enhancement=true \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1 \
-    persist.sys.usb.config=adb \
+    persist.sys.usb.config=mass_storage,adb \
     ro.debuggable=1 \
     ro.cwm.forbid_format = /bootloader,/dfs,/backup,/splash \
     persist.sys.purgeable_assets=1 \
