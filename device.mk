@@ -34,6 +34,7 @@ PRODUCT_PACKAGES += \
     audio.primary.otter\
     audio_policy.default \
     hwcomposer.otter \
+    hwcomposer.omap4 \
 
 PRODUCT_PACKAGES += \
     libinvensense_mpl \
