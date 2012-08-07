@@ -1050,21 +1050,15 @@ static int omap4_hwc_set_best_hdmi_mode(omap4_hwc_device_t *hwc_dev, __u32 xres,
 static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *num, hwc_layer_list_t *list)
 {
     unsigned int i;
-    num->s3d = 0;
 
     /* Figure out how many layers we can support via DSS */
     for (i = 0; list && i < list->numHwLayers; i++) {
         hwc_layer_t *layer = &list->hwLayers[i];
         IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
-        uint32_t s3d_layout_type = (layer->flags & S3DLayoutTypeMask)
-                                            >> S3DLayoutTypeShift;
-        uint32_t s3d_layout_order = (layer->flags & S3DLayoutOrderMask)
-                                            >> S3DLayoutOrderShift;
 
         layer->compositionType = HWC_FRAMEBUFFER;
 
         if (omap4_hwc_is_valid_layer(hwc_dev, layer, handle)) {
-
             num->possible_overlay_layers++;
 
             /* NV12 layers can only be rendered on scaling overlays */
@@ -1610,13 +1604,6 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
             }
         }
     }
-
-    /* Apply transform for primary display */
-    if (hwc_dev->primary_transform)
-        for (i = 0; i < dsscomp->num_ovls; i++) {
-            if(dsscomp->ovls[i].cfg.mgr_ix == 0)
-                omap4_hwc_adjust_primary_display_layer(hwc_dev, &dsscomp->ovls[i]);
-        }
 
     ext->last = ext->current;
 
