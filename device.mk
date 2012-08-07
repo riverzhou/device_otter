@@ -188,6 +188,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     pm.sleep_mode=1 \
     wifi.supplicant_scan_interval=180 \
     windowsmgr.max_events_per_sec=200 \
+    ro.kernel.android.bootanim=1 \
 
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
