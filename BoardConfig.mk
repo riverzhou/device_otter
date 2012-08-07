@@ -54,6 +54,8 @@ BOARD_HAS_SDCARD_INTERNAL := true
 BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
 BOARD_SDCARD_DEVICE_INTERNAL := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
 
+TARGET_RECOVERY_PRE_COMMAND := "idme postmode 1;"
+
 # Kernel Build
 TARGET_KERNEL_CONFIG := otter_android_defconfig
 #TARGET_PREBUILT_KERNEL := device/amazon/otter/kernel
