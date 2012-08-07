@@ -16,21 +16,9 @@
 #ifndef __RGZ_2D__
 #define __RGZ_2D__
 
-//#include <linux/bltsville.h>
-#include "include/linux/bltsville.h"
+#include "include/bltsville.h"
 
-/*
- * Maximum number of layers used to generate subregion rectangles in a
- * horizontal region.
- */
-#define RGZ_MAXLAYERS 13
-
-/*
- * Maximum number of layers the regionizer will accept as input. Account for an
- * additional 'background layer' to generate empty subregion rectangles.
- */
-#define RGZ_INPUT_MAXLAYERS (RGZ_MAXLAYERS - 1)
-
+#define RGZ_MAXLAYERS 12
 /*
  * Regionizer data
  *
@@ -112,7 +100,8 @@ struct rgz_out_bvcmd {
     int cmdlen;
     struct bvsurfgeom *dstgeom;
     int noblend;
-    buffer_handle_t out_hndls[RGZ_INPUT_MAXLAYERS]; /* OUTPUT */
+    int clrdst;
+    buffer_handle_t out_hndls[RGZ_MAXLAYERS]; /* OUTPUT */
     int out_nhndls; /* OUTPUT */
     int out_blits; /* OUTPUT */
 };
@@ -169,6 +158,7 @@ typedef struct rgz_out_params {
  * data.bvc.cmdlen      length of cmdp
  * data.bvc.dstgeom     bltsville struct describing the destination geometry
  * data.bvc.noblend     Test option to disable blending
+ * data.bvc.clrdst      Clear the destination
  * data.bvc.out_hndls   Array of buffer handles (OUTPUT)
  * data.bvc.out_nhndls  Number of buffer handles (OUTPUT)
  * data.bvc.out_blits   Number of blits (OUTPUT)
@@ -286,6 +276,7 @@ struct rgz {
     int state;
     unsigned int rgz_layerno;
     rgz_layer_t rgz_layers[RGZ_MAXLAYERS];
+    int screen_isdirty;
 };
 
 #endif /* __RGZ_2D__ */
