@@ -24,9 +24,10 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <linux/fb.h>
-#include <linux/bltsville.h>
+//#include <linux/bltsville.h>
+#include "include/linux/bltsville.h"
 #include <video/dsscomp.h>
-#include <video/omap_hwc.h>
+#include "include/video/omap_hwc.h"
 
 #ifndef RGZ_TEST_INTEGRATION
 #include <cutils/log.h>

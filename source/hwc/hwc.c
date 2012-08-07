@@ -37,7 +37,8 @@
 #include <utils/Timers.h>
 
 #include <system/graphics.h>
-#include <linux/bltsville.h>
+//#include <linux/bltsville.h>
+#include "include/linux/bltsville.h"
 
 #define MAX_HWC_LAYERS 32
 
@@ -53,7 +54,8 @@
 #define DIV_ROUND_UP(a, b) (((a) + (b) - 1) / (b))
 
 #include <video/dsscomp.h>
-#include <video/omap_hwc.h>
+//#include <video/omap_hwc.h>
+#include "include/video/omap_hwc.h"
 
 #include "hal_public.h"
 #include "rgz_2d.h"
