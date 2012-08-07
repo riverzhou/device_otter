@@ -98,6 +98,7 @@ PRODUCT_COPY_FILES += \
     device/amazon/otter/prebuilt/root/init.omap4430.rc:/root/init.omap4430.rc \
     device/amazon/otter/prebuilt/root/ueventd.rc:/root/ueventd.rc \
     device/amazon/otter/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
+    device/amazon/otter/prebuilt/root/initlogo.rle:/root/initlogo.rle \
 
 # Prebuilts /system/bin
 PRODUCT_COPY_FILES += \
