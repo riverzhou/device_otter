@@ -33,7 +33,7 @@ PRODUCT_PACKAGES += \
     lights.otter \
     audio.primary.otter\
     audio_policy.default \
-    hwcomposer.otter \
+    hwcomposer.default \
 
 #    libwvm \
 
