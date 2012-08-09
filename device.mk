@@ -19,14 +19,8 @@
 #
 # Everything in this directory will become public
 
-#ifeq ($(TARGET_PREBUILT_KERNEL),)
-#LOCAL_KERNEL := device/amazon/otter/kernel
-#else
-LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-#endif
 
-PRODUCT_AAPT_CONFIG := normal mdpi
-PRODUCT_AAPT_PREF_CONFIG := mdpi
+##############################################
 
 # Hardware HALs
 PRODUCT_PACKAGES += \
@@ -47,6 +41,7 @@ PRODUCT_PACKAGES += \
     lib_driver_cmd_wl12xx \
     dhcpcd.conf \
     wpa_supplicant.conf \
+    libtiOsLib \
 
 # Sound
 PRODUCT_PACKAGES += \
@@ -62,7 +57,6 @@ PRODUCT_PACKAGES += \
     libjni_pinyinime \
     make_ext4fs \
     setup_fs \
-    dhcpcd.conf \
     calibrator \
     iontest \
     busybox \
@@ -74,6 +68,8 @@ PRODUCT_PACKAGES += \
     Superuser \
     Term \
     FileManager \
+
+##############################################
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -90,7 +86,8 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-    $(call add-to-product-copy-files-if-exists,packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml)
+
+#---------------------------------------
 
 # Prebuilts /system/root
 PRODUCT_COPY_FILES += \
@@ -176,7 +173,7 @@ PRODUCT_COPY_FILES += \
     device/amazon/otter/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
     device/amazon/otter/vendor/ti/lib/libOMX_Core.so:/system/lib/libOMX_Core.so \
 
-#---------------------------------------
+##############################################
 
     #persist.sys.usb.config=mass_storage,adb \
 
@@ -201,11 +198,16 @@ PRODUCT_PROPERTY_OVERRIDES := \
     windowsmgr.max_events_per_sec=200 \
     ro.kernel.android.bootanim=1 \
 
+##############################################
+
+PRODUCT_AAPT_CONFIG := large mdpi
+
+PRODUCT_AAPT_PREF_CONFIG := large
+
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
 DEVICE_PACKAGE_OVERLAYS := device/amazon/otter/overlay/aosp
 
-# we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)

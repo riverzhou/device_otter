@@ -12,13 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Live Wallpapers
-PRODUCT_PACKAGES += \
-        LiveWallpapers \
-        LiveWallpapersPicker \
-        MagicSmokeWallpapers \
-        VisualizationWallpapers \
-        librs_jni
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
@@ -28,5 +21,5 @@ PRODUCT_NAME := full_otter
 PRODUCT_DEVICE := otter
 PRODUCT_BRAND := Amazon
 PRODUCT_MODEL := Amazon Kindle Fire
-
+PRODUCT_MANUFACTURER := Amazon
 

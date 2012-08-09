@@ -15,12 +15,8 @@
 #
 
 # This variable is set first, so it can be overridden
-BOARD_USES_GENERIC_AUDIO := false
-USE_CAMERA_STUB := true
-BOARD_HAVE_BLUETOOTH := false
 
 # Use the non-open-source parts, if they're present
-#-include vendor/amazon/otter/BoardConfigVendor.mk
 
 # Target information
 # Processor
@@ -42,6 +38,14 @@ TARGET_NO_BOOTLOADER := true
 #TARGET_NO_KERNEL := false
 TARGET_NO_RADIOIMAGE := true
 #TARGET_NO_RECOVERY := false
+BOARD_USES_GENERIC_AUDIO := false
+USE_CAMERA_STUB := true
+BOARD_HAVE_BLUETOOTH := false
+
+OMAP_ENHANCEMENT := true
+ANDROID_API_JB_OR_LATER := true
+COMMON_GLOBAL_CFLAGS += -DANDROID_API_JB_OR_LATER
+
 
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -59,20 +63,6 @@ TARGET_RECOVERY_PRE_COMMAND := "idme postmode 1;"
 # Kernel Build
 TARGET_KERNEL_CONFIG := otter_android_defconfig
 #TARGET_PREBUILT_KERNEL := device/amazon/otter/kernel
-
-#KERNEL_EXTERNAL_MODULES:
-#	make -C kernel/amazon/otter/external/wlan/mac80211/compat_wl12xx KERNEL_DIR=$(KERNEL_OUT) KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE="arm-eabi-"
-#	mv kernel/amazon/otter/external/wlan/mac80211/compat_wl12xx/compat/compat.ko $(KERNEL_MODULES_OUT)
-#	mv kernel/amazon/otter/external/wlan/mac80211/compat_wl12xx/net/mac80211/mac80211.ko $(KERNEL_MODULES_OUT)
-#	mv kernel/amazon/otter/external/wlan/mac80211/compat_wl12xx/net/wireless/cfg80211.ko $(KERNEL_MODULES_OUT)
-#	mv kernel/amazon/otter/external/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx.ko $(KERNEL_MODULES_OUT)
-#	mv kernel/amazon/otter/external/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx_spi.ko $(KERNEL_MODULES_OUT)
-#	mv kernel/amazon/otter/external/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx_sdio.ko $(KERNEL_MODULES_OUT)
-#	make -C kernel/amazon/otter/external/sgx/src/eurasia_km/eurasiacon/build/linux2/omap4430_android ARCH=arm KERNEL_CROSS_COMPILE=arm-eabi- CROSS_COMPILE=arm-eabi- KERNELSRC=$(KERNEL_OUT)/../../../../../../kernel/amazon/otter KERNELDIR=$(KERNEL_OUT) TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
-#	mkdir -p $(TARGET_ROOT_OUT)/modules
-#	mv $(KERNEL_OUT)/../../target/kbuild/omaplfb_sgx540_120.ko $(TARGET_ROOT_OUT)/modules/
-#	mv $(KERNEL_OUT)/../../target/kbuild/pvrsrvkm_sgx540_120.ko $(TARGET_ROOT_OUT)/modules/
-#
 
 KERNEL_EXTERNAL_MODULES:
 	make clean -C hardware/ti/wlan/mac80211/compat_wl12xx
@@ -114,7 +104,7 @@ BOARD_SOFTAP_DEVICE              := wl12xx_mac80211
 WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wl12xx_sdio.ko"
 WIFI_DRIVER_MODULE_NAME          := "wl12xx_sdio"
 WIFI_FIRMWARE_LOADER             := ""
-COMMON_GLOBAL_CFLAGS += -DUSES_TI_MAC80211
+COMMON_GLOBAL_CFLAGS 		 += -DUSES_TI_MAC80211
 
 # Graphics
 BOARD_EGL_CFG := device/amazon/otter/egl.cfg
@@ -125,12 +115,6 @@ OMAP_ENHANCEMENT := true
 ifdef OMAP_ENHANCEMENT
 COMMON_GLOBAL_CFLAGS += -DOMAP_ENHANCEMENT -DTARGET_OMAP4
 endif
-
-# OTA Packaging
-TARGET_PROVIDES_RELEASETOOLS := true
-TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/amazon/otter/releasetools/otter_ota_from_target_files
-TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/amazon/otter/releasetools/otter_img_from_target_files
-TARGET_CUSTOM_RELEASETOOL := ./device/amazon/otter/releasetools/squisher
 
 # Misc.
 BOARD_NEEDS_CUTILS_LOG := true
@@ -145,4 +129,10 @@ TARGET_KRAIT_BIONIC_PLDSIZE := 64
 
 # Bootanimation
 TARGET_BOOTANIMATION_PRELOAD := true
+
+# OTA Packaging
+TARGET_PROVIDES_RELEASETOOLS 		  := true
+TARGET_CUSTOM_RELEASETOOL 		  := device/amazon/otter/releasetools/squisher
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/amazon/otter/releasetools/otter_ota_from_target_files
+TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/amazon/otter/releasetools/otter_img_from_target_files
 
