@@ -134,11 +134,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/amazon/otter/prebuilt/media/bootanimation.zip:/system/media/bootanimation.zip \
 
-#    device/amazon/otter/prebuilt/usr/keylayout/AVRCP.kl:/system/usr/keylayout/AVRCP.kl \
-
 # Prebuilt /system/usr
 PRODUCT_COPY_FILES += \
     device/amazon/otter/prebuilt/usr/idc/ilitek_i2c.idc:/system/usr/idc/ilitek_i2c.idc \
+    device/amazon/otter/prebuilt/usr/keylayout/AVRCP.kl:/system/usr/keylayout/AVRCP.kl \
     device/amazon/otter/prebuilt/usr/idc/twl6030_pwrbutton.idc:/system/usr/idc/twl6030_pwrbutton.idc \
     device/amazon/otter/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:/system/usr/keylayout/twl6030_pwrbutton.kl \
 
