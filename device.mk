@@ -196,6 +196,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.supplicant_scan_interval=180 \
     windowsmgr.max_events_per_sec=200 \
     ro.kernel.android.bootanim=1 \
+    persist.sys.root_access=1 \
 
 ##############################################
 
