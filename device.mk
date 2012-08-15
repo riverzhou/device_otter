@@ -68,7 +68,7 @@ PRODUCT_PACKAGES += \
     Term \
     FileManager \
     RE \
-    SuperSU \
+    SuperUser \
 
 ##############################################
 
