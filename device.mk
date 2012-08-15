@@ -91,86 +91,89 @@ PRODUCT_COPY_FILES += \
 
 # Prebuilts /system/root
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/prebuilt/root/init.rc:/root/init.rc \
-    device/amazon/otter/prebuilt/root/init.usb.rc:/root/init.usb.rc \
-    device/amazon/otter/prebuilt/root/init.omap4430.rc:/root/init.omap4430.rc \
-    device/amazon/otter/prebuilt/root/ueventd.rc:/root/ueventd.rc \
-    device/amazon/otter/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.rc:/root/init.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.usb.rc:/root/init.usb.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.omap4430.rc:/root/init.omap4430.rc \
+    $(LOCAL_PATH)/prebuilt/root/ueventd.rc:/root/ueventd.rc \
+    $(LOCAL_PATH)/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
 
 # Prebuilts /system/bin
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/prebuilt/bin/fix-mac.sh:/system/bin/fix-mac.sh \
-    device/amazon/otter/prebuilt/bin/battery_log.sh:/system/bin/battery_log.sh \
-    device/amazon/otter/prebuilt/bin/idme:/system/bin/idme \
-    device/amazon/otter/prebuilt/bin/klog.sh:/system/bin/klog.sh \
-    device/amazon/otter/prebuilt/bin/temperature_log.sh:/system/bin/temperature_log.sh \
+    $(LOCAL_PATH)/prebuilt/bin/fix-mac.sh:/system/bin/fix-mac.sh \
+    $(LOCAL_PATH)/prebuilt/bin/battery_log.sh:/system/bin/battery_log.sh \
+    $(LOCAL_PATH)/prebuilt/bin/idme:/system/bin/idme \
+    $(LOCAL_PATH)/prebuilt/bin/klog.sh:/system/bin/klog.sh \
+    $(LOCAL_PATH)/prebuilt/bin/temperature_log.sh:/system/bin/temperature_log.sh \
 
 # Prebuilts /system/lib
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/prebuilt/lib/hw/sensors.otter.so:/system/lib/hw/sensors.otter.so \
-    device/amazon/otter/prebuilt/lib/libidme.so:/system/lib/libidme.so \
+    $(LOCAL_PATH)/prebuilt/lib/hw/sensors.otter.so:/system/lib/hw/sensors.otter.so \
+    $(LOCAL_PATH)/prebuilt/lib/libidme.so:/system/lib/libidme.so \
 
 # Prebuilts /system/etc
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/prebuilt/etc/init.d/01fixmac:system/etc/init.d/01fixmac \
-    device/amazon/otter/prebuilt/etc/init.d/01sysctl:system/etc/init.d/01sysctl \
-    device/amazon/otter/prebuilt/etc/init.d/02oom:system/etc/init.d/02oom \
-    device/amazon/otter/prebuilt/etc/init.d/03mount:system/etc/init.d/03mount \
-    device/amazon/otter/prebuilt/etc/sysctl.conf:system/etc/sysctl.conf \
-    device/amazon/otter/prebuilt/etc/audio_policy.conf:/system/etc/audio_policy.conf \
-    device/amazon/otter/prebuilt/etc/gps.conf:/system/etc/gps.conf \
-    device/amazon/otter/prebuilt/etc/media_codecs.xml:/system/etc/media_codecs.xml \
-    device/amazon/otter/prebuilt/etc/media_profiles.xml:/system/etc/media_profiles.xml \
-    device/amazon/otter/prebuilt/etc/mountd.conf:/system/etc/mountd.conf \
-    device/amazon/otter/prebuilt/etc/vold.fstab:/system/etc/vold.fstab \
-    device/amazon/otter/prebuilt/etc/firmware/ducati-m3.bin:/system/etc/firmware/ducati-m3.bin \
-    device/amazon/otter/prebuilt/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin \
-    device/amazon/otter/prebuilt/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin \
-    device/amazon/otter/prebuilt/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
-    device/amazon/otter/prebuilt/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin:system/etc/firmware/ti-connectivity/wl1271-nvs.bin.orig \
-    device/amazon/otter/prebuilt/etc/wifi/TQS_S_2.6.ini:system/etc/wifi/TQS_S_2.6.ini \
+    $(LOCAL_PATH)/prebuilt/etc/init.d/01fixmac:system/etc/init.d/01fixmac \
+    $(LOCAL_PATH)/prebuilt/etc/init.d/01sysctl:system/etc/init.d/01sysctl \
+    $(LOCAL_PATH)/prebuilt/etc/init.d/02oom:system/etc/init.d/02oom \
+    $(LOCAL_PATH)/prebuilt/etc/init.d/03mount:system/etc/init.d/03mount \
+    $(LOCAL_PATH)/prebuilt/etc/sysctl.conf:system/etc/sysctl.conf \
+    $(LOCAL_PATH)/prebuilt/etc/audio_policy.conf:/system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/prebuilt/etc/gps.conf:/system/etc/gps.conf \
+    $(LOCAL_PATH)/prebuilt/etc/media_codecs.xml:/system/etc/media_codecs.xml \
+    $(LOCAL_PATH)/prebuilt/etc/media_profiles.xml:/system/etc/media_profiles.xml \
+    $(LOCAL_PATH)/prebuilt/etc/mountd.conf:/system/etc/mountd.conf \
+    $(LOCAL_PATH)/prebuilt/etc/vold.fstab:/system/etc/vold.fstab \
+    $(LOCAL_PATH)/prebuilt/etc/wifi/TQS_S_2.6.ini:system/etc/wifi/TQS_S_2.6.ini \
 
 # Prebuilt /system/media
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/prebuilt/media/bootanimation.zip:/system/media/bootanimation.zip \
+    $(LOCAL_PATH)/prebuilt/media/bootanimation.zip:/system/media/bootanimation.zip \
 
 # Prebuilt /system/usr
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/prebuilt/usr/idc/ilitek_i2c.idc:/system/usr/idc/ilitek_i2c.idc \
-    device/amazon/otter/prebuilt/usr/keylayout/AVRCP.kl:/system/usr/keylayout/AVRCP.kl \
-    device/amazon/otter/prebuilt/usr/idc/twl6030_pwrbutton.idc:/system/usr/idc/twl6030_pwrbutton.idc \
-    device/amazon/otter/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:/system/usr/keylayout/twl6030_pwrbutton.kl \
+    $(LOCAL_PATH)/prebuilt/usr/idc/ilitek_i2c.idc:/system/usr/idc/ilitek_i2c.idc \
+    $(LOCAL_PATH)/prebuilt/usr/keylayout/AVRCP.kl:/system/usr/keylayout/AVRCP.kl \
+    $(LOCAL_PATH)/prebuilt/usr/idc/twl6030_pwrbutton.idc:/system/usr/idc/twl6030_pwrbutton.idc \
+    $(LOCAL_PATH)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:/system/usr/keylayout/twl6030_pwrbutton.kl \
 
 #---------------------------------------
 
 # Graphics
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/vendor/imgtec/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4430.so \
-    device/amazon/otter/vendor/imgtec/lib/egl/libEGL_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/egl/libGLESv2_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libglslcompiler_SGX540_120.so:/system/vendor/lib/libglslcompiler_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libIMGegl_SGX540_120.so:/system/vendor/lib/libIMGegl_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libpvr2d_SGX540_120.so:/system/vendor/lib/libpvr2d_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libpvrANDROID_WSEGL_SGX540_120.so:/system/vendor/lib/libpvrANDROID_WSEGL_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libPVRScopeServices_SGX540_120.so:/system/vendor/lib/libPVRScopeServices_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libsrv_init_SGX540_120.so:/system/vendor/lib/libsrv_init_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libsrv_um_SGX540_120.so:/system/vendor/lib/libsrv_um_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/lib/libusc_SGX540_120.so:/system/vendor/lib/libusc_SGX540_120.so \
-    device/amazon/otter/vendor/imgtec/bin/pvrsrvinit_SGX540_120:/system/bin/pvrsrvinit \
-    device/amazon/otter/vendor/imgtec/bin/pvrsrvctl:/system/bin/pvrsrvctl \
-    device/amazon/otter/vendor/imgtec/etc/powervr.ini:/system/etc/powervr.ini \
+    $(LOCAL_PATH)/vendor/imgtec/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4430.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/egl/libEGL_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/egl/libGLESv2_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libglslcompiler_SGX540_120.so:/system/vendor/lib/libglslcompiler_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libIMGegl_SGX540_120.so:/system/vendor/lib/libIMGegl_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libpvr2d_SGX540_120.so:/system/vendor/lib/libpvr2d_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libpvrANDROID_WSEGL_SGX540_120.so:/system/vendor/lib/libpvrANDROID_WSEGL_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libPVRScopeServices_SGX540_120.so:/system/vendor/lib/libPVRScopeServices_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libsrv_init_SGX540_120.so:/system/vendor/lib/libsrv_init_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libsrv_um_SGX540_120.so:/system/vendor/lib/libsrv_um_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/lib/libusc_SGX540_120.so:/system/vendor/lib/libusc_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/bin/pvrsrvinit_SGX540_120:/system/bin/pvrsrvinit \
+    $(LOCAL_PATH)/vendor/imgtec/bin/pvrsrvctl:/system/bin/pvrsrvctl \
+    $(LOCAL_PATH)/vendor/imgtec/etc/powervr.ini:/system/etc/powervr.ini \
 
 PRODUCT_COPY_FILES += \
-    device/amazon/otter/vendor/ti/lib/libdomx.so:/system/lib/libdomx.so \
-    device/amazon/otter/vendor/ti/lib/libmm_osal.so:/system/lib/libmm_osal.so \
-    device/amazon/otter/vendor/ti/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
-    device/amazon/otter/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
-    device/amazon/otter/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
-    device/amazon/otter/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
-    device/amazon/otter/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
-    device/amazon/otter/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
-    device/amazon/otter/vendor/ti/lib/libOMX_Core.so:/system/lib/libOMX_Core.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libdomx.so:/system/lib/libdomx.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libmm_osal.so:/system/lib/libmm_osal.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX_Core.so:/system/lib/libOMX_Core.so \
+
+# wifi
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ducati-m3.bin:/system/etc/firmware/ducati-m3.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin:system/etc/firmware/ti-connectivity/wl1271-nvs.bin.orig \
 
 ##############################################
 
