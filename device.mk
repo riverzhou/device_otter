@@ -65,9 +65,10 @@ PRODUCT_PACKAGES += \
 
 # Apps
 PRODUCT_PACKAGES += \
-    Superuser \
     Term \
     FileManager \
+    RE \
+    SuperSU \
 
 ##############################################
 
