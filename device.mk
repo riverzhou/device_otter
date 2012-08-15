@@ -125,10 +125,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/etc/vold.fstab:/system/etc/vold.fstab \
     $(LOCAL_PATH)/prebuilt/etc/wifi/TQS_S_2.6.ini:system/etc/wifi/TQS_S_2.6.ini \
 
-# Prebuilt /system/media
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/media/bootanimation.zip:/system/media/bootanimation.zip \
-
 # Prebuilt /system/usr
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/usr/idc/ilitek_i2c.idc:/system/usr/idc/ilitek_i2c.idc \
@@ -137,6 +133,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:/system/usr/keylayout/twl6030_pwrbutton.kl \
 
 #---------------------------------------
+
+# Prebuilt /system/media
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/vendor/aosp/media/bootanimation.zip:/system/media/bootanimation.zip \
 
 # Graphics
 PRODUCT_COPY_FILES += \
