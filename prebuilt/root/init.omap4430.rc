@@ -8,7 +8,6 @@ on init
     # for backwards compatibility
     symlink /storage/sdcard0 /sdcard
     symlink /storage/sdcard0 /mnt/sdcard
-    # turn on DOMX debug
 
 # power management
 # Enable off mode by default
@@ -24,7 +23,8 @@ on init
     insmod /modules/omaplfb_sgx540_120.ko
 
 on fs
-    mount ext4 /dev/block/mmcblk0p9 /system wait ro
+    mount ext4 /dev/block/mmcblk0p9 /system wait 
+    mount ext4 /dev/block/mmcblk0p9 /system wait ro remount
     mount ext4 /dev/block/mmcblk0p10 /data wait noatime nosuid nodev errors=continue
     mount ext4 /dev/block/mmcblk0p11 /cache wait noatime nosuid nodev errors=continue
     mount ext4 /dev/block/mmcblk0p8 /dropbox wait noatime nosuid nodev errors=continue
@@ -82,7 +82,7 @@ on post-fs
     insmod /system/lib/modules/compat.ko
     insmod /system/lib/modules/cfg80211.ko
     insmod /system/lib/modules/mac80211.ko
-    insmod /system/lib/modules/wl12xx.ko debug_level=0x63c00
+    insmod /system/lib/modules/wl12xx.ko 
 
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
@@ -201,6 +201,9 @@ on post-fs
     chown system system /sys/class/power_supply/usb/device/float_voltage
     chown system system /sys/class/power_supply/usb/device/bad_battery
 
+# adbd for debug
+    start adbd
+
 on boot
     setprop ro.build.product omap4sdp
     setprop ro.product.device omap4sdp
@@ -228,7 +231,7 @@ service hwprops /sbin/hwprops
     oneshot
 
 # Initialize the SGX driver
-service pvrsrvinit /system/bin/pvrsrvinit
+service pvrsrvinit /system/vendor/bin/pvrsrvinit
     class core
     user root
     group root
