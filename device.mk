@@ -92,11 +92,9 @@ PRODUCT_COPY_FILES += \
 
 # Prebuilts /system/root
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/root/init.rc:/root/init.rc \
-    $(LOCAL_PATH)/prebuilt/root/init.otter.usb.rc:/root/init.otter.usb.rc \
-    $(LOCAL_PATH)/prebuilt/root/init.otter.rc:/root/init.otter.rc \
-    $(LOCAL_PATH)/prebuilt/root/ueventd.rc:/root/ueventd.rc \
-    $(LOCAL_PATH)/prebuilt/root/ueventd.otter.rc:/root/ueventd.otter.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.omap4430.rc:/init.omap4430.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.omap4430.usb.rc:/root/init.omap4430.usb.rc \
+    $(LOCAL_PATH)/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
 
 # Prebuilts /system/bin
 PRODUCT_COPY_FILES += \

@@ -43,12 +43,12 @@ BOARD_KERNEL_CMDLINE := mem=512M console=ttyO2,115200n8 vram=16M omapfb.vram=0:8
 TARGET_BOARD_PLATFORM := omap4
 TARGET_BOOTLOADER_BOARD_NAME := otter
 TARGET_BOARD_INFO_FILE := device/amazon/otter/board-info.txt
-TARGET_PROVIDES_INIT_RC := true
 BOARD_HAS_SDCARD_INTERNAL := true
 BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
 BOARD_SDCARD_DEVICE_INTERNAL := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
 
 TARGET_RECOVERY_PRE_COMMAND := "idme postmode 1;"
+#TARGET_PROVIDES_INIT_RC := true
 
 # Kernel Build
 TARGET_KERNEL_CONFIG := otter_android_defconfig
