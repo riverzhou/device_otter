@@ -127,7 +127,6 @@ PRODUCT_COPY_FILES += \
 # Prebuilt /system/usr
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/usr/idc/ilitek_i2c.idc:/system/usr/idc/ilitek_i2c.idc \
-    $(LOCAL_PATH)/prebuilt/usr/keylayout/AVRCP.kl:/system/usr/keylayout/AVRCP.kl \
     $(LOCAL_PATH)/prebuilt/usr/idc/twl6030_pwrbutton.idc:/system/usr/idc/twl6030_pwrbutton.idc \
     $(LOCAL_PATH)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:/system/usr/keylayout/twl6030_pwrbutton.kl \
 
