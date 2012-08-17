@@ -41,8 +41,8 @@ on post-fs
     insmod /system/lib/modules/wl12xx.ko
 
 # adbd for debug // FIXME FIXME
-    write /sys/class/android_usb/android0/iManufacturer $ro.product.manufacturer
-    write /sys/class/android_usb/android0/iProduct $ro.product.model
+    write /sys/class/android_usb/android0/iManufacturer "Amazon"
+    write /sys/class/android_usb/android0/iProduct "Amazon Kindle Fire"
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 1949
     write /sys/class/android_usb/android0/idProduct 0006
