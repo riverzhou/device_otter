@@ -156,23 +156,23 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/imgtec/etc/powervr.ini:/system/vendor/etc/powervr.ini \
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/ti/lib/libdomx.so:/system/lib/libdomx.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libmm_osal.so:/system/lib/libmm_osal.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX_Core.so:/system/lib/libOMX_Core.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libdomx.so:/system/vendor/lib/libdomx.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libmm_osal.so:/system/vendor/lib/libmm_osal.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
+    $(LOCAL_PATH)/vendor/ti/lib/libOMX_Core.so:/system/vendor/lib/libOMX_Core.so \
 
 # wifi
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/ti/etc/firmware/ducati-m3.bin:/system/etc/firmware/ducati-m3.bin \
-    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin \
-    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin \
-    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
-    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin:system/etc/firmware/ti-connectivity/wl1271-nvs.bin.orig \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ducati-m3.bin:/system/vendor/etc/firmware/ducati-m3.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin:system/vendor/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin:system/vendor/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/vendor/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin:system/vendor/etc/firmware/ti-connectivity/wl1271-nvs.bin.orig \
 
 ##############################################
 
