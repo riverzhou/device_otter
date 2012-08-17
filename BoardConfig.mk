@@ -14,10 +14,6 @@
 # limitations under the License.
 #
 
-# This variable is set first, so it can be overridden
-
-# Use the non-open-source parts, if they're present
-
 # Target information
 # Processor
 TARGET_CPU_ABI := armeabi-v7a
@@ -33,7 +29,6 @@ TARGET_arm_CFLAGS := -O2 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops
 TARGET_thumb_CFLAGS := -mthumb -Os -fomit-frame-pointer -fstrict-aliasing
 
 # Kernel
-
 TARGET_NO_BOOTLOADER := true
 #TARGET_NO_KERNEL := false
 TARGET_NO_RADIOIMAGE := true
@@ -41,11 +36,6 @@ TARGET_NO_RADIOIMAGE := true
 BOARD_USES_GENERIC_AUDIO := false
 USE_CAMERA_STUB := true
 BOARD_HAVE_BLUETOOTH := false
-
-OMAP_ENHANCEMENT := true
-ANDROID_API_JB_OR_LATER := true
-COMMON_GLOBAL_CFLAGS += -DANDROID_API_JB_OR_LATER
-
 
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -79,7 +69,6 @@ KERNEL_EXTERNAL_MODULES:
 	mv $(KERNEL_OUT)/../../target/kbuild/omaplfb_sgx540_120.ko $(TARGET_ROOT_OUT)/modules/
 	mv $(KERNEL_OUT)/../../target/kbuild/pvrsrvkm_sgx540_120.ko $(TARGET_ROOT_OUT)/modules/
 
-
 #$(KERNEL_OUT)
 
 TARGET_KERNEL_MODULES := KERNEL_EXTERNAL_MODULES
@@ -110,6 +99,7 @@ COMMON_GLOBAL_CFLAGS 		 += -DUSES_TI_MAC80211
 BOARD_EGL_CFG := device/amazon/otter/egl.cfg
 USE_OPENGL_RENDERER := true
 
+OMAP_ENHANCEMENT := true
 # OMAP
 OMAP_ENHANCEMENT := true
 ifdef OMAP_ENHANCEMENT
