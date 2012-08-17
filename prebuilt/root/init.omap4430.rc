@@ -1,14 +1,16 @@
-on init
-    # mount debugfs
+on early-init
+    start hwprops
+# mount debugfs
     mount debugfs /sys/kernel/debug /sys/kernel/debug
-    export DOWNLOAD_CACHE /cache/download
-    export EXTERNAL_STORAGE /storage/sdcard0
+# create storage
     mkdir /storage 0050 system sdcard_r
     mkdir /storage/sdcard0 0000 system system
-    # for backwards compatibility
     symlink /storage/sdcard0 /sdcard
     symlink /storage/sdcard0 /mnt/sdcard
+    export DOWNLOAD_CACHE /cache/download
+    export EXTERNAL_STORAGE /storage/sdcard0
 
+on init
 # power management
 # Enable off mode by default
     write /sys/kernel/debug/pm_debug/enable_off_mode 1
@@ -30,7 +32,6 @@ on fs
     mount ext4 /dev/block/mmcblk0p8 /dropbox wait noatime nosuid nodev errors=continue
 
 on post-fs
-    # forget what this fixed
     mkdir /data/tmp 0777 system system
     symlink /data/tmp /tmp
 
@@ -43,7 +44,6 @@ on post-fs
 #    write /sys/devices/system/cpu/cpufreq/hotplug/down_threshold 30
 
 # Set default maximum of 1008 on cpu0 (peformance settings will change this if set by user)
-# FIXME-HASHCODE: Removing this for AOSP where there's no built-in CPU manager.
 #    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1008000
 
 #Give system ownership and permission to boost clock for specified timeout
