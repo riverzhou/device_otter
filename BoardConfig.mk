@@ -48,7 +48,7 @@ BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/platform/omap/omap_hsmmc.1/by-name/med
 BOARD_SDCARD_DEVICE_INTERNAL := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
 
 TARGET_RECOVERY_PRE_COMMAND := "idme postmode 1;"
-TARGET_PROVIDES_INIT_RC := true
+#TARGET_PROVIDES_INIT_RC := true
 
 # Kernel Build
 TARGET_KERNEL_CONFIG := otter_android_defconfig

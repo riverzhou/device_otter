@@ -13,7 +13,7 @@ on post-fs-data
     write /sys/class/android_usb/android0/iSerial $ro.serialno
     write /sys/class/android_usb/android0/idVendor 1949
     write /sys/class/android_usb/android0/idProduct 0004
-    write /sys/class/android_usb/f_mass_storage/inquiry_string "Am  Blaze     0100"
+    write /sys/class/android_usb/f_mass_storage/inquiry_string "KindleFire"
 
 on property:sys.usb.config=none
     stop adbd
