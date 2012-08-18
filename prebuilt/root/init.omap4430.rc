@@ -1,6 +1,4 @@
 on early-init
-    start hwprops
-
 # mount debugfs
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
@@ -218,11 +216,6 @@ service fixmac /system/bin/fix-mac.sh
     class core
     user root
     group root
-    oneshot
-
-service hwprops /hwprops
-    critical
-    disabled
     oneshot
 
 # Initialize the SGX driver
