@@ -228,7 +228,7 @@ service hwprops /sbin/hwprops
     oneshot
 
 # Initialize the SGX driver
-service pvrsrvinit /system/bin/pvrsrvinit
+service pvrsrvinit /vendor/bin/pvrsrvinit
     class core
     user root
     group root
