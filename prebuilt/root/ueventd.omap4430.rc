@@ -10,9 +10,9 @@
 /dev/s3c-mem              0666   system     system
 /dev/s3c-mfc              0666   system     graphics
 
-/dev/modem_ctl            0666   radio      radio
-/dev/modem_fmt            0666   radio      radio
-/dev/modem_rfs            0666   radio      radio
+#/dev/modem_ctl            0666   radio      radio
+#/dev/modem_fmt            0666   radio      radio
+#/dev/modem_rfs            0666   radio      radio
 /dev/s3c2410_serial3      0666   radio      radio
 /dev/block/mtdblock5      0666   radio      radio
 /dev/mtd/mtd5ro           0666   radio      radio
@@ -48,4 +48,4 @@
 /dev/accelerometer        0666   system     system
 
 # for GPS
-/dev/s3c2410_serial1      0666   gps        gps
+#/dev/s3c2410_serial1      0666   gps        gps
