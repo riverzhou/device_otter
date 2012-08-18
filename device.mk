@@ -94,7 +94,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/root/init.rc:/init.rc \
     $(LOCAL_PATH)/prebuilt/root/init.omap4430.rc:/init.omap4430.rc \
-    $(LOCAL_PATH)/prebuilt/root/init.omap4430.usb.rc:/root/init.omap4430.usb.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.usb.rc:/root/init.usb.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.trace.rc:/root/init.trace.rc \
+    $(LOCAL_PATH)/prebuilt/root/ueventd.rc:/root/ueventd.rc \
     $(LOCAL_PATH)/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
 
 # Prebuilts /system/bin

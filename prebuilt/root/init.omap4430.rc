@@ -1,18 +1,15 @@
-on early-init
-    start hwprops
-
-# mount debugfs
+on init
+    # mount debugfs
     mount debugfs /sys/kernel/debug /sys/kernel/debug
-
-# create storage
-    mkdir /storage 0050 system sdcard_r
-    mkdir /storage/sdcard0 0000 system system
-    symlink /storage/sdcard0 /sdcard
-    symlink /storage/sdcard0 /mnt/sdcard
     export DOWNLOAD_CACHE /cache/download
     export EXTERNAL_STORAGE /storage/sdcard0
+    mkdir /storage 0050 system sdcard_r
+    mkdir /storage/sdcard0 0000 system system
+    # for backwards compatibility
+    symlink /storage/sdcard0 /sdcard
+    symlink /storage/sdcard0 /mnt/sdcard
+    # turn on DOMX debug
 
-on init
 # power management
 # Enable off mode by default
     write /sys/kernel/debug/pm_debug/enable_off_mode 1
@@ -27,44 +24,26 @@ on init
     insmod /modules/omaplfb_sgx540_120.ko
 
 on fs
-    mount ext4 /dev/block/mmcblk0p9 /system wait
-    mount ext4 /dev/block/mmcblk0p9 /system wait ro remount
+    mount ext4 /dev/block/mmcblk0p9 /system wait ro
     mount ext4 /dev/block/mmcblk0p10 /data wait noatime nosuid nodev errors=continue
     mount ext4 /dev/block/mmcblk0p11 /cache wait noatime nosuid nodev errors=continue
     mount ext4 /dev/block/mmcblk0p8 /dropbox wait noatime nosuid nodev errors=continue
 
 on post-fs
-# Load Modules
-    insmod /system/lib/modules/compat.ko
-    insmod /system/lib/modules/cfg80211.ko
-    insmod /system/lib/modules/mac80211.ko
-    insmod /system/lib/modules/wl12xx.ko
-
-# adbd for debug // FIXME FIXME
-    write /sys/class/android_usb/android0/iManufacturer "Amazon"
-    write /sys/class/android_usb/android0/iProduct "Amazon Kindle Fire"
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 1949
-    write /sys/class/android_usb/android0/idProduct 0006
-    write /sys/class/android_usb/android0/functions adb
-    write /sys/class/android_usb/android0/enable 1
-    start adbd
-
-on post-fs-data
+    # forget what this fixed
     mkdir /data/tmp 0777 system system
     symlink /data/tmp /tmp
 
+# make dir for trace
     mkdir /data/trace 0777 system system
     chmod 0777 /data/trace
-
-    mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    mkdir /data/misc/dhcp 0770 dhcp dhcp
 
 # switch CPUfreq from performance to hotplug
 #    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
 #    write /sys/devices/system/cpu/cpufreq/hotplug/down_threshold 30
 
 # Set default maximum of 1008 on cpu0 (peformance settings will change this if set by user)
+# FIXME-HASHCODE: Removing this for AOSP where there's no built-in CPU manager.
 #    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1008000
 
 #Give system ownership and permission to boost clock for specified timeout
@@ -98,6 +77,12 @@ on post-fs-data
 # Boost the CPU for 60 sec for boot optimization
     write /sys/devices/system/cpu/cpufreq/hotplug/boost_timeout 60000000
     write /sys/devices/system/cpu/cpu0/cpufreq/boost_cpufreq 1
+
+# Load Modules
+    insmod /system/lib/modules/compat.ko
+    insmod /system/lib/modules/cfg80211.ko
+    insmod /system/lib/modules/mac80211.ko
+    insmod /system/lib/modules/wl12xx.ko debug_level=0x63c00
 
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
@@ -210,7 +195,7 @@ on post-fs-data
 # SGX driver
     chmod 0666 /dev/pvrsrvkm
 
-# Set current permissions for charge protection
+    # Set current permissions for charge protection
     chown system system /sys/class/power_supply/usb/device/charge_command
     chown system system /sys/class/power_supply/usb/device/charge_current
     chown system system /sys/class/power_supply/usb/device/float_voltage
@@ -228,6 +213,9 @@ on boot
     setprop status.battery.level_scale 9
 
 # wi-fi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+
 service fixmac /system/bin/fix-mac.sh
     class core
     user root
@@ -240,7 +228,7 @@ service hwprops /sbin/hwprops
     oneshot
 
 # Initialize the SGX driver
-service pvrsrvinit /system/vendor/bin/pvrsrvinit
+service pvrsrvinit /system/bin/pvrsrvinit
     class core
     user root
     group root
@@ -258,6 +246,14 @@ service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
     oneshot
 
 service iprenew_wlan0 /system/bin/dhcpcd -n
+    disabled
+    oneshot
+
+service dhcpcd_eth0 /system/bin/dhcpcd -ABKL
+    disabled
+    oneshot
+
+service iprenew_eth0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
