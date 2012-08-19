@@ -204,7 +204,7 @@ PRODUCT_AAPT_PREF_CONFIG := large
 
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
-DEVICE_PACKAGE_OVERLAYS := device/amazon/otter/overlay/cm
+DEVICE_PACKAGE_OVERLAYS := device/amazon/otter/overlay/aosp
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
