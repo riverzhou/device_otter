@@ -14,7 +14,7 @@ on init
     write /sys/class/android_usb/android0/idVendor 18d1
     write /sys/class/android_usb/android0/f_mass_storage/inquiry_string "Amazon  KindleFire      0100"
 
-#    write /sys/class/android_usb/android0/f_rndis/manufacturer BN
+#    write /sys/class/android_usb/android0/f_rndis/manufacturer Amazon
 #    write /sys/class/android_usb/android0/f_rndis/vendorID 18d1
 #    write /sys/class/android_usb/android0/f_rndis/wceis 1
 
@@ -31,7 +31,7 @@ on property:sys.usb.config=none
 on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 18d1
-    write /sys/class/android_usb/android0/idProduct D002
+    write /sys/class/android_usb/android0/idProduct 0D02
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
     start adbd
@@ -40,7 +40,7 @@ on property:sys.usb.config=adb
 on property:sys.usb.config=mass_storage
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 18d1
-    write /sys/class/android_usb/android0/idProduct D001
+    write /sys/class/android_usb/android0/idProduct 0D01
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
     setprop sys.usb.state $sys.usb.config
@@ -48,8 +48,27 @@ on property:sys.usb.config=mass_storage
 on property:sys.usb.config=mass_storage,adb
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 18d1
-    write /sys/class/android_usb/android0/idProduct D003
+    write /sys/class/android_usb/android0/idProduct 0D03
     write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+on property:sys.usb.config=rndis
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 18d1
+    write /sys/class/android_usb/android0/idProduct D103
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/bDeviceClass 224
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+on property:sys.usb.config=rndis,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 18d1
+    write /sys/class/android_usb/android0/idProduct D104
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/bDeviceClass 224
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state $sys.usb.config
@@ -58,4 +77,5 @@ on property:sys.usb.config=mass_storage,adb
 # when changing the default configuration
 on property:persist.sys.usb.config=*
     setprop sys.usb.config ${persist.sys.usb.config}
+
 
