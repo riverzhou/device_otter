@@ -40,12 +40,11 @@ on post-fs
     insmod /system/lib/modules/nls_utf8.ko
 
 # adbd for debug // FIXME FIXME
-on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/iManufacturer "Amazon"
     write /sys/class/android_usb/android0/iProduct "Amazon Kindle Fire"
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 18d1
-    write /sys/class/android_usb/android0/idProduct D002
+    write /sys/class/android_usb/android0/idProduct 0D02
     write /sys/class/android_usb/android0/functions adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
