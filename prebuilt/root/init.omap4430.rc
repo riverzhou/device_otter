@@ -128,10 +128,6 @@ on post-fs-data
     chmod 0660 /dev/ttyS0
     chown radio radio /dev/ttyS0
 
-    # change permissions for Camera
-    chmod 0777 /dev/video5
-    chmod 0777 /dev/video0
-
     # change permissions for Sensors
     chown system system /sys/devices/virtual/input/input0/mode
     chmod 0771 /sys/devices/virtual/input/input0/mode
