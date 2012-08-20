@@ -40,16 +40,20 @@ on post-fs
     insmod /system/lib/modules/nls_utf8.ko
 
 # adbd for debug // FIXME FIXME
+on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/iManufacturer "Amazon"
     write /sys/class/android_usb/android0/iProduct "Amazon Kindle Fire"
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 1949
-    write /sys/class/android_usb/android0/idProduct 0006
+    write /sys/class/android_usb/android0/idVendor 18d1
+    write /sys/class/android_usb/android0/idProduct D002
     write /sys/class/android_usb/android0/functions adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
+    setprop sys.usb.state adb
 
 on post-fs-data
+    setprop vold.post_fs_data_done 1
+
     mkdir /data/tmp 0777 system system
     symlink /data/tmp /tmp
 
@@ -107,7 +111,7 @@ on post-fs-data
 #   chmod 0666 /dev/i2c-4
 #   chmod 0666 /dev/mtp_usb
 
-    # change permissions for alsa nodes
+# change permissions for alsa nodes
     chmod 0777 /dev/snd/controlC0
     chmod 0777 /dev/snd/pcmC0D0c
     chmod 0777 /dev/snd/pcmC0D0p
@@ -124,24 +128,20 @@ on post-fs-data
     chmod 0777 /dev/snd/pcmC0D7p
     chmod 0777 /dev/snd/timer
 
-    # change permissions for modem
-    chmod 0660 /dev/ttyS0
-    chown radio radio /dev/ttyS0
-
-    # change permissions for Sensors
+# change permissions for Sensors
     chown system system /sys/devices/virtual/input/input0/mode
     chmod 0771 /sys/devices/virtual/input/input0/mode
     chown system system /sys/devices/virtual/input/input0/delay
     chmod 0771 /sys/devices/virtual/input/input0/delay
 
-    # change permissions for Thermal sensor TMP105
+# change permissions for Thermal sensor TMP105
     chmod 0777 /sys/class/hwmon/hwmon0/device/temp1_max
     chmod 0777 /sys/class/hwmon/hwmon0/device/temp1_max_hyst
 
     chown system system /system/bin/omapconf
     chown root root /system/bin/omapconf2
 
-    # change permissions for overlay managers and display devices
+# change permissions for overlay managers and display devices
     chown system system /sys/devices/platform/omapdss/display0/enabled
     chown system system /sys/devices/platform/omapdss/display1/enabled
     chown system system /sys/devices/platform/omapdss/display2/enabled
@@ -158,7 +158,7 @@ on post-fs-data
     chown system system /sys/devices/platform/omapdss/overlay1/zorder
     chown system system /sys/devices/platform/omapdss/overlay2/zorder
     chown system system /sys/devices/platform/omapdss/overlay3/zorder
-    # change permissions for manager tranparency parameters
+# change permissions for manager tranparency parameters
     chown system system /sys/devices/platform/omapdss/manager0/name
     chown system system /sys/devices/platform/omapdss/manager0/display
     chown system system /sys/devices/platform/omapdss/manager1/name
