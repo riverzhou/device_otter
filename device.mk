@@ -96,7 +96,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/fix-mac.sh:/system/bin/fix-mac.sh \
     $(LOCAL_PATH)/prebuilt/bin/battery_log.sh:/system/bin/battery_log.sh \
-    $(LOCAL_PATH)/prebuilt/bin/idme:/system/bin/idme \
     $(LOCAL_PATH)/prebuilt/bin/klog.sh:/system/bin/klog.sh \
     $(LOCAL_PATH)/prebuilt/bin/temperature_log.sh:/system/bin/temperature_log.sh \
 
@@ -131,6 +130,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/amazon/lib/hw/sensors.otter.so:/system/lib/hw/sensors.otter.so \
     $(LOCAL_PATH)/vendor/amazon/lib/libidme.so:/system/lib/libidme.so \
+    $(LOCAL_PATH)/vendor/amazon/bin/idme:/system/bin/idme \
 
 # Graphics
 PRODUCT_COPY_FILES += \
