@@ -100,11 +100,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/klog.sh:/system/bin/klog.sh \
     $(LOCAL_PATH)/prebuilt/bin/temperature_log.sh:/system/bin/temperature_log.sh \
 
-# Prebuilts /system/lib
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/lib/hw/sensors.otter.so:/system/lib/hw/sensors.otter.so \
-    $(LOCAL_PATH)/prebuilt/lib/libidme.so:/system/lib/libidme.so \
-
 # Prebuilts /system/etc
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/etc/init.d/01fixmac:system/etc/init.d/01fixmac \
@@ -128,9 +123,14 @@ PRODUCT_COPY_FILES += \
 
 #---------------------------------------
 
-# Prebuilt /system/media
+# bootanimation
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/aosp/media/bootanimation.zip:/system/media/bootanimation.zip \
+
+# misc
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/vendor/amazon/lib/hw/sensors.otter.so:/system/lib/hw/sensors.otter.so \
+    $(LOCAL_PATH)/vendor/amazon/lib/libidme.so:/system/lib/libidme.so \
 
 # Graphics
 PRODUCT_COPY_FILES += \
@@ -149,6 +149,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/imgtec/bin/pvrsrvinit_SGX540_120:/system/vendor/bin/pvrsrvinit \
     $(LOCAL_PATH)/vendor/imgtec/etc/powervr.ini:/system/vendor/etc/powervr.ini \
 
+# TI OMX
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/lib/libdomx.so:/system/vendor/lib/libdomx.so \
     $(LOCAL_PATH)/vendor/ti/lib/libmm_osal.so:/system/vendor/lib/libmm_osal.so \
