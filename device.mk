@@ -175,7 +175,9 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.sf.lcd_density=160 \
-    dalvik.vm.heapsize=64m \
+    dalvik.vm.heapstartsize=5m \
+    dalvik.vm.heapgrowthlimit=42m \
+    dalvik.vm.heapsize=128m \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=120 \
     ro.sf.hwrotation=270 \
