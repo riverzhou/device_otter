@@ -197,8 +197,6 @@ on post-fs-data
     chown system system /sys/class/power_supply/usb/device/bad_battery
 
 on boot
-    setprop ro.build.product omap4sdp
-    setprop ro.product.device omap4sdp
     setprop ro.radio.noril yes
 
 # fake some battery state
