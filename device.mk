@@ -200,6 +200,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.debuggable=1 \
     persist.service.adb.enable=1 \
     ro.secure=0 \
+    dalvik.vm.stack-trace-file=/data/tmp/traces.txt \
 
 ##############################################
 

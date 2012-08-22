@@ -39,7 +39,7 @@ on post-fs
     insmod /system/lib/modules/wl12xx.ko
     insmod /system/lib/modules/nls_utf8.ko
 
-# adbd for debug // FIXME FIXME
+# adbd for debug
     write /sys/class/android_usb/android0/iManufacturer "Amazon"
     write /sys/class/android_usb/android0/iProduct "Amazon Kindle Fire"
     write /sys/class/android_usb/android0/enable 0
