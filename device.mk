@@ -108,8 +108,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/etc/sysctl.conf:system/etc/sysctl.conf \
     $(LOCAL_PATH)/prebuilt/etc/audio_policy.conf:/system/etc/audio_policy.conf \
     $(LOCAL_PATH)/prebuilt/etc/gps.conf:/system/etc/gps.conf \
-    $(LOCAL_PATH)/prebuilt/etc/media_codecs.xml:/system/etc/media_codecs.xml \
-    $(LOCAL_PATH)/prebuilt/etc/media_profiles.xml:/system/etc/media_profiles.xml \
     $(LOCAL_PATH)/prebuilt/etc/mountd.conf:/system/etc/mountd.conf \
     $(LOCAL_PATH)/prebuilt/etc/vold.fstab:/system/etc/vold.fstab \
     $(LOCAL_PATH)/prebuilt/etc/wifi/TQS_S_2.6.ini:system/etc/wifi/TQS_S_2.6.ini \
@@ -125,6 +123,10 @@ PRODUCT_COPY_FILES += \
 # bootanimation
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/aosp/media/bootanimation.zip:/system/media/bootanimation.zip \
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/vendor/ti/etc/media_codecs.xml:/system/etc/media_codecs.xml \
+    $(LOCAL_PATH)/vendor/ti/etc/media_profiles.xml:/system/etc/media_profiles.xml \
 
 # misc
 PRODUCT_COPY_FILES += \
