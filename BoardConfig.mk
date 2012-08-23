@@ -24,18 +24,20 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
 TARGET_GLOBAL_CFLAGS += -mtune=cortex-a9 -mfpu=neon 
-TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon
+TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon 
 TARGET_arm_CFLAGS := -O2 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops fmodulo-sched -fmodulo-sched-allow-regmoves
 TARGET_thumb_CFLAGS := -mthumb -Os -fomit-frame-pointer -fstrict-aliasing
 
 # Kernel
 TARGET_NO_BOOTLOADER := true
-#TARGET_NO_KERNEL := false
+TARGET_NO_KERNEL := false
 TARGET_NO_RADIOIMAGE := true
-#TARGET_NO_RECOVERY := false
+TARGET_NO_RECOVERY := false
 BOARD_USES_GENERIC_AUDIO := false
 USE_CAMERA_STUB := true
 BOARD_HAVE_BLUETOOTH := false
+TARGET_NO_RADIOIMAGE := true
+BOARD_HAVE_FAKE_GPS := true
 
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -43,16 +45,11 @@ BOARD_KERNEL_CMDLINE := mem=512M console=ttyO2,115200n8 vram=16M omapfb.vram=0:8
 TARGET_BOARD_PLATFORM := omap4
 TARGET_BOOTLOADER_BOARD_NAME := otter
 TARGET_BOARD_INFO_FILE := device/amazon/otter/board-info.txt
-BOARD_HAS_SDCARD_INTERNAL := true
-BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
-BOARD_SDCARD_DEVICE_INTERNAL := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
-
-TARGET_RECOVERY_PRE_COMMAND := "idme postmode 1;"
-#TARGET_PROVIDES_INIT_RC := true
 
 # Kernel Build
-TARGET_KERNEL_CONFIG := otter_android_defconfig
 #TARGET_PREBUILT_KERNEL := device/amazon/otter/kernel
+#TARGET_KERNEL_SOURCE := kernel/amazon/otter
+TARGET_KERNEL_CONFIG := otter_android_defconfig
 
 WLAN_MODULES:
 	make clean -C hardware/ti/wlan/mac80211/compat_wl12xx
@@ -84,6 +81,13 @@ BOARD_FLASH_BLOCK_SIZE := 4096
 BOARD_VOLD_MAX_PARTITIONS := 32
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file"
+TARGET_RECOVERY_PRE_COMMAND := "idme postmode 1;"
+
+BOARD_HAS_SDCARD_INTERNAL := true
+BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
+BOARD_SDCARD_DEVICE_INTERNAL := /dev/block/platform/omap/omap_hsmmc.1/by-name/media
+
+#TARGET_PROVIDES_INIT_RC := true
 
 # Connectivity - Wi-Fi
 BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
@@ -109,6 +113,7 @@ endif
 
 # Misc.
 BOARD_NEEDS_CUTILS_LOG := true
+#BOARD_USES_SECURE_SERVICES := true
 
 # CodeAurora Optimizations: msm8960: Improve performance of memmove, bcopy, and memmove_words
 TARGET_USE_KRAIT_BIONIC_OPTIMIZATION := true
@@ -124,15 +129,15 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.secure=0 \
     ro.allow.mock.location=0 \
     ro.debuggable=1 \
-    persist.sys.usb.config=adb \
+    persist.sys.usb.config=mass_storage,adb \
 
 # Bootanimation
 TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 
 # OTA Packaging
-TARGET_PROVIDES_RELEASETOOLS 		  := true
-TARGET_CUSTOM_RELEASETOOL 		  := device/amazon/otter/releasetools/squisher
+TARGET_PROVIDES_RELEASETOOLS              := true
+TARGET_CUSTOM_RELEASETOOL                 := device/amazon/otter/releasetools/squisher
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/amazon/otter/releasetools/otter_ota_from_target_files
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/amazon/otter/releasetools/otter_img_from_target_files
 
