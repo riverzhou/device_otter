@@ -120,6 +120,12 @@ ifdef TARGET_USE_KRAIT_BIONIC_OPTIMIZATION
 #TARGET_KRAIT_BIONIC_PLDSIZE := 64
 endif
 
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    ro.allow.mock.location=0 \
+    ro.debuggable=1 \
+    persist.sys.usb.config=adb \
+
 # Bootanimation
 TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_BOOTANIMATION_TEXTURE_CACHE := true

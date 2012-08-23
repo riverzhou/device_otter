@@ -173,8 +173,6 @@ PRODUCT_COPY_FILES += \
 
 ##############################################
 
-    #persist.sys.usb.config=mass_storage,adb \
-
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.sf.lcd_density=160 \
     dalvik.vm.heapstartsize=5m \
@@ -189,7 +187,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
     omap.enhancement=true \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1 \
-    persist.sys.usb.config=mass_storage,adb \
     ro.cwm.forbid_format = /bootloader,/dfs,/backup,/splash \
     persist.sys.purgeable_assets=1 \
     pm.sleep_mode=1 \
@@ -197,9 +194,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     windowsmgr.max_events_per_sec=200 \
     ro.kernel.android.bootanim=1 \
     persist.sys.root_access=1 \
-    ro.debuggable=1 \
     persist.service.adb.enable=1 \
-    ro.secure=0 \
     dalvik.vm.stack-trace-file=/data/tmp/traces.txt \
 
 ##############################################
