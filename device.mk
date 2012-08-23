@@ -208,4 +208,3 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 #$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 #$(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 
-
