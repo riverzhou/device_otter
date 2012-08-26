@@ -14,7 +14,6 @@
      limitations under the License.
 -->
 
-<?xml version="1.0" encoding="utf-8"?>
 <device name="Android">
     <item name="none">0</item>
     <item name="screen.on">71</item>
