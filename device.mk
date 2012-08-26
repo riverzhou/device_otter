@@ -167,6 +167,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin:system/etc/firmware/ti-connectivity/wl1271-nvs.bin.orig \
 
+# drm (only for jb)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/vendor/google/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so \
+    $(LOCAL_PATH)/vendor/google/lib/libWVStreamControlAPI_L1.so:system/vendor/lib/libWVStreamControlAPI_L1.so \
+    $(LOCAL_PATH)/vendor/google/lib/libwvdrm_L1.so:system/vendor/lib/libwvdrm_L1.so \
+    $(LOCAL_PATH)/vendor/google/lib/libwvm.so:system/vendor/lib/libwvm.so \
+
 ##############################################
 
 PRODUCT_PROPERTY_OVERRIDES := \
