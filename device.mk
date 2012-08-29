@@ -177,9 +177,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PROPERTY_OVERRIDES := \
     dalvik.vm.stack-trace-file=/data/tmp/traces.txt \
-    dalvik.vm.heapstartsize=5m \
-    dalvik.vm.heapgrowthlimit=42m \
-    dalvik.vm.heapsize=128m \
     ro.opengles.version=131072 \
     ro.sf.hwrotation=270 \
     ro.sf.lcd_density=160 \
@@ -201,6 +198,10 @@ PRODUCT_PROPERTY_OVERRIDES := \
     omap.enhancement=true \
     persist.lab126.chargeprotect=1 \
 
+#    dalvik.vm.heapstartsize=5m \
+#    dalvik.vm.heapgrowthlimit=42m \
+#    dalvik.vm.heapsize=128m \
+
 ##############################################
 
 PRODUCT_AAPT_CONFIG := large mdpi
@@ -213,6 +214,5 @@ DEVICE_PACKAGE_OVERLAYS := device/amazon/otter/overlay/aosp
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-#$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
-#$(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
+$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 
