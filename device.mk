@@ -115,8 +115,8 @@ PRODUCT_COPY_FILES += \
 
 #---------------------------------------
 
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/vendor/aosp/media/bootanimation.zip:/system/media/bootanimation.zip \
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/vendor/aosp/media/bootanimation.zip:/system/media/bootanimation.zip \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/etc/media_codecs.xml:/system/etc/media_codecs.xml \
