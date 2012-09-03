@@ -17,6 +17,8 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := ion.c
+LOCAL_C_INCLUDES += device/amazon/otter/source/include
+
 LOCAL_MODULE := libion
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/../vendor/lib/
 LOCAL_MODULE_TAGS := user eng debug
