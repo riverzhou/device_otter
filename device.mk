@@ -28,6 +28,7 @@ PRODUCT_PACKAGES += \
     audio.primary.otter\
     audio_policy.default \
     hwcomposer.default \
+    power.otter \
 
 PRODUCT_PACKAGES += \
     libinvensense_mpl \
