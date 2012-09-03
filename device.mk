@@ -29,12 +29,11 @@ PRODUCT_PACKAGES += \
     audio_policy.default \
     hwcomposer.default \
 
-#    libwvm \
-
 PRODUCT_PACKAGES += \
     libinvensense_mpl \
     libaudioutils \
-    libion \
+
+#    libion \
 
 # Wifi
 PRODUCT_PACKAGES += \
