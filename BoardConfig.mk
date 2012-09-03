@@ -49,7 +49,8 @@ TARGET_BOARD_INFO_FILE := device/amazon/otter/board-info.txt
 # Kernel Build
 #TARGET_PREBUILT_KERNEL := device/amazon/otter/kernel
 #TARGET_KERNEL_SOURCE := kernel/amazon/otter
-TARGET_KERNEL_CONFIG := otter_android_defconfig
+#TARGET_KERNEL_CONFIG := otter_android_defconfig
+TARGET_KERNEL_CONFIG := river_defconfig
 
 WLAN_MODULES:
 	make clean -C hardware/ti/wlan/mac80211/compat_wl12xx
