@@ -159,7 +159,7 @@ PRODUCT_COPY_FILES += \
 
 # wifi
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/ti/etc/firmware/ducati-m3.bin:/system/etc/firmware/ducati-m3.bin \
+    $(LOCAL_PATH)/vendor/ti/etc/firmware/ducati-m3.512MB.bin:/system/etc/firmware/ducati-m3.512MB.bin \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-mr.bin \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
