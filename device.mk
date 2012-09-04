@@ -142,7 +142,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/imgtec/lib/libsrv_init_SGX540_120.so:/system/vendor/lib/libsrv_init_SGX540_120.so \
     $(LOCAL_PATH)/vendor/imgtec/lib/libsrv_um_SGX540_120.so:/system/vendor/lib/libsrv_um_SGX540_120.so \
     $(LOCAL_PATH)/vendor/imgtec/lib/libusc_SGX540_120.so:/system/vendor/lib/libusc_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/bin/pvrsrvinit_SGX540_120:/system/vendor/bin/pvrsrvinit \
+    $(LOCAL_PATH)/vendor/imgtec/bin/pvrsrvinit:/system/vendor/bin/pvrsrvinit \
     $(LOCAL_PATH)/vendor/imgtec/etc/powervr.ini:/system/vendor/etc/powervr.ini \
 
 # TI OMX
