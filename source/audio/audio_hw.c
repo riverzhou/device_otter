@@ -794,8 +794,8 @@ struct omap_audio_device {
     int mode;
     int devices;
     int cur_devices;
-    struct pcm *pcm_modem_dl;
-    struct pcm *pcm_modem_ul;
+//    struct pcm *pcm_modem_dl;
+//    struct pcm *pcm_modem_ul;
     int in_call;
     float voice_volume;
     struct omap_stream_in *active_input;
@@ -810,11 +810,6 @@ struct omap_audio_device {
     bool bluetooth_nrec;
     bool vx_rec_on;
     bool dl2_support;
-
-    /* For modem purpose */
-    bool modem;
-    int wb_amr;
-
 };
 
 struct omap_stream_out {
@@ -1023,77 +1018,16 @@ static int set_route_by_array(struct mixer *mixer, struct route_setting *route,
 
 static int start_call(struct omap_audio_device *adev)
 {
-    ALOGE("Opening modem PCMs");
-    LOGFUNC("%s(%p)", __FUNCTION__, adev);
-
-    if (adev->modem) {
-        pcm_config_vx.rate = adev->wb_amr ? VX_WB_SAMPLING_RATE : VX_NB_SAMPLING_RATE;
-    } else {
-        pcm_config_vx.rate = VX_NB_SAMPLING_RATE;
-    }
-
-    /* Open modem PCM channels */
-    if (adev->pcm_modem_dl == NULL) {
-        adev->pcm_modem_dl = pcm_open(0, PORT_MODEM, PCM_OUT, &pcm_config_vx);
-        if (!pcm_is_ready(adev->pcm_modem_dl)) {
-            ALOGE("cannot open PCM modem DL stream: %s", pcm_get_error(adev->pcm_modem_dl));
-            goto err_open_dl;
-        }
-    }
-
-    if (adev->pcm_modem_ul == NULL) {
-        adev->pcm_modem_ul = pcm_open(0, PORT_MODEM, PCM_IN, &pcm_config_vx);
-        if (!pcm_is_ready(adev->pcm_modem_ul)) {
-            ALOGE("cannot open PCM modem UL stream: %s", pcm_get_error(adev->pcm_modem_ul));
-            goto err_open_ul;
-        }
-    }
-
-    pcm_start(adev->pcm_modem_dl);
-    pcm_start(adev->pcm_modem_ul);
 
     return 0;
-
-err_open_ul:
-    pcm_close(adev->pcm_modem_ul);
-    adev->pcm_modem_ul = NULL;
-err_open_dl:
-    pcm_close(adev->pcm_modem_dl);
-    adev->pcm_modem_dl = NULL;
-
-    return -ENOMEM;
 }
 
 static void end_call(struct omap_audio_device *adev)
 {
-    ALOGE("Closing modem PCMs");
-    LOGFUNC("%s(%p)", __FUNCTION__, adev);
-
-    pcm_stop(adev->pcm_modem_dl);
-    pcm_stop(adev->pcm_modem_ul);
-    pcm_close(adev->pcm_modem_dl);
-    pcm_close(adev->pcm_modem_ul);
-    adev->pcm_modem_dl = NULL;
-    adev->pcm_modem_ul = NULL;
 }
 
 static void set_eq_filter(struct omap_audio_device *adev)
 {
-    if (false == adev->modem) {
-        return;
-    }
-    LOGFUNC("%s(%p)", __FUNCTION__, adev);
-
-    /* DL1_EQ can't be used for bt */
-    int dl1_eq_applicable = adev->devices & (AUDIO_DEVICE_OUT_WIRED_HEADSET |
-                    AUDIO_DEVICE_OUT_WIRED_HEADPHONE | AUDIO_DEVICE_OUT_EARPIECE);
-
-    /* 4Khz LPF is used only in NB-AMR voicecall */
-    if ((adev->mode == AUDIO_MODE_IN_CALL) && dl1_eq_applicable &&
-            (adev->tty_mode == TTY_MODE_OFF) && !adev->wb_amr)
-        mixer_ctl_set_enum_by_string(adev->mixer_ctls.dl1_eq, MIXER_4KHZ_LPF_0DB);
-    else
-        mixer_ctl_set_enum_by_string(adev->mixer_ctls.dl1_eq, MIXER_FLAT_RESPONSE);
 }
 
 void audio_set_wb_amr_callback(void *data, int enable)
@@ -1118,12 +1052,6 @@ void audio_set_wb_amr_callback(void *data, int enable)
     if (adev->wb_amr != enable) {
         adev->wb_amr = enable;
 
-        /* reopen the modem PCMs at the new rate */
-        if (adev->in_call) {
-            end_call(adev);
-            set_eq_filter(adev);
-            start_call(adev);
-        }
     }
     if (EDEADLK != trylock) {
         pthread_mutex_unlock(&adev->lock);
@@ -1132,40 +1060,6 @@ void audio_set_wb_amr_callback(void *data, int enable)
 
 static void set_incall_device(struct omap_audio_device *adev)
 {
-    int device_type;
-    char prop[PROPERTY_VALUE_MAX];
-
-    if (false == adev->modem) {
-        return;
-    }
-    LOGFUNC("%s(%p)", __FUNCTION__, adev);
-
-    switch(adev->devices & AUDIO_DEVICE_OUT_ALL) {
-        case AUDIO_DEVICE_OUT_EARPIECE:
-            device_type = SOUND_AUDIO_PATH_HANDSET;
-            break;
-        case AUDIO_DEVICE_OUT_SPEAKER:
-            device_type = SOUND_AUDIO_PATH_SPEAKER;
-            break;
-        case AUDIO_DEVICE_OUT_WIRED_HEADSET:
-            device_type = SOUND_AUDIO_PATH_HEADSET;
-            break;
-        case AUDIO_DEVICE_OUT_WIRED_HEADPHONE:
-            device_type = SOUND_AUDIO_PATH_HEADPHONE;
-            break;
-        case AUDIO_DEVICE_OUT_BLUETOOTH_SCO:
-        case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET:
-        case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_CARKIT:
-            if (adev->bluetooth_nrec)
-                device_type = SOUND_AUDIO_PATH_BLUETOOTH;
-            else
-                device_type = SOUND_AUDIO_PATH_BLUETOOTH_NO_NR;
-            break;
-        default:
-            device_type = SOUND_AUDIO_PATH_HANDSET;
-            break;
-    }
-
 }
 
 static void set_input_volumes(struct omap_audio_device *adev, int main_mic_on,
@@ -3170,34 +3064,6 @@ static int adev_set_voice_volume(struct audio_hw_device *dev, float volume)
 
 static int set_voice_volume(struct audio_hw_device *dev, float volume)
 {
-    struct omap_audio_device *adev = (struct omap_audio_device *)dev;
-
-    if (false == adev->modem) {
-        return 0;
-    }
-    LOGFUNC("%s(%p, %f)", __FUNCTION__, dev, volume);
-
-    if (adev->mode == AUDIO_MODE_IN_CALL) {
-        switch(adev->devices & AUDIO_DEVICE_OUT_ALL) {
-            case AUDIO_DEVICE_OUT_EARPIECE:
-            default:
-                sound_type = SOUND_TYPE_VOICE;
-                break;
-            case AUDIO_DEVICE_OUT_SPEAKER:
-                sound_type = SOUND_TYPE_SPEAKER;
-                break;
-            case AUDIO_DEVICE_OUT_WIRED_HEADSET:
-            case AUDIO_DEVICE_OUT_WIRED_HEADPHONE:
-                sound_type = SOUND_TYPE_HEADSET;
-                break;
-            case AUDIO_DEVICE_OUT_BLUETOOTH_SCO:
-            case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET:
-            case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_CARKIT:
-                sound_type = SOUND_TYPE_BTVOICE;
-                break;
-        }
-    }
-
     return 0;
 }
 
@@ -3456,7 +3322,6 @@ static int adev_open(const hw_module_t* module, const char* name,
     struct omap_audio_device *adev;
     int ret;
     pthread_mutexattr_t mta;
-    char modem[PROPERTY_VALUE_MAX];
 
     LOGFUNC("%s(%p, %s, %p)", __FUNCTION__, module, name, device);
 
@@ -3466,13 +3331,6 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev = calloc(1, sizeof(struct omap_audio_device));
     if (!adev)
         return -ENOMEM;
-
-    property_get("modem.audio", modem, "0");
-    if (!strcmp(modem, "1")) {
-        adev->modem=true;
-    } else {
-        adev->modem=false;
-    }
 
     adev->hw_device.common.tag = HARDWARE_DEVICE_TAG;
     adev->hw_device.common.version = AUDIO_DEVICE_API_VERSION_CURRENT;
@@ -3579,13 +3437,7 @@ static int adev_open(const hw_module_t* module, const char* name,
     }
 
     pthread_mutexattr_init(&mta);
-    if (adev->modem) {
-        /* need to set attribute to Error check to detect deadlock usefull
-        * for the callback function audio_set_wb_amr_callback */
-        pthread_mutexattr_settype(&mta, PTHREAD_MUTEX_ERRORCHECK);
-    } else {
-        pthread_mutexattr_settype(&mta, PTHREAD_MUTEX_NORMAL);
-    }
+    pthread_mutexattr_settype(&mta, PTHREAD_MUTEX_NORMAL);
     pthread_mutex_init(&adev->lock, &mta);
     pthread_mutexattr_destroy(&mta);
 
@@ -3601,8 +3453,8 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev->devices = AUDIO_DEVICE_OUT_SPEAKER | AUDIO_DEVICE_IN_BUILTIN_MIC;
     select_output_device(adev);
 
-    adev->pcm_modem_dl = NULL;
-    adev->pcm_modem_ul = NULL;
+//    adev->pcm_modem_dl = NULL;
+//    adev->pcm_modem_ul = NULL;
     adev->voice_volume = 1.0f;
     adev->tty_mode = TTY_MODE_OFF;
     if(get_boardtype(adev)) {
