@@ -19,9 +19,9 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES := ion.c
 LOCAL_C_INCLUDES += device/amazon/otter/source/include
 
-LOCAL_MODULE := libion
+LOCAL_MODULE := libion_ti
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/../vendor/lib/
-LOCAL_MODULE_TAGS := user eng debug
+LOCAL_MODULE_TAGS := eng debug
 LOCAL_SHARED_LIBRARIES := liblog
 include $(BUILD_SHARED_LIBRARY)
 
