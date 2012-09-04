@@ -22,7 +22,7 @@ on init
 
 # Enable PVR modules
     insmod /modules/pvrsrvkm_sgx540_120.ko
-    insmod /modules/omaplfb_sgx540_120.ko
+#    insmod /modules/omaplfb_sgx540_120.ko
 
 on fs
     mount ext4 /dev/block/mmcblk0p9  /system  wait ro noatime nodiratime noauto_da_alloc barrier=0
