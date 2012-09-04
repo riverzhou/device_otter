@@ -1049,10 +1049,6 @@ void audio_set_wb_amr_callback(void *data, int enable)
     if (EBUSY == trylock) {
         pthread_mutex_lock(&adev->lock);
     }
-    if (adev->wb_amr != enable) {
-        adev->wb_amr = enable;
-
-    }
     if (EDEADLK != trylock) {
         pthread_mutex_unlock(&adev->lock);
     }
