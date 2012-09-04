@@ -68,6 +68,7 @@ rm $REPACK/ota/system/lib/hw/lights.goldfish.so
 rm $REPACK/ota/system/lib/hw/sensors.goldfish.so
 
 mv $REPACK/ota/system/lib/hw/hwcomposer.default.so $REPACK/ota/system/lib/hw/hwcomposer.otter.so
+mv $REPACK/ota/system/vendor/lib/libion_ti.so $REPACK/ota/system/vendor/lib/libion.so 
 
 # Remove unwanted apps
 #rm $REPACK/ota/system/app/Camera.apk
