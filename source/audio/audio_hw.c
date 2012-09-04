@@ -52,10 +52,10 @@
 /* Setting these values to zero effectively disables all the FM_RADIO
  * code paths.
  */
-#define AUDIO_DEVICE_OUT_FM_RADIO_TX 0
-#define AUDIO_DEVICE_IN_FM_RADIO_RX 0
-#define AUDIO_PARAMETER_STREAM_FM_ROUTING "fm_routing"
-#define AUDIO_PARAMETER_STREAM_FM_MUTE "fm_mute"
+#define AUDIO_DEVICE_OUT_FM_RADIO_TX 	    0
+#define AUDIO_DEVICE_IN_FM_RADIO_RX 	    0
+#define AUDIO_PARAMETER_STREAM_FM_ROUTING   "fm_routing"
+#define AUDIO_PARAMETER_STREAM_FM_MUTE      "fm_mute"
 #endif
 
 /* Mixer control names */
@@ -145,29 +145,29 @@
 #define MIXER_VX_LEFT                       "VX Left"
 
 /* Codec controls */
-#define SP_DRIVER_MUTE 						"SP driver mute"
-#define SP_ANALOG_GAIN						"SP Analog Gain"
-#define DAC_PLAYBACK_VOLUME					"DAC Playback Volume"
-#define RIGHT_DAC_INPUT_SELECTION			"Right DAC input selection"
-#define LEFT_DAC_INPUT_SELECTION			"Left DAC input selection"
-#define DAC_L_TO_LEFT_OUTPUT_MIXER			"Left Output Mixer From DAC_L"
-#define DAC_R_TO_RIGHT_OUTPUT_MIXER			"Right Output Mixer From DAC_R"
-#define HP_DRIVER_MUTE 						"HP driver mute"
-#define HP_ANALOG_GAIN						"HP Analog Gain"
-#define HP_CM_VOLTAGE_CTL					"HP Output common - mode voltage control"
-#define M_INPUT_MIXER						"M_Input_Mixer CM_PGA_CNTL"
-#define P_INPUT_MIXER						"P_Input_Mixer MIC1LM_PGA_CNTL"
-#define MIC_PGA_GAIN						"ADC MIC_PGA GAIN"
-#define ADC_COARSE_GAIN						"ADC COARSE GAIN"
-#define DL1_MM_EXT_SWITCH					"DL1 MM_EXT Switch"
+#define SP_DRIVER_MUTE 			    "SP driver mute"
+#define SP_ANALOG_GAIN			    "SP Analog Gain"
+#define DAC_PLAYBACK_VOLUME		    "DAC Playback Volume"
+#define RIGHT_DAC_INPUT_SELECTION	    "Right DAC input selection"
+#define LEFT_DAC_INPUT_SELECTION	    "Left DAC input selection"
+#define DAC_L_TO_LEFT_OUTPUT_MIXER	    "Left Output Mixer From DAC_L"
+#define DAC_R_TO_RIGHT_OUTPUT_MIXER	    "Right Output Mixer From DAC_R"
+#define HP_DRIVER_MUTE 			    "HP driver mute"
+#define HP_ANALOG_GAIN			    "HP Analog Gain"
+#define HP_CM_VOLTAGE_CTL		    "HP Output common - mode voltage control"
+#define M_INPUT_MIXER			    "M_Input_Mixer CM_PGA_CNTL"
+#define P_INPUT_MIXER			    "P_Input_Mixer MIC1LM_PGA_CNTL"
+#define MIC_PGA_GAIN			    "ADC MIC_PGA GAIN"
+#define ADC_COARSE_GAIN			    "ADC COARSE GAIN"
+#define DL1_MM_EXT_SWITCH		    "DL1 MM_EXT Switch"
 
-#define RIGHT_DATA							"right data"
-#define LEFT_DATA							"left data"
-#define VOLTAGE								"5 V "
+#define RIGHT_DATA			    "right data"
+#define LEFT_DATA			    "left data"
+#define VOLTAGE				    "5 V "
 
 /* ALSA cards for OMAP */
-#define CARD_OMAP_ABE 0
-#define CARD_OMAP_USB 2
+#define CARD_OMAP_ABE   0
+#define CARD_OMAP_USB   2
 #define CARD_OMAP_DEFAULT CARD_OMAP_ABE
 
 /* ALSA ports for OMAP */
@@ -259,11 +259,11 @@
 #define HEADPHONE_VOLUME                      0 /* allow louder output for headphones */
 
 /* product-specific defines */
-#define PRODUCT_DEVICE_PROPERTY "ro.product.device"
-#define PRODUCT_DEVICE_BLAZE    "blaze"
-#define PRODUCT_DEVICE_TABLET   "blaze_tablet"
-#define PRODUCT_DEVICE_OMAP5_SEVM   "omap5sevm"
-#define PRODUCT_DEVICE_KC1      "otter"
+#define PRODUCT_DEVICE_PROPERTY 	      "ro.product.device"
+#define PRODUCT_DEVICE_BLAZE    	      "blaze"
+#define PRODUCT_DEVICE_TABLET   	      "blaze_tablet"
+#define PRODUCT_DEVICE_OMAP5_SEVM   	      "omap5sevm"
+#define PRODUCT_DEVICE_KC1      	      "otter"
 
 /* fm */
 static bool fm_enable = false;
@@ -794,8 +794,6 @@ struct omap_audio_device {
     int mode;
     int devices;
     int cur_devices;
-//    struct pcm *pcm_modem_dl;
-//    struct pcm *pcm_modem_ul;
     int in_call;
     float voice_volume;
     struct omap_stream_in *active_input;
@@ -3448,9 +3446,6 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev->mode = AUDIO_MODE_NORMAL;
     adev->devices = AUDIO_DEVICE_OUT_SPEAKER | AUDIO_DEVICE_IN_BUILTIN_MIC;
     select_output_device(adev);
-
-//    adev->pcm_modem_dl = NULL;
-//    adev->pcm_modem_ul = NULL;
     adev->voice_volume = 1.0f;
     adev->tty_mode = TTY_MODE_OFF;
     if(get_boardtype(adev)) {
