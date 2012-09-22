@@ -85,10 +85,10 @@ PRODUCT_COPY_FILES += \
 
 #---------------------------------------
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/root/init.omap4430.rc:/root/init.omap4430.rc \
-    $(LOCAL_PATH)/prebuilt/root/init.usb.rc:/root/init.usb.rc \
-    $(LOCAL_PATH)/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/prebuilt/root/init.omap4430.rc:/root/init.omap4430.rc \
+#    $(LOCAL_PATH)/prebuilt/root/init.usb.rc:/root/init.usb.rc \
+#    $(LOCAL_PATH)/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/fix-mac.sh:/system/bin/fix-mac.sh \
@@ -96,12 +96,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/battery_log.sh:/system/bin/battery_log.sh \
     $(LOCAL_PATH)/prebuilt/bin/klog.sh:/system/bin/klog.sh \
 
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/prebuilt/etc/init.d/01sysctl:system/etc/init.d/01sysctl \
+#    $(LOCAL_PATH)/prebuilt/etc/init.d/02oom:system/etc/init.d/02oom \
+#    $(LOCAL_PATH)/prebuilt/etc/init.d/03mount:system/etc/init.d/03mount \
+#    $(LOCAL_PATH)/prebuilt/etc/sysctl.conf:system/etc/sysctl.conf \
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/etc/init.d/01fixmac:system/etc/init.d/01fixmac \
-    $(LOCAL_PATH)/prebuilt/etc/init.d/01sysctl:system/etc/init.d/01sysctl \
-    $(LOCAL_PATH)/prebuilt/etc/init.d/02oom:system/etc/init.d/02oom \
-    $(LOCAL_PATH)/prebuilt/etc/init.d/03mount:system/etc/init.d/03mount \
-    $(LOCAL_PATH)/prebuilt/etc/sysctl.conf:system/etc/sysctl.conf \
     $(LOCAL_PATH)/prebuilt/etc/audio_policy.conf:/system/etc/audio_policy.conf \
     $(LOCAL_PATH)/prebuilt/etc/gps.conf:/system/etc/gps.conf \
     $(LOCAL_PATH)/prebuilt/etc/vold.fstab:/system/etc/vold.fstab \
@@ -120,7 +122,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/etc/media_codecs.xml:/system/etc/media_codecs.xml \
-    $(LOCAL_PATH)/vendor/ti/etc/media_profiles.xml:/system/etc/media_profiles.xml \
 
 # misc
 PRODUCT_COPY_FILES += \
@@ -130,33 +131,33 @@ PRODUCT_COPY_FILES += \
 
 # Graphics
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/imgtec/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4430.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/egl/libEGL_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/egl/libGLESv2_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libglslcompiler_SGX540_120.so:/system/vendor/lib/libglslcompiler_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libIMGegl_SGX540_120.so:/system/vendor/lib/libIMGegl_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libpvr2d_SGX540_120.so:/system/vendor/lib/libpvr2d_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libpvrANDROID_WSEGL_SGX540_120.so:/system/vendor/lib/libpvrANDROID_WSEGL_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libPVRScopeServices_SGX540_120.so:/system/vendor/lib/libPVRScopeServices_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libsrv_init_SGX540_120.so:/system/vendor/lib/libsrv_init_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libsrv_um_SGX540_120.so:/system/vendor/lib/libsrv_um_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/lib/libusc_SGX540_120.so:/system/vendor/lib/libusc_SGX540_120.so \
-    $(LOCAL_PATH)/vendor/imgtec/bin/pvrsrvinit:/system/vendor/bin/pvrsrvinit \
-    $(LOCAL_PATH)/vendor/imgtec/bin/pvrsrvctl_SGX540_120:/system/vendor/bin/pvrsrvctl_SGX540_120 \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4430.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libglslcompiler_SGX540_120.so:/system/vendor/lib/libglslcompiler_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libIMGegl_SGX540_120.so:/system/vendor/lib/libIMGegl_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libpvr2d_SGX540_120.so:/system/vendor/lib/libpvr2d_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libpvrANDROID_WSEGL_SGX540_120.so:/system/vendor/lib/libpvrANDROID_WSEGL_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libPVRScopeServices_SGX540_120.so:/system/vendor/lib/libPVRScopeServices_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libsrv_init_SGX540_120.so:/system/vendor/lib/libsrv_init_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libsrv_um_SGX540_120.so:/system/vendor/lib/libsrv_um_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/lib/libusc_SGX540_120.so:/system/vendor/lib/libusc_SGX540_120.so \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/bin/pvrsrvinit:/system/vendor/bin/pvrsrvinit \
+    $(LOCAL_PATH)/vendor/imgtec/vendor/bin/pvrsrvctl_SGX540_120:/system/vendor/bin/pvrsrvctl_SGX540_120 \
     $(LOCAL_PATH)/vendor/imgtec/etc/powervr.ini:/system/vendor/etc/powervr.ini \
 
 # TI OMX
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/ti/lib/libdomx.so:/system/vendor/lib/libdomx.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libmm_osal.so:/system/vendor/lib/libmm_osal.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
-    $(LOCAL_PATH)/vendor/ti/lib/libOMX_Core.so:/system/vendor/lib/libOMX_Core.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libdomx.so:/system/vendor/lib/libdomx.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libmm_osal.so:/system/vendor/lib/libmm_osal.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
+    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX_Core.so:/system/vendor/lib/libOMX_Core.so \
 
 # wifi
 PRODUCT_COPY_FILES += \
@@ -168,10 +169,10 @@ PRODUCT_COPY_FILES += \
 
 # drm (only for jb)
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/google/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so \
-    $(LOCAL_PATH)/vendor/google/lib/libWVStreamControlAPI_L1.so:system/vendor/lib/libWVStreamControlAPI_L1.so \
-    $(LOCAL_PATH)/vendor/google/lib/libwvdrm_L1.so:system/vendor/lib/libwvdrm_L1.so \
-    $(LOCAL_PATH)/vendor/google/lib/libwvm.so:system/vendor/lib/libwvm.so \
+    $(LOCAL_PATH)/vendor/google/vendor/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so \
+    $(LOCAL_PATH)/vendor/google/vendor/lib/libWVStreamControlAPI_L1.so:system/vendor/lib/libWVStreamControlAPI_L1.so \
+    $(LOCAL_PATH)/vendor/google/vendor/lib/libwvdrm_L1.so:system/vendor/lib/libwvdrm_L1.so \
+    $(LOCAL_PATH)/vendor/google/vendor/lib/libwvm.so:system/vendor/lib/libwvm.so \
 
 ##############################################
 
@@ -197,22 +198,15 @@ PRODUCT_PROPERTY_OVERRIDES := \
     com.ti.omap_enhancement=true \
     omap.enhancement=true \
     persist.lab126.chargeprotect=1 \
-
-#    dalvik.vm.heapstartsize=5m \
-#    dalvik.vm.heapgrowthlimit=42m \
-#    dalvik.vm.heapsize=128m \
+    dalvik.vm.heapstartsize=5m \
+    dalvik.vm.heapgrowthlimit=48m \
+    dalvik.vm.heapsize=128m \
 
 ##############################################
 
-PRODUCT_AAPT_CONFIG := large mdpi
-
-PRODUCT_AAPT_PREF_CONFIG := large
-
-PRODUCT_CHARACTERISTICS := tablet,nosdcard
-
-DEVICE_PACKAGE_OVERLAYS := device/amazon/otter/overlay/aosp
-
-PRODUCT_TAGS += dalvik.gc.type-precise
-
-$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
+PRODUCT_AAPT_CONFIG 		:= large mdpi
+PRODUCT_AAPT_PREF_CONFIG 	:= large
+PRODUCT_CHARACTERISTICS 	:= tablet,nosdcard
+DEVICE_PACKAGE_OVERLAYS 	:= device/amazon/otter/overlay/aosp
+PRODUCT_TAGS 			+= dalvik.gc.type-precise
 

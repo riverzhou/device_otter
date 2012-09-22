@@ -17,9 +17,9 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, device/amazon/otter/device.mk)
 
-PRODUCT_NAME := full_otter
-PRODUCT_DEVICE := otter
-PRODUCT_BRAND := Amazon
-PRODUCT_MODEL := Amazon Kindle Fire
-PRODUCT_MANUFACTURER := Amazon
+PRODUCT_NAME 		:= full_otter
+PRODUCT_DEVICE 	  	:= otter
+PRODUCT_BRAND 		:= Amazon
+PRODUCT_MODEL 		:= Amazon Kindle Fire
+PRODUCT_MANUFACTURER 	:= Amazon
 
