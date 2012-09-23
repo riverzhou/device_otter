@@ -89,11 +89,6 @@ PRODUCT_COPY_FILES += \
 
 #---------------------------------------
 
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/prebuilt/root/init.omap4430.rc:/root/init.omap4430.rc \
-#    $(LOCAL_PATH)/prebuilt/root/init.usb.rc:/root/init.usb.rc \
-#    $(LOCAL_PATH)/prebuilt/root/ueventd.omap4430.rc:/root/ueventd.omap4430.rc \
-
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/fix-mac.sh:/system/bin/fix-mac.sh \
     $(LOCAL_PATH)/prebuilt/bin/temperature_log.sh:/system/bin/temperature_log.sh \
