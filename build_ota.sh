@@ -95,7 +95,7 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 		cp     net/mac80211/mac80211.ko ${KERNEL_MODULES_OUT}
 		cp     net/wireless/cfg80211.ko ${KERNEL_MODULES_OUT}
 		cp     drivers/net/wireless/wl12xx/wl12xx.ko ${KERNEL_MODULES_OUT}
-		cp     drivers/net/wireless/wl12xx/wl12xx_spi.ko ${KERNEL_MODULES_OUT}
+		#cp     drivers/net/wireless/wl12xx/wl12xx_spi.ko ${KERNEL_MODULES_OUT}
 		cp     drivers/net/wireless/wl12xx/wl12xx_sdio.ko ${KERNEL_MODULES_OUT}
 		cd     ${TOP_DIR}
 	fi 
