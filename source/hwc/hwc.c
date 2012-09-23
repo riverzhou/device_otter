@@ -129,14 +129,14 @@ enum bltmode {
     BLTMODE_REGION = 1,   /* Attempt to blit layers via regions */
 };
 
-/* ARGB image */
-struct omap4_hwc_img {
-    int width;
-    int height;
-    int rowbytes;
-    int size;
-    unsigned char *ptr;
-} dock_image = { .rowbytes = 0 };
+///* ARGB image */
+//struct omap4_hwc_img {
+//    int width;
+//    int height;
+//    int rowbytes;
+//    int size;
+//    unsigned char *ptr;
+//} dock_image = { .rowbytes = 0 };
 
 struct omap4_hwc_module {
     hwc_module_t base;
@@ -182,7 +182,7 @@ struct omap4_hwc_device {
     int flags_nv12_only;
     float upscaled_nv12_limit;
 
-    int on_tv;                  /* using a tv */
+//    int on_tv;                  /* using a tv */
     int force_sgx;
 //    omap4_hwc_ext_t ext;        /* external mirroring data */
     int idle;
@@ -2309,37 +2309,37 @@ err_out:
     return err;
 }
 
-static void set_primary_display_transform_matrix(omap4_hwc_device_t *hwc_dev)
-{
-    /* create primary display translation matrix */
-    hwc_dev->fb_dis.ix = 0;/*Default display*/
-
-    int ret = ioctl(hwc_dev->dsscomp_fd, DSSCIOC_QUERY_DISPLAY, &hwc_dev->fb_dis);
-    if (ret)
-        ALOGE("failed to get display info (%d): %m", errno);
-
-    int lcd_w = hwc_dev->fb_dis.timings.x_res;
-    int lcd_h = hwc_dev->fb_dis.timings.y_res;
-    int orig_w = hwc_dev->fb_dev->base.width;
-    int orig_h = hwc_dev->fb_dev->base.height;
-    hwc_rect_t region = {.left = 0, .top = 0, .right = orig_w, .bottom = orig_h};
-    hwc_dev->primary_region = region;
-    hwc_dev->primary_rotation = ((lcd_w > lcd_h) ^ (orig_w > orig_h)) ? 1 : 0;
-    hwc_dev->primary_transform = ((lcd_w != orig_w)||(lcd_h != orig_h)) ? 1 : 0;
-
-    ALOGI("transforming FB (%dx%d) => (%dx%d) rot%d", orig_w, orig_h, lcd_w, lcd_h, hwc_dev->primary_rotation);
-
-    /* reorientation matrix is:
-       m = (center-from-target-center) * (scale-to-target) * (mirror) * (rotate) * (center-to-original-center) */
-
-    memcpy(hwc_dev->primary_m, m_unit, sizeof(m_unit));
-    m_translate(hwc_dev->primary_m, -(orig_w >> 1), -(orig_h >> 1));
-    m_rotate(hwc_dev->primary_m, hwc_dev->primary_rotation);
-    if (hwc_dev->primary_rotation & 1)
-         swap(orig_w, orig_h);
-    m_scale(hwc_dev->primary_m, orig_w, lcd_w, orig_h, lcd_h);
-    m_translate(hwc_dev->primary_m, lcd_w >> 1, lcd_h >> 1);
-}
+//static void set_primary_display_transform_matrix(omap4_hwc_device_t *hwc_dev)
+//{
+//    /* create primary display translation matrix */
+//    hwc_dev->fb_dis.ix = 0;/*Default display*/
+//
+//    int ret = ioctl(hwc_dev->dsscomp_fd, DSSCIOC_QUERY_DISPLAY, &hwc_dev->fb_dis);
+//    if (ret)
+//        ALOGE("failed to get display info (%d): %m", errno);
+//
+//    int lcd_w = hwc_dev->fb_dis.timings.x_res;
+//    int lcd_h = hwc_dev->fb_dis.timings.y_res;
+//    int orig_w = hwc_dev->fb_dev->base.width;
+//    int orig_h = hwc_dev->fb_dev->base.height;
+//    hwc_rect_t region = {.left = 0, .top = 0, .right = orig_w, .bottom = orig_h};
+//    hwc_dev->primary_region = region;
+//    hwc_dev->primary_rotation = ((lcd_w > lcd_h) ^ (orig_w > orig_h)) ? 1 : 0;
+//    hwc_dev->primary_transform = ((lcd_w != orig_w)||(lcd_h != orig_h)) ? 1 : 0;
+//
+//    ALOGI("transforming FB (%dx%d) => (%dx%d) rot%d", orig_w, orig_h, lcd_w, lcd_h, hwc_dev->primary_rotation);
+//
+//    /* reorientation matrix is:
+//       m = (center-from-target-center) * (scale-to-target) * (mirror) * (rotate) * (center-to-original-center) */
+//
+//    memcpy(hwc_dev->primary_m, m_unit, sizeof(m_unit));
+//    m_translate(hwc_dev->primary_m, -(orig_w >> 1), -(orig_h >> 1));
+//    m_rotate(hwc_dev->primary_m, hwc_dev->primary_rotation);
+//    if (hwc_dev->primary_rotation & 1)
+//         swap(orig_w, orig_h);
+//    m_scale(hwc_dev->primary_m, orig_w, lcd_w, orig_h, lcd_h);
+//    m_translate(hwc_dev->primary_m, lcd_w >> 1, lcd_h >> 1);
+//}
 
 
 
