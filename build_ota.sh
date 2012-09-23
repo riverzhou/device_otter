@@ -56,6 +56,7 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 	cp    -rf ${RAMDISK_SOURCE}/* ${RAMDISK_DIR}
 	mkdir -p  ${RAMDISK_DIR}/data
 	mkdir -p  ${RAMDISK_DIR}/dev
+	mkdir -p  ${RAMDISK_DIR}/dropbox
 	mkdir -p  ${RAMDISK_DIR}/modules
 	mkdir -p  ${RAMDISK_DIR}/proc
 	mkdir -p  ${RAMDISK_DIR}/sbin
