@@ -45,6 +45,9 @@ PRODUCT_PACKAGES += \
     calibrator \
     crda \
     regulatory.bin \
+    libwpa_client \
+    wpa_cli \
+    wpa_supplicant \
 
 # Sound
 PRODUCT_PACKAGES += \
