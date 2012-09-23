@@ -1,0 +1,12 @@
+show_progress(0.900000, 5);
+package_extract_file("boot.img", "/dev/block/mmcblk0p7");
+show_progress(0.100000, 5);
+mount("ext4", "EMMC", "/dev/block/mmcblk0p9", "/system");
+package_extract_file("/modules/compat.ko", "/system/lib/modules/compat.ko");
+package_extract_file("/modules/mac80211.ko", "/system/lib/modules/mac80211.ko");
+package_extract_file("/modules/cfg80211.ko", "/system/lib/modules/cfg80211.ko");
+package_extract_file("/modules/wl12xx/wl12xx.ko", "/system/lib/modules/wl12xx.ko");
+package_extract_file("/modules/wl12xx/wl12xx_spi.ko", "/system/lib/modules/wl12xx_spi.ko");
+package_extract_file("/modules/wl12xx/wl12xx_sdio.ko", "/system/lib/modules/wl12xx_sdio.ko");
+unmount("/system");
+

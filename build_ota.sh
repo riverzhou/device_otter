@@ -28,12 +28,7 @@ KERNEL_MODULES_OUT=${OTA_DIR}/modules/
 RAMDISK_SOURCE=${PWD}/device/amazon/otter/ramdisk/
 DEVICE_SOURCE=${PWD}/device/amazon/otter/
 KERNEL_SOURCE=${PWD}/kernel/amazon/otter/
-
-if [  "$ONLYBOOT_BUILD" != "true" ] ; then 
-METAINF_SOURCE=${PWD}/device/amazon/otter/OTA/full/META-INF/
-else
-METAINF_SOURCE=${PWD}/device/amazon/otter/OTA/boot/META-INF/
-fi
+METAINF_SOURCE=${PWD}/device/amazon/otter/OTA/
 
 KERNEL_BASE=0x80000000
 KERNEL_PAGESIZE=4096
@@ -52,8 +47,8 @@ WLAN_DIR=${TOP_DIR}/hardware/ti/wlan/mac80211/compat_wl12xx/
 #-----------------------------------------------
 
 rm    -rf ${OTA_DIR}
-mkdir -p  ${OTA_DIR}/META-INF/
-cp    -rf ${METAINF_SOURCE}/* ${OTA_DIR}/META-INF/
+mkdir -p  ${OTA_DIR}/META-INF/com/google/android/
+cp    -f ${METAINF_SOURCE}/update-binary  ${OTA_DIR}/META-INF/com/google/android/update-binary
 
 if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 	rm    -rf ${RAMDISK_DIR}
@@ -113,8 +108,10 @@ cp ${PRODUCT_DIR}/boot.img ${OTA_DIR}/boot.img
 if [ "$ONLYBOOT_BUILD" != "true" ] && [ "$OLDKERNEL_BUILD" != "true" ] ; then
 	${TOOLS_DIR}/simg2img ${PRODUCT_DIR}/system.img ${OTA_DIR}/system.img
 	OTA_FILE=${PRODUCT_DIR}/full_otter-ota
+	cp    -f ${METAINF_SOURCE}/updater-script_full ${OTA_DIR}/META-INF/com/google/android/updater-script 
 else
 	OTA_FILE=${PRODUCT_DIR}/boot_otter-ota
+	cp    -f ${METAINF_SOURCE}/updater-script_boot ${OTA_DIR}/META-INF/com/google/android/updater-script 
 fi
 
 rm -f ${OTA_FILE}.zip

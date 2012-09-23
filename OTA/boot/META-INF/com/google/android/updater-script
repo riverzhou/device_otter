@@ -1,3 +1,0 @@
-show_progress(1.000000, 5);
-package_extract_file("boot.img", "/dev/block/mmcblk0p7");
-
