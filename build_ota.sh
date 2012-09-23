@@ -35,7 +35,7 @@ fi
 
 KERNEL_BASE=0x80000000
 KERNEL_PAGESIZE=4096
-KERNEL_CMDLINE="mem=512M console=tty0 vram=16M omapfb.vram=0:8M def_disp=lcd2"
+KERNEL_CMDLINE="mem=512M console=tty0 vram=16M omapfb.vram=0:8M"
 #KERNEL_DEFCONFIG=otter_android_defconfig
 KERNEL_DEFCONFIG=river_defconfig
 
@@ -82,7 +82,6 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 		export KERNELSRC=${KERNEL_SOURCE}
 		cd ${SGX_SOURCE}
 		make  clean 
-		#cp $(TARGET_KERNEL_SOURCE)/drivers/video/omap2/omapfb/omapfb.h $(KERNEL_OUT)/drivers/video/omap2/omapfb/omapfb.h
 		make  -j ${CPU_NUMBER} TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
         	mkdir -p ${RAMDISK_DIR}/modules
 		cp ${SGX_DIR}/pvrsrvkm_sgx540_120.ko ${RAMDISK_DIR}/modules
