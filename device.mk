@@ -28,6 +28,7 @@ PRODUCT_PACKAGES += \
     audio.primary.otter\
     audio_policy.default \
     hwcomposer.default \
+    hwcomposer.otter \
     power.otter \
 
 PRODUCT_PACKAGES += \
