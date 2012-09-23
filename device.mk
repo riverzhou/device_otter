@@ -33,15 +33,18 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libinvensense_mpl \
     libaudioutils \
-
-#    libion \
+    libion \
 
 # Wifi
 PRODUCT_PACKAGES += \
+    ti_wfd_libs \
     lib_driver_cmd_wl12xx \
     dhcpcd.conf \
+    hostapd.conf \
     wpa_supplicant.conf \
-    libtiOsLib \
+    calibrator \
+    crda \
+    regulatory.bin \
 
 # Sound
 PRODUCT_PACKAGES += \
@@ -60,12 +63,12 @@ PRODUCT_PACKAGES += \
     iontest \
     busybox \
     su \
-    Superuser \
     strace \
 
 # Apps
 PRODUCT_PACKAGES += \
     FileManager \
+    Superuser \
 
 ##############################################
 
