@@ -60,6 +60,7 @@ PRODUCT_PACKAGES += \
     iontest \
     busybox \
     su \
+    Superuser \
     strace \
 
 # Apps
