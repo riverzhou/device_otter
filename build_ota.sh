@@ -20,8 +20,10 @@ PRODUCT_DIR=${PWD}/out/target/product/otter/
 OTA_DIR=${PRODUCT_DIR}/OTA/
 RAMDISK_DIR=${PRODUCT_DIR}/ramdisk/
 BOOT_DIR=${PRODUCT_DIR}/boot/
-KERNEL_DIR=${PRODUCT_DIR}/kernel/
+KERNEL_OUT=${PRODUCT_DIR}/kernel/
 ROOT_DIR=${PRODUCT_DIR}/root/
+
+KERNEL_MODULES_OUT=${OTA_DIR}/modules/
 
 RAMDISK_SOURCE=${PWD}/device/amazon/otter/ramdisk/
 DEVICE_SOURCE=${PWD}/device/amazon/otter/
@@ -45,6 +47,8 @@ SGX_BASE=${TOP_DIR}/hardware/ti/sgx540/eurasia_km/eurasiacon/
 SGX_SOURCE=${SGX_BASE}/build/linux2/omap4430_android
 SGX_DIR=${SGX_BASE}/binary2_540_120_omap4430_android_release/target/
 
+WLAN_DIR=${TOP_DIR}/hardware/ti/wlan/mac80211/compat_wl12xx/
+
 #-----------------------------------------------
 
 rm    -rf ${OTA_DIR}
@@ -67,18 +71,18 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 	rm    -rf ${BOOT_DIR}
 	mkdir -p  ${BOOT_DIR}
 
-	if [ "$OLDKERNEL_BUILD" != "true" ] || [ ! -f ${KERNEL_DIR}/arch/arm/boot/zImage ] ; then
+	if [ "$OLDKERNEL_BUILD" != "true" ] || [ ! -f ${KERNEL_OUT}/arch/arm/boot/zImage ] ; then
 		cp -f ${DEVICE_SOURCE}/river_defconfig  ${KERNEL_SOURCE}/arch/arm/configs/river_defconfig
 
-		rm    -rf ${KERNEL_DIR}
-		mkdir -p  ${KERNEL_DIR}
+		rm    -rf ${KERNEL_OUT}
+		mkdir -p  ${KERNEL_OUT}
 		export ARCH=arm
 		export CROSS_COMPILE=${GCC_PREFIX}
 		export KERNEL_CROSS_COMPILE=${GCC_PREFIX}
-		make  -C ${KERNEL_SOURCE} O=${KERNEL_DIR}  ${KERNEL_DEFCONFIG}
-		make  -C ${KERNEL_SOURCE} O=${KERNEL_DIR}  -j ${CPU_NUMBER}
+		make  -C ${KERNEL_SOURCE} O=${KERNEL_OUT}  ${KERNEL_DEFCONFIG}
+		make  -C ${KERNEL_SOURCE} O=${KERNEL_OUT}  -j ${CPU_NUMBER}
 
-		export KERNELDIR=${KERNEL_DIR}
+		export KERNELDIR=${KERNEL_OUT}
 		export KERNELSRC=${KERNEL_SOURCE}
 		cd ${SGX_SOURCE}
 		make  clean 
@@ -86,10 +90,23 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
         	mkdir -p ${RAMDISK_DIR}/modules
 		cp ${SGX_DIR}/pvrsrvkm_sgx540_120.ko ${RAMDISK_DIR}/modules
 		cd ${TOP_DIR}
+
+		cd ${WLAN_DIR}
+		rm -rf $(KERNEL_MODULES_OUT)
+		mkdir -p $(KERNEL_MODULES_OUT)
+		make clean -C 
+		make -j ${CPU_NUMBER} KERNEL_DIR=$(KERNEL_OUT) KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) 
+		cp compat/compat.ko $(KERNEL_MODULES_OUT)
+		cp net/mac80211/mac80211.ko $(KERNEL_MODULES_OUT)
+		cp net/wireless/cfg80211.ko $(KERNEL_MODULES_OUT)
+		cp drivers/net/wireless/wl12xx/wl12xx.ko $(KERNEL_MODULES_OUT)
+		cp drivers/net/wireless/wl12xx/wl12xx_spi.ko $(KERNEL_MODULES_OUT)
+		cp drivers/net/wireless/wl12xx/wl12xx_sdio.ko $(KERNEL_MODULES_OUT)
+		cd ${TOP_DIR}
 	fi 
 
 	${TOOLS_DIR}/mkbootfs ${RAMDISK_DIR} | gzip > ${BOOT_DIR}/ramdisk.gz
-	${TOOLS_DIR}/mkbootimg --cmdline "${KERNEL_CMDLINE}" --kernel ${KERNEL_DIR}/arch/arm/boot/zImage --ramdisk ${BOOT_DIR}/ramdisk.gz -o ${PRODUCT_DIR}/boot.img --base ${KERNEL_BASE} --pagesize ${KERNEL_PAGESIZE}
+	${TOOLS_DIR}/mkbootimg --cmdline "${KERNEL_CMDLINE}" --kernel ${KERNEL_OUT}/arch/arm/boot/zImage --ramdisk ${BOOT_DIR}/ramdisk.gz -o ${PRODUCT_DIR}/boot.img --base ${KERNEL_BASE} --pagesize ${KERNEL_PAGESIZE}
 fi 
 cp ${PRODUCT_DIR}/boot.img ${OTA_DIR}/boot.img
 
