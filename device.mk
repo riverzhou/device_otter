@@ -63,8 +63,6 @@ PRODUCT_PACKAGES += \
     libjni_pinyinime \
     make_ext4fs \
     setup_fs \
-    calibrator \
-    iontest \
     busybox \
     su \
     strace \
