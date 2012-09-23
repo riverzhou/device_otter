@@ -69,35 +69,35 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 	if [ "$OLDKERNEL_BUILD" != "true" ] || [ ! -f ${KERNEL_OUT}/arch/arm/boot/zImage ] ; then
 		cp -f ${DEVICE_SOURCE}/river_defconfig  ${KERNEL_SOURCE}/arch/arm/configs/river_defconfig
 
-		rm    -rf ${KERNEL_OUT}
-		mkdir -p  ${KERNEL_OUT}
+		rm     -rf ${KERNEL_OUT}
+		mkdir  -p  ${KERNEL_OUT}
 		export ARCH=arm
 		export CROSS_COMPILE=${GCC_PREFIX}
 		export KERNEL_CROSS_COMPILE=${GCC_PREFIX}
-		make  -C ${KERNEL_SOURCE} O=${KERNEL_OUT}  ${KERNEL_DEFCONFIG}
-		make  -C ${KERNEL_SOURCE} O=${KERNEL_OUT}  -j ${CPU_NUMBER}
+		make   -C ${KERNEL_SOURCE} O=${KERNEL_OUT}  ${KERNEL_DEFCONFIG}
+		make   -C ${KERNEL_SOURCE} O=${KERNEL_OUT}  -j ${CPU_NUMBER}
 
 		export KERNELDIR=${KERNEL_OUT}
 		export KERNELSRC=${KERNEL_SOURCE}
-		cd ${SGX_SOURCE}
-		make  clean 
-		make  -j ${CPU_NUMBER} TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
-        	mkdir -p ${RAMDISK_DIR}/modules
-		cp ${SGX_DIR}/pvrsrvkm_sgx540_120.ko ${RAMDISK_DIR}/modules
-		cd ${TOP_DIR}
+		cd     ${SGX_SOURCE}
+		make   clean 
+		make   -j ${CPU_NUMBER} TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
+        	mkdir  -p ${RAMDISK_DIR}/modules
+		cp     ${SGX_DIR}/pvrsrvkm_sgx540_120.ko ${RAMDISK_DIR}/modules
+		cd     ${TOP_DIR}
 
-		cd ${WLAN_DIR}
-		rm -rf $(KERNEL_MODULES_OUT)
-		mkdir -p $(KERNEL_MODULES_OUT)
-		make clean -C 
-		make -j ${CPU_NUMBER} KERNEL_DIR=$(KERNEL_OUT) KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) 
-		cp compat/compat.ko $(KERNEL_MODULES_OUT)
-		cp net/mac80211/mac80211.ko $(KERNEL_MODULES_OUT)
-		cp net/wireless/cfg80211.ko $(KERNEL_MODULES_OUT)
-		cp drivers/net/wireless/wl12xx/wl12xx.ko $(KERNEL_MODULES_OUT)
-		cp drivers/net/wireless/wl12xx/wl12xx_spi.ko $(KERNEL_MODULES_OUT)
-		cp drivers/net/wireless/wl12xx/wl12xx_sdio.ko $(KERNEL_MODULES_OUT)
-		cd ${TOP_DIR}
+		rm     -rf ${KERNEL_MODULES_OUT}
+		mkdir  -p ${KERNEL_MODULES_OUT}
+		cd     ${WLAN_DIR}
+		make   clean 
+		make   -j ${CPU_NUMBER} KERNEL_DIR=${KERNEL_OUT} KLIB=${KERNEL_OUT} KLIB_BUILD=${KERNEL_OUT} 
+		cp     compat/compat.ko ${KERNEL_MODULES_OUT}
+		cp     net/mac80211/mac80211.ko ${KERNEL_MODULES_OUT}
+		cp     net/wireless/cfg80211.ko ${KERNEL_MODULES_OUT}
+		cp     drivers/net/wireless/wl12xx/wl12xx.ko ${KERNEL_MODULES_OUT}
+		cp     drivers/net/wireless/wl12xx/wl12xx_spi.ko ${KERNEL_MODULES_OUT}
+		cp     drivers/net/wireless/wl12xx/wl12xx_sdio.ko ${KERNEL_MODULES_OUT}
+		cd     ${TOP_DIR}
 	fi 
 
 	${TOOLS_DIR}/mkbootfs ${RAMDISK_DIR} | gzip > ${BOOT_DIR}/ramdisk.gz
