@@ -129,14 +129,14 @@ enum bltmode {
     BLTMODE_REGION = 1,   /* Attempt to blit layers via regions */
 };
 
-///* ARGB image */
-//struct omap4_hwc_img {
-//    int width;
-//    int height;
-//    int rowbytes;
-//    int size;
-//    unsigned char *ptr;
-//} dock_image = { .rowbytes = 0 };
+/* ARGB image */
+struct omap4_hwc_img {
+    int width;
+    int height;
+    int rowbytes;
+    int size;
+    unsigned char *ptr;
+} dock_image = { .rowbytes = 0 };
 
 struct omap4_hwc_module {
     hwc_module_t base;
