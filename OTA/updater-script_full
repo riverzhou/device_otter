@@ -4,6 +4,6 @@ show_progress(0.100000, 5);
 package_extract_file("boot.img", "/dev/block/mmcblk0p7");
 show_progress(0.100000, 5);
 mount("ext4", "EMMC", "/dev/block/mmcblk0p9", "/system");
-package_extract_dir("/modules", "/system/lib/modules");
+package_extract_dir("modules", "/system/lib/modules");
 unmount("/system");
 
