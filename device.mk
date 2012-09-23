@@ -115,9 +115,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:/system/usr/keylayout/twl6030_pwrbutton.kl \
 
 #---------------------------------------
-# Create dir /system/lib/modules/
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/kernel:/system/lib/modules/README \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/aosp/media/bootanimation.zip:/system/media/bootanimation.zip \
