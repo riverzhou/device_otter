@@ -19,6 +19,8 @@
 
 #include <linux/types.h>
 
+typedef unsigned int u32;;
+
 /**
  * struct omap_ion_tiler_alloc_data - metadata passed from userspace for allocations
  * @w:		width of the allocation

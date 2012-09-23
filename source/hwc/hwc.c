@@ -22,7 +22,7 @@
 #include <poll.h>
 #include <sys/ioctl.h>
 #include <linux/fb.h>
-#include <linux/omapfb.h>
+#include "linux/omapfb.h"
 #include <sys/mman.h>
 #include <sys/resource.h>
 #include <stdbool.h>
@@ -1700,22 +1700,25 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 
     gather_layer_statistics(hwc_dev, &num, list);
 
-    decide_supported_cloning(hwc_dev, &num);
+    hwc_dev->force_sgx = 0;
+    hwc_dev->use_sgx = 0;
+    hwc_dev->swap_rb = num.BGR != 0;
 
-    /* Disable the forced SGX rendering if there is only one layer */
-    if (hwc_dev->force_sgx && num.composited_layers <= 1)
-        hwc_dev->force_sgx = 0;
-
-    /* phase 3 logic */
-    if (can_dss_render_all(hwc_dev, &num)) {
-        /* All layers can be handled by the DSS -- don't use SGX for composition */
-        hwc_dev->use_sgx = 0;
-        hwc_dev->swap_rb = num.BGR != 0;
-    } else {
-        /* Use SGX for composition plus first 3 layers that are DSS renderable */
-        hwc_dev->use_sgx = 1;
-        hwc_dev->swap_rb = is_BGR_format(hwc_dev->fb_dev->base.format);
-    }
+//    decide_supported_cloning(hwc_dev, &num);
+//    /* Disable the forced SGX rendering if there is only one layer */
+//    if (hwc_dev->force_sgx && num.composited_layers <= 1)
+//        hwc_dev->force_sgx = 0;
+//
+//    /* phase 3 logic */
+//    if (can_dss_render_all(hwc_dev, &num)) {
+//        /* All layers can be handled by the DSS -- don't use SGX for composition */
+//        hwc_dev->use_sgx = 0;
+//        hwc_dev->swap_rb = num.BGR != 0;
+//    } else {
+//        /* Use SGX for composition plus first 3 layers that are DSS renderable */
+//        hwc_dev->use_sgx = 1;
+//        hwc_dev->swap_rb = is_BGR_format(hwc_dev->fb_dev->base.format);
+//    }
 
     /* setup pipes */
     int z = 0;
@@ -1922,8 +1925,8 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 //                    break;
 //                z++;
 //            }
-        }
-    }
+//        }
+//    }
 
     /* Apply transform for primary display */
     if (hwc_dev->primary_transform)
