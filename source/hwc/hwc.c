@@ -2701,6 +2701,7 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
         return -ENOMEM;
 
     memset(hwc_dev, 0, sizeof(*hwc_dev));
+    char value[PROPERTY_VALUE_MAX]={0};
 
     hwc_dev->base.common.tag = HARDWARE_DEVICE_TAG;
     hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_2;
