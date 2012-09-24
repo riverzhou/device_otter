@@ -419,7 +419,7 @@ static int omap4_hwc_is_valid_format(int format)
 //{
 //    return (layer->flags & S3DLayoutTypeMask) >> S3DLayoutTypeShift;
 //}
-//
+
 //static __u32 get_s3d_layout_order(hwc_layer_t *layer)
 //{
 //    return (layer->flags & S3DLayoutOrderMask) >> S3DLayoutOrderShift;
@@ -684,32 +684,32 @@ static inline int m_round(float x)
  * and height for a screen of xres/yres and physical size of width/height.
  * The adjusted size is the largest that fits into the screen.
  */
-static void get_max_dimensions(__u32 orig_xres, __u32 orig_yres,
-                               float xpy,
-                               __u32 scr_xres, __u32 scr_yres,
-                               __u32 scr_width, __u32 scr_height,
-                               __u32 *adj_xres, __u32 *adj_yres)
-{
-    /* assume full screen (largest size)*/
-    *adj_xres = scr_xres;
-    *adj_yres = scr_yres;
-
-    /* assume 1:1 pixel ratios if none supplied */
-    if (!scr_width || !scr_height) {
-        scr_width = scr_xres;
-        scr_height = scr_yres;
-    }
-
-    /* trim to keep aspect ratio */
-    float x_factor = orig_xres * xpy * scr_height;
-    float y_factor = orig_yres *       scr_width;
-
-    /* allow for tolerance so we avoid scaling if framebuffer is standard size */
-    if (x_factor < y_factor * (1.f - ASPECT_RATIO_TOLERANCE))
-        *adj_xres = (__u32) (x_factor * *adj_xres / y_factor + 0.5);
-    else if (x_factor * (1.f - ASPECT_RATIO_TOLERANCE) > y_factor)
-        *adj_yres = (__u32) (y_factor * *adj_yres / x_factor + 0.5);
-}
+//static void get_max_dimensions(__u32 orig_xres, __u32 orig_yres,
+//                               float xpy,
+//                               __u32 scr_xres, __u32 scr_yres,
+//                               __u32 scr_width, __u32 scr_height,
+//                               __u32 *adj_xres, __u32 *adj_yres)
+//{
+//    /* assume full screen (largest size)*/
+//    *adj_xres = scr_xres;
+//    *adj_yres = scr_yres;
+//
+//    /* assume 1:1 pixel ratios if none supplied */
+//    if (!scr_width || !scr_height) {
+//        scr_width = scr_xres;
+//        scr_height = scr_yres;
+//    }
+//
+//    /* trim to keep aspect ratio */
+//    float x_factor = orig_xres * xpy * scr_height;
+//    float y_factor = orig_yres *       scr_width;
+//
+//    /* allow for tolerance so we avoid scaling if framebuffer is standard size */
+//    if (x_factor < y_factor * (1.f - ASPECT_RATIO_TOLERANCE))
+//        *adj_xres = (__u32) (x_factor * *adj_xres / y_factor + 0.5);
+//    else if (x_factor * (1.f - ASPECT_RATIO_TOLERANCE) > y_factor)
+//        *adj_yres = (__u32) (y_factor * *adj_yres / x_factor + 0.5);
+//}
 
 //static void set_ext_matrix(omap4_hwc_ext_t *ext, struct hwc_rect region)
 //{
@@ -869,129 +869,129 @@ omap4_hwc_adjust_primary_display_layer(omap4_hwc_device_t *hwc_dev, struct dss2_
     oc->rotation &= 3;
 }
 
-static int omap4_hwc_can_scale(__u32 src_w, __u32 src_h, __u32 dst_w, __u32 dst_h, int is_2d,
-                               struct dsscomp_display_info *dis, struct dsscomp_platform_info *limits,
-                               __u32 pclk, void *handle)
-{
-    __u32 fclk = limits->fclk / 1000;
-    __u32 min_src_w = DIV_ROUND_UP(src_w, is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d);
-    __u32 min_src_h = DIV_ROUND_UP(src_h, is_2d ? limits->max_ydecim_2d : limits->max_ydecim_1d);
+//static int omap4_hwc_can_scale(__u32 src_w, __u32 src_h, __u32 dst_w, __u32 dst_h, int is_2d,
+//                               struct dsscomp_display_info *dis, struct dsscomp_platform_info *limits,
+//                               __u32 pclk, void *handle)
+//{
+//    __u32 fclk = limits->fclk / 1000;
+//    __u32 min_src_w = DIV_ROUND_UP(src_w, is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d);
+//    __u32 min_src_h = DIV_ROUND_UP(src_h, is_2d ? limits->max_ydecim_2d : limits->max_ydecim_1d);
+//
+//    /* ERRATAs */
+//    /* cannot render 1-width layers on DSI video mode panels - we just disallow all 1-width LCD layers */
+//    if (dis->channel != OMAP_DSS_CHANNEL_DIGIT && dst_w < limits->min_width)
+//        return 0;
+//
+//    /* NOTE: no support for checking YUV422 layers that are tricky to scale */
+//
+//    /* FIXME: limit vertical downscale well below theoretical limit as we saw display artifacts */
+//    if (dst_h < src_h / 4)
+//        return 0;
+//
+//    /* max downscale */
+//    if (dst_h * limits->max_downscale < min_src_h)
+//        return 0;
+//
+//    /* for manual panels pclk is 0, and there are no pclk based scaling limits */
+//    if (!pclk)
+//        return !(dst_w < src_w / limits->max_downscale / (is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d));
+//
+//    /* :HACK: limit horizontal downscale well below theoretical limit as we saw display artifacts */
+//    if (dst_w * 4 < src_w)
+//        return 0;
+//
+//    if (handle)
+//        if (get_rgb_bpp(handle) == 32 && src_w > 1280 && dst_w * 3 < src_w)
+//            return 0;
+//
+//    /* max horizontal downscale is 4, or the fclk/pixclk */
+//    if (fclk > pclk * limits->max_downscale)
+//        fclk = pclk * limits->max_downscale;
+//    /* for small parts, we need to use integer fclk/pixclk */
+//    if (src_w < limits->integer_scale_ratio_limit)
+//        fclk = fclk / pclk * pclk;
+//    if ((__u32) dst_w * fclk < min_src_w * pclk)
+//        return 0;
+//
+//    return 1;
+//}
 
-    /* ERRATAs */
-    /* cannot render 1-width layers on DSI video mode panels - we just disallow all 1-width LCD layers */
-    if (dis->channel != OMAP_DSS_CHANNEL_DIGIT && dst_w < limits->min_width)
-        return 0;
+//static int omap4_hwc_can_scale_layer(omap4_hwc_device_t *hwc_dev, hwc_layer_t *layer, IMG_native_handle_t *handle)
+//{
+//    int src_w = WIDTH(layer->sourceCrop);
+//    int src_h = HEIGHT(layer->sourceCrop);
+//    int dst_w = WIDTH(layer->displayFrame);
+//    int dst_h = HEIGHT(layer->displayFrame);
+//
+//    /* account for 90-degree rotation */
+//    if (layer->transform & HWC_TRANSFORM_ROT_90)
+//        swap(src_w, src_h);
+//
+//    /* NOTE: layers should be able to be scaled externally since
+//       framebuffer is able to be scaled on selected external resolution */
+//    return omap4_hwc_can_scale(src_w, src_h, dst_w, dst_h, is_NV12(handle), &hwc_dev->fb_dis, &limits,
+//                               hwc_dev->fb_dis.timings.pixel_clock, handle);
+//}
 
-    /* NOTE: no support for checking YUV422 layers that are tricky to scale */
+//static int omap4_hwc_is_valid_layer(omap4_hwc_device_t *hwc_dev,
+//                                    hwc_layer_t *layer,
+//                                    IMG_native_handle_t *handle)
+//{
+//    /* Skip layers are handled by SF */
+//    if ((layer->flags & HWC_SKIP_LAYER) || !handle)
+//        return 0;
+//
+//    if (!omap4_hwc_is_valid_format(handle->iFormat))
+//        return 0;
+//
+//    /* 1D buffers: no transform, must fit in TILER slot */
+//    if (!is_NV12(handle)) {
+//        if (layer->transform)
+//            return 0;
+//        if (mem1d(handle) > limits.tiler1d_slot_size)
+//            return 0;
+//    }
+//
+//    return omap4_hwc_can_scale_layer(hwc_dev, layer, handle);
+//}
 
-    /* FIXME: limit vertical downscale well below theoretical limit as we saw display artifacts */
-    if (dst_h < src_h / 4)
-        return 0;
-
-    /* max downscale */
-    if (dst_h * limits->max_downscale < min_src_h)
-        return 0;
-
-    /* for manual panels pclk is 0, and there are no pclk based scaling limits */
-    if (!pclk)
-        return !(dst_w < src_w / limits->max_downscale / (is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d));
-
-    /* :HACK: limit horizontal downscale well below theoretical limit as we saw display artifacts */
-    if (dst_w * 4 < src_w)
-        return 0;
-
-    if (handle)
-        if (get_rgb_bpp(handle) == 32 && src_w > 1280 && dst_w * 3 < src_w)
-            return 0;
-
-    /* max horizontal downscale is 4, or the fclk/pixclk */
-    if (fclk > pclk * limits->max_downscale)
-        fclk = pclk * limits->max_downscale;
-    /* for small parts, we need to use integer fclk/pixclk */
-    if (src_w < limits->integer_scale_ratio_limit)
-        fclk = fclk / pclk * pclk;
-    if ((__u32) dst_w * fclk < min_src_w * pclk)
-        return 0;
-
-    return 1;
-}
-
-static int omap4_hwc_can_scale_layer(omap4_hwc_device_t *hwc_dev, hwc_layer_t *layer, IMG_native_handle_t *handle)
-{
-    int src_w = WIDTH(layer->sourceCrop);
-    int src_h = HEIGHT(layer->sourceCrop);
-    int dst_w = WIDTH(layer->displayFrame);
-    int dst_h = HEIGHT(layer->displayFrame);
-
-    /* account for 90-degree rotation */
-    if (layer->transform & HWC_TRANSFORM_ROT_90)
-        swap(src_w, src_h);
-
-    /* NOTE: layers should be able to be scaled externally since
-       framebuffer is able to be scaled on selected external resolution */
-    return omap4_hwc_can_scale(src_w, src_h, dst_w, dst_h, is_NV12(handle), &hwc_dev->fb_dis, &limits,
-                               hwc_dev->fb_dis.timings.pixel_clock, handle);
-}
-
-static int omap4_hwc_is_valid_layer(omap4_hwc_device_t *hwc_dev,
-                                    hwc_layer_t *layer,
-                                    IMG_native_handle_t *handle)
-{
-    /* Skip layers are handled by SF */
-    if ((layer->flags & HWC_SKIP_LAYER) || !handle)
-        return 0;
-
-    if (!omap4_hwc_is_valid_format(handle->iFormat))
-        return 0;
-
-    /* 1D buffers: no transform, must fit in TILER slot */
-    if (!is_NV12(handle)) {
-        if (layer->transform)
-            return 0;
-        if (mem1d(handle) > limits.tiler1d_slot_size)
-            return 0;
-    }
-
-    return omap4_hwc_can_scale_layer(hwc_dev, layer, handle);
-}
-
-static __u32 add_scaling_score(__u32 score,
-                               __u32 xres, __u32 yres, __u32 refresh,
-                               __u32 ext_xres, __u32 ext_yres,
-                               __u32 mode_xres, __u32 mode_yres, __u32 mode_refresh)
-{
-    __u32 area = xres * yres;
-    __u32 ext_area = ext_xres * ext_yres;
-    __u32 mode_area = mode_xres * mode_yres;
-
-    /* prefer to upscale (1% tolerance) [0..1] (insert after 1st bit) */
-    int upscale = (ext_xres >= xres * 99 / 100 && ext_yres >= yres * 99 / 100);
-    score = (((score & ~1) | upscale) << 1) | (score & 1);
-
-    /* pick minimum scaling [0..16] */
-    if (ext_area > area)
-        score = (score << 5) | (16 * area / ext_area);
-    else
-        score = (score << 5) | (16 * ext_area / area);
-
-    /* pick smallest leftover area [0..16] */
-    score = (score << 5) | ((16 * ext_area + (mode_area >> 1)) / mode_area);
-
-    /* adjust mode refresh rate */
-    mode_refresh += mode_refresh % 6 == 5;
-
-    /* prefer same or higher frame rate */
-    upscale = (mode_refresh >= refresh);
-    score = (score << 1) | upscale;
-
-    /* pick closest frame rate */
-    if (mode_refresh > refresh)
-        score = (score << 8) | (240 * refresh / mode_refresh);
-    else
-        score = (score << 8) | (240 * mode_refresh / refresh);
-
-    return score;
-}
+//static __u32 add_scaling_score(__u32 score,
+//                               __u32 xres, __u32 yres, __u32 refresh,
+//                               __u32 ext_xres, __u32 ext_yres,
+//                               __u32 mode_xres, __u32 mode_yres, __u32 mode_refresh)
+//{
+//    __u32 area = xres * yres;
+//    __u32 ext_area = ext_xres * ext_yres;
+//    __u32 mode_area = mode_xres * mode_yres;
+//
+//    /* prefer to upscale (1% tolerance) [0..1] (insert after 1st bit) */
+//    int upscale = (ext_xres >= xres * 99 / 100 && ext_yres >= yres * 99 / 100);
+//    score = (((score & ~1) | upscale) << 1) | (score & 1);
+//
+//    /* pick minimum scaling [0..16] */
+//    if (ext_area > area)
+//        score = (score << 5) | (16 * area / ext_area);
+//    else
+//        score = (score << 5) | (16 * ext_area / area);
+//
+//    /* pick smallest leftover area [0..16] */
+//    score = (score << 5) | ((16 * ext_area + (mode_area >> 1)) / mode_area);
+//
+//    /* adjust mode refresh rate */
+//    mode_refresh += mode_refresh % 6 == 5;
+//
+//    /* prefer same or higher frame rate */
+//    upscale = (mode_refresh >= refresh);
+//    score = (score << 1) | upscale;
+//
+//    /* pick closest frame rate */
+//    if (mode_refresh > refresh)
+//        score = (score << 8) | (240 * refresh / mode_refresh);
+//    else
+//        score = (score << 8) | (240 * mode_refresh / refresh);
+//
+//    return score;
+//}
 
 //static int omap4_hwc_set_best_hdmi_mode(omap4_hwc_device_t *hwc_dev, __u32 xres, __u32 yres,
 //                                        float xpy)
@@ -1110,20 +1110,20 @@ static __u32 add_scaling_score(__u32 score,
 //    return 0;
 //}
 
-static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *num, hwc_layer_list_t *list)
-{
-    unsigned int i;
-
-    /* Figure out how many layers we can support via DSS */
-    for (i = 0; list && i < list->numHwLayers; i++) {
-        hwc_layer_t *layer = &list->hwLayers[i];
-        IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
+//static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *num, hwc_layer_list_t *list)
+//{
+//    unsigned int i;
+//
+//    /* Figure out how many layers we can support via DSS */
+//    for (i = 0; list && i < list->numHwLayers; i++) {
+//        hwc_layer_t *layer = &list->hwLayers[i];
+//        IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
 //        __u32 s3d_layout_type = get_s3d_layout_type(layer);
-
-        layer->compositionType = HWC_FRAMEBUFFER;
-
-        if (omap4_hwc_is_valid_layer(hwc_dev, layer, handle)) {
-
+//
+//        layer->compositionType = HWC_FRAMEBUFFER;
+//
+//        if (omap4_hwc_is_valid_layer(hwc_dev, layer, handle)) {
+//
 //            if (s3d_layout_type != eMono) {
 //                /* For now we can only handle 1 S3D layer, skip any additional ones */
 //                if (num->s3d > 0 || !hwc_dev->ext.dock.enabled || !hwc_dev->ext.s3d_capable) {
@@ -1139,31 +1139,31 @@ static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *
 //                    hwc_dev->s3d_input_order = get_s3d_layout_order(layer);
 //                }
 //            }
-
-            num->possible_overlay_layers++;
-
-            /* NV12 layers can only be rendered on scaling overlays */
-            if (scaled(layer) || is_NV12(handle) || hwc_dev->primary_transform)
-                num->scaled_layers++;
-
-            if (is_BGR(handle))
-                num->BGR++;
-            else if (is_RGB(handle))
-                num->RGB++;
-            else if (is_NV12(handle))
-                num->NV12++;
-
+//
+//            num->possible_overlay_layers++;
+//
+//            /* NV12 layers can only be rendered on scaling overlays */
+//            if (scaled(layer) || is_NV12(handle) || hwc_dev->primary_transform)
+//                num->scaled_layers++;
+//
+//            if (is_BGR(handle))
+//                num->BGR++;
+//            else if (is_RGB(handle))
+//                num->RGB++;
+//            else if (is_NV12(handle))
+//                num->NV12++;
+//
 //            if (dockable(layer))
 //                num->dockable++;
-
-            if (is_protected(layer))
-                num->protected++;
-
-            num->mem += mem1d(handle);
-        }
-    }
-    hwc_dev->stats = *num;
-}
+//
+//            if (is_protected(layer))
+//                num->protected++;
+//
+//            num->mem += mem1d(handle);
+//        }
+//    }
+//    hwc_dev->stats = *num;
+//}
 
 //static void decide_supported_cloning(omap4_hwc_device_t *hwc_dev, struct counts *num)
 //{
@@ -1646,46 +1646,46 @@ void debug_post2(omap4_hwc_device_t *hwc_dev, int nbufs)
     }
 }
 
-static int free_tiler2d_buffers(omap4_hwc_device_t *hwc_dev)
-{
-    int i;
+//static int free_tiler2d_buffers(omap4_hwc_device_t *hwc_dev)
+//{
+//    int i;
+//
+//    for (i = 0 ; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
+//        ion_free(hwc_dev->ion_fd, hwc_dev->ion_handles[i]);
+//        hwc_dev->ion_handles[i] = NULL;
+//    }
+//    return 0;
+//}
 
-    for (i = 0 ; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
-        ion_free(hwc_dev->ion_fd, hwc_dev->ion_handles[i]);
-        hwc_dev->ion_handles[i] = NULL;
-    }
-    return 0;
-}
-
-static int allocate_tiler2d_buffers(omap4_hwc_device_t *hwc_dev)
-{
-    int ret, i;
-    size_t stride;
-
-    if (hwc_dev->ion_fd < 0) {
-        ALOGE("No ion fd, hence can't allocate tiler2d buffers");
-        return -1;
-    }
-
-    for (i = 0; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
-        if (hwc_dev->ion_handles[i])
-            return 0;
-    }
-
-    for (i = 0 ; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
-        ret = ion_alloc_tiler(hwc_dev->ion_fd, hwc_dev->fb_dev->base.width, hwc_dev->fb_dev->base.height,
-                                            TILER_PIXEL_FMT_32BIT, 0, &hwc_dev->ion_handles[i], &stride);
-        if (ret)
-            goto handle_error;
-
-        ALOGI("ion handle[%d][%p]", i, hwc_dev->ion_handles[i]);
-    }
-    return 0;
-
-handle_error:
-    free_tiler2d_buffers(hwc_dev);
-    return -1;
-}
+//static int allocate_tiler2d_buffers(omap4_hwc_device_t *hwc_dev)
+//{
+//    int ret, i;
+//    size_t stride;
+//
+//    if (hwc_dev->ion_fd < 0) {
+//        ALOGE("No ion fd, hence can't allocate tiler2d buffers");
+//        return -1;
+//    }
+//
+//    for (i = 0; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
+//        if (hwc_dev->ion_handles[i])
+//            return 0;
+//    }
+//
+//    for (i = 0 ; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
+//        ret = ion_alloc_tiler(hwc_dev->ion_fd, hwc_dev->fb_dev->base.width, hwc_dev->fb_dev->base.height,
+//                                            TILER_PIXEL_FMT_32BIT, 0, &hwc_dev->ion_handles[i], &stride);
+//        if (ret)
+//            goto handle_error;
+//
+//        ALOGI("ion handle[%d][%p]", i, hwc_dev->ion_handles[i]);
+//    }
+//    return 0;
+//
+//handle_error:
+//    free_tiler2d_buffers(hwc_dev);
+//    return -1;
+//}
 
 static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* list)
 {
@@ -1698,7 +1698,7 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
     memset(dsscomp, 0x0, sizeof(*dsscomp));
     dsscomp->sync_id = sync_id++;
 
-    gather_layer_statistics(hwc_dev, &num, list);
+//    gather_layer_statistics(hwc_dev, &num, list);
 
     hwc_dev->force_sgx = 0;
     hwc_dev->use_sgx = 0;
@@ -1819,6 +1819,7 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 //            if (get_s3d_layout_type(layer) != eMono) {
 //                ix_s3d = dsscomp->num_ovls;
 //            }
+
             dsscomp->num_ovls++;
             z++;
         } else if (hwc_dev->use_sgx) {
@@ -2145,121 +2146,121 @@ static void omap4_hwc_dump(struct hwc_composer_device *dev, char *buff, int buff
     dump_printf(&log, "\n");
 }
 
-static void free_png_image(omap4_hwc_device_t *hwc_dev, struct omap4_hwc_img *img)
-{
-    memset(img, 0, sizeof(*img));
-}
+//static void free_png_image(omap4_hwc_device_t *hwc_dev, struct omap4_hwc_img *img)
+//{
+//    memset(img, 0, sizeof(*img));
+//}
 
-static int load_png_image(omap4_hwc_device_t *hwc_dev, char *path, struct omap4_hwc_img *img)
-{
-    void *ptr = NULL;
-    png_bytepp row_pointers = NULL;
-
-    FILE *fd = fopen(path, "rb");
-    if (!fd) {
-        ALOGE("failed to open PNG file %s: (%d)", path, errno);
-        return -EINVAL;
-    }
-
-    const int SIZE_PNG_HEADER = 8;
-    __u8 header[SIZE_PNG_HEADER];
-    fread(header, 1, SIZE_PNG_HEADER, fd);
-    if (png_sig_cmp(header, 0, SIZE_PNG_HEADER)) {
-        ALOGE("%s is not a PNG file", path);
-        goto fail;
-    }
-
-    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (!png_ptr)
-         goto fail_alloc;
-    png_infop info_ptr = png_create_info_struct(png_ptr);
-    if (!info_ptr)
-         goto fail_alloc;
-
-    if (setjmp(png_jmpbuf(png_ptr)))
-        goto fail_alloc;
-
-    png_init_io(png_ptr, fd);
-    png_set_sig_bytes(png_ptr, SIZE_PNG_HEADER);
-    png_set_user_limits(png_ptr, limits.max_width, limits.max_height);
-    png_read_info(png_ptr, info_ptr);
-
-    __u8 bit_depth = png_get_bit_depth(png_ptr, info_ptr);
-    __u32 width = png_get_image_width(png_ptr, info_ptr);
-    __u32 height = png_get_image_height(png_ptr, info_ptr);
-    __u8 color_type = png_get_color_type(png_ptr, info_ptr);
-
-    switch (color_type) {
-    case PNG_COLOR_TYPE_PALETTE:
-        png_set_palette_to_rgb(png_ptr);
-        png_set_filler(png_ptr, 128, PNG_FILLER_AFTER);
-        break;
-    case PNG_COLOR_TYPE_GRAY:
-        if (bit_depth < 8) {
-            png_set_expand_gray_1_2_4_to_8(png_ptr);
-            if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
-                png_set_tRNS_to_alpha(png_ptr);
-        } else {
-            png_set_filler(png_ptr, 128, PNG_FILLER_AFTER);
-        }
-        /* fall through */
-    case PNG_COLOR_TYPE_GRAY_ALPHA:
-        png_set_gray_to_rgb(png_ptr);
-        break;
-    case PNG_COLOR_TYPE_RGB:
-        png_set_filler(png_ptr, 128, PNG_FILLER_AFTER);
-        /* fall through */
-    case PNG_COLOR_TYPE_RGB_ALPHA:
-        png_set_bgr(png_ptr);
-        break;
-    default:
-        ALOGE("unsupported PNG color: %x", color_type);
-        goto fail_alloc;
-    }
-
-    if (bit_depth == 16)
-        png_set_strip_16(png_ptr);
-
-    const int bpp = 4;
-    img->size = ALIGN(width * height * bpp, 4096);
-    if (img->size > hwc_dev->img_mem_size) {
-        ALOGE("image does not fit into framebuffer area (%d > %d)", img->size, hwc_dev->img_mem_size);
-        goto fail_alloc;
-    }
-    img->ptr = hwc_dev->img_mem_ptr;
-
-    row_pointers = calloc(height, sizeof(*row_pointers));
-    if (!row_pointers) {
-        ALOGE("failed to allocate row pointers");
-        goto fail_alloc;
-    }
-    __u32 i;
-    for (i = 0; i < height; i++)
-        row_pointers[i] = img->ptr + i * width * bpp;
-    png_set_rows(png_ptr, info_ptr, row_pointers);
-    png_read_update_info(png_ptr, info_ptr);
-    img->rowbytes = png_get_rowbytes(png_ptr, info_ptr);
-
-    png_read_image(png_ptr, row_pointers);
-    png_read_end(png_ptr, NULL);
-    free(row_pointers);
-    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-    fclose(fd);
-    img->width = width;
-    img->height = height;
-    return 0;
-
-fail_alloc:
-    free_png_image(hwc_dev, img);
-    free(row_pointers);
-    if (!png_ptr || !info_ptr)
-        ALOGE("failed to allocate PNG structures");
-    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-fail:
-    fclose(fd);
-    return -EINVAL;
-}
-
+//static int load_png_image(omap4_hwc_device_t *hwc_dev, char *path, struct omap4_hwc_img *img)
+//{
+//    void *ptr = NULL;
+//    png_bytepp row_pointers = NULL;
+//
+//    FILE *fd = fopen(path, "rb");
+//    if (!fd) {
+//        ALOGE("failed to open PNG file %s: (%d)", path, errno);
+//        return -EINVAL;
+//    }
+//
+//    const int SIZE_PNG_HEADER = 8;
+//    __u8 header[SIZE_PNG_HEADER];
+//    fread(header, 1, SIZE_PNG_HEADER, fd);
+//    if (png_sig_cmp(header, 0, SIZE_PNG_HEADER)) {
+//        ALOGE("%s is not a PNG file", path);
+//        goto fail;
+//    }
+//
+//    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+//    if (!png_ptr)
+//         goto fail_alloc;
+//    png_infop info_ptr = png_create_info_struct(png_ptr);
+//    if (!info_ptr)
+//         goto fail_alloc;
+//
+//    if (setjmp(png_jmpbuf(png_ptr)))
+//        goto fail_alloc;
+//
+//    png_init_io(png_ptr, fd);
+//    png_set_sig_bytes(png_ptr, SIZE_PNG_HEADER);
+//    png_set_user_limits(png_ptr, limits.max_width, limits.max_height);
+//    png_read_info(png_ptr, info_ptr);
+//
+//    __u8 bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+//    __u32 width = png_get_image_width(png_ptr, info_ptr);
+//    __u32 height = png_get_image_height(png_ptr, info_ptr);
+//    __u8 color_type = png_get_color_type(png_ptr, info_ptr);
+//
+//    switch (color_type) {
+//    case PNG_COLOR_TYPE_PALETTE:
+//        png_set_palette_to_rgb(png_ptr);
+//        png_set_filler(png_ptr, 128, PNG_FILLER_AFTER);
+//        break;
+//    case PNG_COLOR_TYPE_GRAY:
+//        if (bit_depth < 8) {
+//            png_set_expand_gray_1_2_4_to_8(png_ptr);
+//            if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+//                png_set_tRNS_to_alpha(png_ptr);
+//        } else {
+//            png_set_filler(png_ptr, 128, PNG_FILLER_AFTER);
+//        }
+//        /* fall through */
+//    case PNG_COLOR_TYPE_GRAY_ALPHA:
+//        png_set_gray_to_rgb(png_ptr);
+//        break;
+//    case PNG_COLOR_TYPE_RGB:
+//        png_set_filler(png_ptr, 128, PNG_FILLER_AFTER);
+//        /* fall through */
+//    case PNG_COLOR_TYPE_RGB_ALPHA:
+//        png_set_bgr(png_ptr);
+//        break;
+//    default:
+//        ALOGE("unsupported PNG color: %x", color_type);
+//        goto fail_alloc;
+//    }
+//
+//    if (bit_depth == 16)
+//        png_set_strip_16(png_ptr);
+//
+//    const int bpp = 4;
+//    img->size = ALIGN(width * height * bpp, 4096);
+//    if (img->size > hwc_dev->img_mem_size) {
+//        ALOGE("image does not fit into framebuffer area (%d > %d)", img->size, hwc_dev->img_mem_size);
+//        goto fail_alloc;
+//    }
+//    img->ptr = hwc_dev->img_mem_ptr;
+//
+//    row_pointers = calloc(height, sizeof(*row_pointers));
+//    if (!row_pointers) {
+//        ALOGE("failed to allocate row pointers");
+//        goto fail_alloc;
+//    }
+//    __u32 i;
+//    for (i = 0; i < height; i++)
+//        row_pointers[i] = img->ptr + i * width * bpp;
+//    png_set_rows(png_ptr, info_ptr, row_pointers);
+//    png_read_update_info(png_ptr, info_ptr);
+//    img->rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+//
+//    png_read_image(png_ptr, row_pointers);
+//    png_read_end(png_ptr, NULL);
+//    free(row_pointers);
+//    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+//    fclose(fd);
+//    img->width = width;
+//    img->height = height;
+//    return 0;
+//
+//fail_alloc:
+//    free_png_image(hwc_dev, img);
+//    free(row_pointers);
+//    if (!png_ptr || !info_ptr)
+//        ALOGE("failed to allocate PNG structures");
+//    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+//fail:
+//    fclose(fd);
+//    return -EINVAL;
+//}
+//
 
 static int omap4_hwc_device_close(hw_device_t* device)
 {
@@ -2309,39 +2310,37 @@ err_out:
     return err;
 }
 
-//static void set_primary_display_transform_matrix(omap4_hwc_device_t *hwc_dev)
-//{
-//    /* create primary display translation matrix */
-//    hwc_dev->fb_dis.ix = 0;/*Default display*/
-//
-//    int ret = ioctl(hwc_dev->dsscomp_fd, DSSCIOC_QUERY_DISPLAY, &hwc_dev->fb_dis);
-//    if (ret)
-//        ALOGE("failed to get display info (%d): %m", errno);
-//
-//    int lcd_w = hwc_dev->fb_dis.timings.x_res;
-//    int lcd_h = hwc_dev->fb_dis.timings.y_res;
-//    int orig_w = hwc_dev->fb_dev->base.width;
-//    int orig_h = hwc_dev->fb_dev->base.height;
-//    hwc_rect_t region = {.left = 0, .top = 0, .right = orig_w, .bottom = orig_h};
-//    hwc_dev->primary_region = region;
-//    hwc_dev->primary_rotation = ((lcd_w > lcd_h) ^ (orig_w > orig_h)) ? 1 : 0;
-//    hwc_dev->primary_transform = ((lcd_w != orig_w)||(lcd_h != orig_h)) ? 1 : 0;
-//
-//    ALOGI("transforming FB (%dx%d) => (%dx%d) rot%d", orig_w, orig_h, lcd_w, lcd_h, hwc_dev->primary_rotation);
-//
-//    /* reorientation matrix is:
-//       m = (center-from-target-center) * (scale-to-target) * (mirror) * (rotate) * (center-to-original-center) */
-//
-//    memcpy(hwc_dev->primary_m, m_unit, sizeof(m_unit));
-//    m_translate(hwc_dev->primary_m, -(orig_w >> 1), -(orig_h >> 1));
-//    m_rotate(hwc_dev->primary_m, hwc_dev->primary_rotation);
-//    if (hwc_dev->primary_rotation & 1)
-//         swap(orig_w, orig_h);
-//    m_scale(hwc_dev->primary_m, orig_w, lcd_w, orig_h, lcd_h);
-//    m_translate(hwc_dev->primary_m, lcd_w >> 1, lcd_h >> 1);
-//}
+static void set_primary_display_transform_matrix(omap4_hwc_device_t *hwc_dev)
+{
+    /* create primary display translation matrix */
+    hwc_dev->fb_dis.ix = 0;/*Default display*/
 
+    int ret = ioctl(hwc_dev->dsscomp_fd, DSSCIOC_QUERY_DISPLAY, &hwc_dev->fb_dis);
+    if (ret)
+        ALOGE("failed to get display info (%d): %m", errno);
 
+    int lcd_w = hwc_dev->fb_dis.timings.x_res;
+    int lcd_h = hwc_dev->fb_dis.timings.y_res;
+    int orig_w = hwc_dev->fb_dev->base.width;
+    int orig_h = hwc_dev->fb_dev->base.height;
+    hwc_rect_t region = {.left = 0, .top = 0, .right = orig_w, .bottom = orig_h};
+    hwc_dev->primary_region = region;
+    hwc_dev->primary_rotation = ((lcd_w > lcd_h) ^ (orig_w > orig_h)) ? 1 : 0;
+    hwc_dev->primary_transform = ((lcd_w != orig_w)||(lcd_h != orig_h)) ? 1 : 0;
+
+    ALOGI("transforming FB (%dx%d) => (%dx%d) rot%d", orig_w, orig_h, lcd_w, lcd_h, hwc_dev->primary_rotation);
+
+    /* reorientation matrix is:
+       m = (center-from-target-center) * (scale-to-target) * (mirror) * (rotate) * (center-to-original-center) */
+
+    memcpy(hwc_dev->primary_m, m_unit, sizeof(m_unit));
+    m_translate(hwc_dev->primary_m, -(orig_w >> 1), -(orig_h >> 1));
+    m_rotate(hwc_dev->primary_m, hwc_dev->primary_rotation);
+    if (hwc_dev->primary_rotation & 1)
+         swap(orig_w, orig_h);
+    m_scale(hwc_dev->primary_m, orig_w, lcd_w, orig_h, lcd_h);
+    m_translate(hwc_dev->primary_m, lcd_w >> 1, lcd_h >> 1);
+}
 
 //static void handle_s3d_hotplug(omap4_hwc_ext_t *ext, int state)
 //{
@@ -2704,19 +2703,22 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
     memset(hwc_dev, 0, sizeof(*hwc_dev));
 
     hwc_dev->base.common.tag = HARDWARE_DEVICE_TAG;
-    hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_3;
+    hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_2;
 
-    char value[PROPERTY_VALUE_MAX];
-    property_get("ro.product.board", value, "");
-    if (strncmp("blaze", value, PROPERTY_VALUE_MAX) == 0) {
-        ALOGI("Revert to legacy HWC API for fake vsync");
-        hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_2;
-    }
+//    hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_3;
+//
+//    char value[PROPERTY_VALUE_MAX];
+//    property_get("ro.product.board", value, "");
+//    if (strncmp("blaze", value, PROPERTY_VALUE_MAX) == 0) {
+//        ALOGI("Revert to legacy HWC API for fake vsync");
+//        hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_2;
+//    }
+//
+//    if (strncmp("panda5", value, PROPERTY_VALUE_MAX) == 0) {
+//        ALOGI("Revert to legacy HWC API for fake vsync");
+//        hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_2;
+//    }
 
-    if (strncmp("panda5", value, PROPERTY_VALUE_MAX) == 0) {
-        ALOGI("Revert to legacy HWC API for fake vsync");
-        hwc_dev->base.common.version = HWC_DEVICE_API_VERSION_0_2;
-    }
     hwc_dev->base.common.module = (hw_module_t *)module;
     hwc_dev->base.common.close = omap4_hwc_device_close;
     hwc_dev->base.prepare = omap4_hwc_prepare;
@@ -2808,19 +2810,20 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
 //        }
 //    }
 //
-//    set_primary_display_transform_matrix(hwc_dev);
-//
-//    if (pipe(hwc_dev->pipe_fds) == -1) {
-//            ALOGE("failed to event pipe (%d): %m", errno);
-//            err = -errno;
-//            goto done;
-//    }
-//
-//    if (pthread_mutex_init(&hwc_dev->lock, NULL)) {
-//        ALOGE("failed to create mutex (%d): %m", errno);
-//        err = -errno;
-//        goto done;
-//    }
+    set_primary_display_transform_matrix(hwc_dev);
+
+    if (pipe(hwc_dev->pipe_fds) == -1) {
+            ALOGE("failed to event pipe (%d): %m", errno);
+            err = -errno;
+            goto done;
+    }
+
+    if (pthread_mutex_init(&hwc_dev->lock, NULL)) {
+        ALOGE("failed to create mutex (%d): %m", errno);
+        err = -errno;
+        goto done;
+    }
+
 //    if (pthread_create(&hwc_dev->hdmi_thread, NULL, omap4_hwc_hdmi_thread, hwc_dev))
 //    {
 //        ALOGE("failed to create HDMI listening thread (%d): %m", errno);
@@ -2828,16 +2831,16 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
 //        goto done;
 //    }
 //
-//    /* get debug properties */
-//
-//    /* see if hwc is enabled at all */
-//    property_get("debug.hwc.rgb_order", value, "1");
-//    hwc_dev->flags_rgb_order = atoi(value);
-//    property_get("debug.hwc.nv12_only", value, "0");
-//    hwc_dev->flags_nv12_only = atoi(value);
-//    property_get("debug.hwc.idle", value, "250");
-//    hwc_dev->idle = atoi(value);
-//
+    /* get debug properties */
+
+    /* see if hwc is enabled at all */
+    property_get("debug.hwc.rgb_order", value, "1");
+    hwc_dev->flags_rgb_order = atoi(value);
+    property_get("debug.hwc.nv12_only", value, "0");
+    hwc_dev->flags_nv12_only = atoi(value);
+    property_get("debug.hwc.idle", value, "250");
+    hwc_dev->idle = atoi(value);
+
 //    /* get the board specific clone properties */
 //    /* 0:0:1280:720 */
 //    if (property_get("persist.hwc.mirroring.region", value, "") <= 0 ||
@@ -2868,36 +2871,36 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
 //            hwc_dev->ext.force_dock = value == '1';
 //        close(sw_fd);
 //    }
-////    handle_hotplug(hwc_dev);
-//
-//    ALOGI("omap4_hwc_device_open(rgb_order=%d nv12_only=%d)",
-//        hwc_dev->flags_rgb_order, hwc_dev->flags_nv12_only);
-//
-//    int gc2d_fd = open("/dev/gcioctl", O_RDWR);
-//    if (gc2d_fd < 0) {
-//        ALOGI("Unable to open gc-core device (%d), blits disabled", errno);
-//        hwc_dev->blt_policy = BLTPOLICY_DISABLED;
-//    } else {
-//        property_get("persist.hwc.bltmode", value, "1");
-//        hwc_dev->blt_mode = atoi(value);
-//        property_get("persist.hwc.bltpolicy", value, "1");
-//        hwc_dev->blt_policy = atoi(value);
-//        ALOGI("blitter present, blits mode %d, blits policy %d", hwc_dev->blt_mode, hwc_dev->blt_policy);
-//        close(gc2d_fd);
-//
-//        if (rgz_get_screengeometry(hwc_dev->fb_fd, &gscrngeom,
-//                hwc_dev->fb_dev->base.format) != 0) {
-//            err = -EINVAL;
-//            goto done;
-//        }
-//    }
-//
-//    property_get("persist.hwc.upscaled_nv12_limit", value, "2.");
-//    sscanf(value, "%f", &hwc_dev->upscaled_nv12_limit);
-//    if (hwc_dev->upscaled_nv12_limit < 0. || hwc_dev->upscaled_nv12_limit > 2048.) {
-//        ALOGW("Invalid upscaled_nv12_limit (%s), setting to 2.", value);
-//        hwc_dev->upscaled_nv12_limit = 2.;
-//    }
+//    handle_hotplug(hwc_dev);
+
+    ALOGI("omap4_hwc_device_open(rgb_order=%d nv12_only=%d)",
+        hwc_dev->flags_rgb_order, hwc_dev->flags_nv12_only);
+
+    int gc2d_fd = open("/dev/gcioctl", O_RDWR);
+    if (gc2d_fd < 0) {
+        ALOGI("Unable to open gc-core device (%d), blits disabled", errno);
+        hwc_dev->blt_policy = BLTPOLICY_DISABLED;
+    } else {
+        property_get("persist.hwc.bltmode", value, "1");
+        hwc_dev->blt_mode = atoi(value);
+        property_get("persist.hwc.bltpolicy", value, "1");
+        hwc_dev->blt_policy = atoi(value);
+        ALOGI("blitter present, blits mode %d, blits policy %d", hwc_dev->blt_mode, hwc_dev->blt_policy);
+        close(gc2d_fd);
+
+        if (rgz_get_screengeometry(hwc_dev->fb_fd, &gscrngeom,
+                hwc_dev->fb_dev->base.format) != 0) {
+            err = -EINVAL;
+            goto done;
+        }
+    }
+
+    property_get("persist.hwc.upscaled_nv12_limit", value, "2.");
+    sscanf(value, "%f", &hwc_dev->upscaled_nv12_limit);
+    if (hwc_dev->upscaled_nv12_limit < 0. || hwc_dev->upscaled_nv12_limit > 2048.) {
+        ALOGW("Invalid upscaled_nv12_limit (%s), setting to 2.", value);
+        hwc_dev->upscaled_nv12_limit = 2.;
+    }
 
 done:
     if (err && hwc_dev) {
