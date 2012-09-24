@@ -194,11 +194,11 @@ on boot
     setprop status.battery.level_scale 9
 
 # wi-fi
-service fixmac /system/bin/fix-mac.sh
-    class core
-    user root
-    group root
-    oneshot
+#service fixmac /system/bin/fix-mac.sh
+#    class core
+#    user root
+#    group root
+#    oneshot
 
 # Initialize the SGX driver
 service pvrsrvinit /system/vendor/bin/pvrsrvinit
