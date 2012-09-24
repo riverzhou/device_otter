@@ -1,5 +1,0 @@
-#!/system/bin/sh
-
-busybox mount -o remount,ro,noatime,nodiratime,noauto_da_alloc,barrier=0    /system
-busybox mount -o remount,noatime,nodiratime,noauto_da_alloc,nodev,barrier=0 /cache
-busybox mount -o remount,noatime,nodiratime,noauto_da_alloc,nodev,barrier=0 /data
