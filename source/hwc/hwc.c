@@ -197,9 +197,9 @@ struct omap4_hwc_device {
     int swap_rb;
     unsigned int post2_layers; /* Buffers used with DSS pipes*/
     unsigned int post2_blit_buffers; /* Buffers used with blit */
-    int ext_ovls;               /* # of overlays on external display for current composition */
-    int ext_ovls_wanted;        /* # of overlays that should be on external display for current composition */
-    int last_ext_ovls;          /* # of overlays on external/internal display for last composition */
+//    int ext_ovls;               /* # of overlays on external display for current composition */
+//    int ext_ovls_wanted;        /* # of overlays that should be on external display for current composition */
+//    int last_ext_ovls;          /* # of overlays on external/internal display for last composition */
     int last_int_ovls;
 
 //    enum S3DLayoutType s3d_input_type;
@@ -2034,8 +2034,8 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
 
     omap4_hwc_reset_screen(hwc_dev);
 
-    invalidate = hwc_dev->ext_ovls_wanted && (hwc_dev->ext_ovls < hwc_dev->ext_ovls_wanted) &&
-                                              (hwc_dev->stats.protected || !hwc_dev->ext_ovls);
+//    invalidate = hwc_dev->ext_ovls_wanted && (hwc_dev->ext_ovls < hwc_dev->ext_ovls_wanted) &&
+//                                              (hwc_dev->stats.protected || !hwc_dev->ext_ovls);
 
     if (debug)
         dump_set_info(hwc_dev, list);
@@ -2097,7 +2097,7 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
                                  dsscomp, omaplfb_comp_data_sz);
         showfps();
     }
-    hwc_dev->last_ext_ovls = hwc_dev->ext_ovls;
+//    hwc_dev->last_ext_ovls = hwc_dev->ext_ovls;
     hwc_dev->last_int_ovls = hwc_dev->post2_layers;
     if (err)
         ALOGE("Post2 error");
@@ -2105,8 +2105,8 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
 err_out:
     pthread_mutex_unlock(&hwc_dev->lock);
 
-    if (invalidate && hwc_dev->procs && hwc_dev->procs->invalidate)
-        hwc_dev->procs->invalidate(hwc_dev->procs);
+//    if (invalidate && hwc_dev->procs && hwc_dev->procs->invalidate)
+//        hwc_dev->procs->invalidate(hwc_dev->procs);
 
     return err;
 }
