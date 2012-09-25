@@ -73,6 +73,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     FileManager \
     Superuser \
+    Trebuchet \
 
 ##############################################
 
