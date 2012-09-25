@@ -209,6 +209,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_AAPT_CONFIG 		:= large mdpi
 PRODUCT_AAPT_PREF_CONFIG 	:= large
 PRODUCT_CHARACTERISTICS 	:= tablet,nosdcard
-DEVICE_PACKAGE_OVERLAYS 	:= device/amazon/otter/overlay/aosp
+DEVICE_PACKAGE_OVERLAYS 	:= device/amazon/otter/overlay
 PRODUCT_TAGS 			+= dalvik.gc.type-precise
 
