@@ -39,6 +39,9 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
+    smc_pa_ctrl \
+    tf_daemon \
+    libtf_crypto_sst \
     ti_wfd_libs \
     lib_driver_cmd_wl12xx \
     dhcpcd.conf \
