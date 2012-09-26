@@ -28,11 +28,12 @@ on fs
 
 on post-fs
 # Load Modules
+    setprop wifi.interface "wlan0"
+    setprop softap.interface "wlan0"
     insmod /system/lib/modules/compat.ko
     insmod /system/lib/modules/cfg80211.ko
     insmod /system/lib/modules/mac80211.ko
     insmod /system/lib/modules/wl12xx.ko
-#    insmod /system/lib/modules/nls_utf8.ko
 
 # adbd for debug
     write /sys/class/android_usb/android0/iManufacturer "Amazon"
@@ -46,16 +47,21 @@ on post-fs
     setprop sys.usb.state adb
 
 on post-fs-data
-    setprop vold.post_fs_data_done 1
-
-    mkdir /data/tmp 0777 system system
-    symlink /data/tmp /tmp
-
-    mkdir /data/trace 0777 system system
-    chmod 0777 /data/trace
-
+# wifi
+    mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
+    chown dhcp dhcp /data/misc/dhcp
+    mkdir /data/smc 0770 drmrpc drmrpc
+    chown drmrpc drmrpc /data/smc/counter.bin
+    chown drmrpc drmrpc /data/smc/storage.bin
+    chown drmrpc drmrpc /data/smc/system.bin
+
+# Misc
+    mkdir /data/tmp 0777 system system
+    symlink /data/tmp /tmp
+    mkdir /data/trace 0777 system system
+    chmod 0777 /data/trace
 
 #Give system ownership and permission to boost clock for specified timeout
 #Note boost_timeout cannot be changed from application because of dynamic sysfs creation. It will have default value of 3 sec.
@@ -184,6 +190,8 @@ on post-fs-data
     chown system system /sys/class/power_supply/usb/device/float_voltage
     chown system system /sys/class/power_supply/usb/device/bad_battery
 
+    setprop vold.post_fs_data_done 1
+
 on boot
     setprop ro.radio.noril yes
 
@@ -202,6 +210,34 @@ on boot
 
 # Initialize the SGX driver
 service pvrsrvinit /system/vendor/bin/pvrsrvinit
+    class core
+    user root
+    group root
+    oneshot
+
+# Watchdog
+service watchdog /sbin/watchdog
+    user root
+    oneshot
+
+###################################################
+# MSHIELD SMC Daemon - component required to store persistent data coming
+#   from the SMC PA to the device persistent storage
+###################################################
+service tf_daemon /system/bin/tf_daemon \
+    -d -c /vendor/etc/smc_normal_world_android_cfg.ini
+    class main
+    user root
+    group root
+    oneshot
+    disabled
+
+###################################################
+# MSHIELD SMC PA Control - installs the SMC PA into the Secure Environment
+###################################################
+service smc_pa /system/bin/smc_pa_ctrl \
+    -c /vendor/etc/smc_normal_world_android_cfg.ini \
+    start /vendor/firmware/smc_pa.ift
     class core
     user root
     group root
@@ -264,7 +300,5 @@ service hostapd_bin /system/bin/hostapd -d /data/misc/wifi/hostapd.conf
     disabled
     oneshot
 
-service watchdog /sbin/watchdog
-    user root
-    oneshot
+on property:sys.boot_completed=1
 
