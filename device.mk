@@ -184,30 +184,26 @@ PRODUCT_COPY_FILES += \
 ##############################################
 
 PRODUCT_PROPERTY_OVERRIDES := \
-    dalvik.vm.stack-trace-file=/data/tmp/traces.txt \
-    ro.opengles.version=131072 \
-    ro.sf.hwrotation=270 \
-    ro.sf.lcd_density=160 \
-    ro.com.google.locationfeatures=1 \
-    ro.com.google.networklocation=1 \
-    ro.cwm.forbid_format = /bootloader,/dfs,/backup,/splash \
-    ro.kernel.android.bootanim=1 \
-    ro.crypto.state=unencrypted \
-    wifi.interface=wlan0 \
-    wifi.supplicant_scan_interval=120 \
-    wifi.supplicant_scan_interval=180 \
-    persist.sys.usb.config=mass_storage,adb \
-    persist.sys.purgeable_assets=1 \
-    persist.sys.root_access=3 \
-    persist.service.adb.enable=1 \
-    windowsmgr.max_events_per_sec=200 \
-    pm.sleep_mode=1 \
+    dalvik.vm.heapstartsize=5m \
+    dalvik.vm.heapgrowthlimit=42m \
+    dalvik.vm.heapsize=128m \
     com.ti.omap_enhancement=true \
     omap.enhancement=true \
     persist.lab126.chargeprotect=1 \
-    dalvik.vm.heapstartsize=5m \
-    dalvik.vm.heapgrowthlimit=48m \
-    dalvik.vm.heapsize=128m \
+    persist.service.adb.enable=1 \
+    persist.sys.purgeable_assets=1 \
+    persist.sys.root_access=3 \
+    persist.sys.usb.config=mass_storage,adb \
+    ro.com.google.locationfeatures=1 \
+    ro.com.google.networklocation=1 \
+    ro.crypto.state=unencrypted \
+    ro.hwc.legacy_api=true \
+    ro.kernel.android.bootanim=1 \
+    ro.opengles.version=131072 \
+    ro.sf.lcd_density=160 \
+    ro.sf.hwrotation=270 \
+    wifi.interface=wlan0 \
+    wifi.supplicant_scan_interval=120 \
 
 ##############################################
 
