@@ -67,8 +67,9 @@
 #include "ion/ion.h"
 
 #define MAX_HW_OVERLAYS 4
-#define NUM_NONSCALING_OVERLAYS 1
-#define NUM_EXT_DISPLAY_BACK_BUFFERS 2
+
+//#define NUM_NONSCALING_OVERLAYS 1
+//#define NUM_EXT_DISPLAY_BACK_BUFFERS 2
 
 //struct ext_transform_t {
 //    __u8 rotation : 3;          /* 90-degree clockwise rotations */
@@ -112,11 +113,11 @@
 //};
 //typedef struct omap4_hwc_ext omap4_hwc_ext_t;
 
-/* used by property settings */
-enum {
-    EXT_ROTATION    = 3,        /* rotation while mirroring */
-    EXT_HFLIP       = (1 << 2), /* flip l-r on output (after rotation) */
-};
+///* used by property settings */
+//enum {
+//    EXT_ROTATION    = 3,        /* rotation while mirroring */
+//    EXT_HFLIP       = (1 << 2), /* flip l-r on output (after rotation) */
+//};
 
 enum bltpolicy {
     BLTPOLICY_DISABLED = 0,
@@ -869,91 +870,91 @@ omap4_hwc_adjust_primary_display_layer(omap4_hwc_device_t *hwc_dev, struct dss2_
     oc->rotation &= 3;
 }
 
-//static int omap4_hwc_can_scale(__u32 src_w, __u32 src_h, __u32 dst_w, __u32 dst_h, int is_2d,
-//                               struct dsscomp_display_info *dis, struct dsscomp_platform_info *limits,
-//                               __u32 pclk, void *handle)
-//{
-//    __u32 fclk = limits->fclk / 1000;
-//    __u32 min_src_w = DIV_ROUND_UP(src_w, is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d);
-//    __u32 min_src_h = DIV_ROUND_UP(src_h, is_2d ? limits->max_ydecim_2d : limits->max_ydecim_1d);
-//
-//    /* ERRATAs */
-//    /* cannot render 1-width layers on DSI video mode panels - we just disallow all 1-width LCD layers */
-//    if (dis->channel != OMAP_DSS_CHANNEL_DIGIT && dst_w < limits->min_width)
-//        return 0;
-//
-//    /* NOTE: no support for checking YUV422 layers that are tricky to scale */
-//
-//    /* FIXME: limit vertical downscale well below theoretical limit as we saw display artifacts */
-//    if (dst_h < src_h / 4)
-//        return 0;
-//
-//    /* max downscale */
-//    if (dst_h * limits->max_downscale < min_src_h)
-//        return 0;
-//
-//    /* for manual panels pclk is 0, and there are no pclk based scaling limits */
-//    if (!pclk)
-//        return !(dst_w < src_w / limits->max_downscale / (is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d));
-//
-//    /* :HACK: limit horizontal downscale well below theoretical limit as we saw display artifacts */
-//    if (dst_w * 4 < src_w)
-//        return 0;
-//
-//    if (handle)
-//        if (get_rgb_bpp(handle) == 32 && src_w > 1280 && dst_w * 3 < src_w)
-//            return 0;
-//
-//    /* max horizontal downscale is 4, or the fclk/pixclk */
-//    if (fclk > pclk * limits->max_downscale)
-//        fclk = pclk * limits->max_downscale;
-//    /* for small parts, we need to use integer fclk/pixclk */
-//    if (src_w < limits->integer_scale_ratio_limit)
-//        fclk = fclk / pclk * pclk;
-//    if ((__u32) dst_w * fclk < min_src_w * pclk)
-//        return 0;
-//
-//    return 1;
-//}
+static int omap4_hwc_can_scale(__u32 src_w, __u32 src_h, __u32 dst_w, __u32 dst_h, int is_2d,
+                               struct dsscomp_display_info *dis, struct dsscomp_platform_info *limits,
+                               __u32 pclk, void *handle)
+{
+    __u32 fclk = limits->fclk / 1000;
+    __u32 min_src_w = DIV_ROUND_UP(src_w, is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d);
+    __u32 min_src_h = DIV_ROUND_UP(src_h, is_2d ? limits->max_ydecim_2d : limits->max_ydecim_1d);
 
-//static int omap4_hwc_can_scale_layer(omap4_hwc_device_t *hwc_dev, hwc_layer_t *layer, IMG_native_handle_t *handle)
-//{
-//    int src_w = WIDTH(layer->sourceCrop);
-//    int src_h = HEIGHT(layer->sourceCrop);
-//    int dst_w = WIDTH(layer->displayFrame);
-//    int dst_h = HEIGHT(layer->displayFrame);
-//
-//    /* account for 90-degree rotation */
-//    if (layer->transform & HWC_TRANSFORM_ROT_90)
-//        swap(src_w, src_h);
-//
-//    /* NOTE: layers should be able to be scaled externally since
-//       framebuffer is able to be scaled on selected external resolution */
-//    return omap4_hwc_can_scale(src_w, src_h, dst_w, dst_h, is_NV12(handle), &hwc_dev->fb_dis, &limits,
-//                               hwc_dev->fb_dis.timings.pixel_clock, handle);
-//}
+    /* ERRATAs */
+    /* cannot render 1-width layers on DSI video mode panels - we just disallow all 1-width LCD layers */
+    if (dis->channel != OMAP_DSS_CHANNEL_DIGIT && dst_w < limits->min_width)
+        return 0;
 
-//static int omap4_hwc_is_valid_layer(omap4_hwc_device_t *hwc_dev,
-//                                    hwc_layer_t *layer,
-//                                    IMG_native_handle_t *handle)
-//{
-//    /* Skip layers are handled by SF */
-//    if ((layer->flags & HWC_SKIP_LAYER) || !handle)
-//        return 0;
-//
-//    if (!omap4_hwc_is_valid_format(handle->iFormat))
-//        return 0;
-//
-//    /* 1D buffers: no transform, must fit in TILER slot */
-//    if (!is_NV12(handle)) {
-//        if (layer->transform)
-//            return 0;
-//        if (mem1d(handle) > limits.tiler1d_slot_size)
-//            return 0;
-//    }
-//
-//    return omap4_hwc_can_scale_layer(hwc_dev, layer, handle);
-//}
+    /* NOTE: no support for checking YUV422 layers that are tricky to scale */
+
+    /* FIXME: limit vertical downscale well below theoretical limit as we saw display artifacts */
+    if (dst_h < src_h / 4)
+        return 0;
+
+    /* max downscale */
+    if (dst_h * limits->max_downscale < min_src_h)
+        return 0;
+
+    /* for manual panels pclk is 0, and there are no pclk based scaling limits */
+    if (!pclk)
+        return !(dst_w < src_w / limits->max_downscale / (is_2d ? limits->max_xdecim_2d : limits->max_xdecim_1d));
+
+    /* :HACK: limit horizontal downscale well below theoretical limit as we saw display artifacts */
+    if (dst_w * 4 < src_w)
+        return 0;
+
+    if (handle)
+        if (get_rgb_bpp(handle) == 32 && src_w > 1280 && dst_w * 3 < src_w)
+            return 0;
+
+    /* max horizontal downscale is 4, or the fclk/pixclk */
+    if (fclk > pclk * limits->max_downscale)
+        fclk = pclk * limits->max_downscale;
+    /* for small parts, we need to use integer fclk/pixclk */
+    if (src_w < limits->integer_scale_ratio_limit)
+        fclk = fclk / pclk * pclk;
+    if ((__u32) dst_w * fclk < min_src_w * pclk)
+        return 0;
+
+    return 1;
+}
+
+static int omap4_hwc_can_scale_layer(omap4_hwc_device_t *hwc_dev, hwc_layer_t *layer, IMG_native_handle_t *handle)
+{
+    int src_w = WIDTH(layer->sourceCrop);
+    int src_h = HEIGHT(layer->sourceCrop);
+    int dst_w = WIDTH(layer->displayFrame);
+    int dst_h = HEIGHT(layer->displayFrame);
+
+    /* account for 90-degree rotation */
+    if (layer->transform & HWC_TRANSFORM_ROT_90)
+        swap(src_w, src_h);
+
+    /* NOTE: layers should be able to be scaled externally since
+       framebuffer is able to be scaled on selected external resolution */
+    return omap4_hwc_can_scale(src_w, src_h, dst_w, dst_h, is_NV12(handle), &hwc_dev->fb_dis, &limits,
+                               hwc_dev->fb_dis.timings.pixel_clock, handle);
+}
+
+static int omap4_hwc_is_valid_layer(omap4_hwc_device_t *hwc_dev,
+                                    hwc_layer_t *layer,
+                                    IMG_native_handle_t *handle)
+{
+    /* Skip layers are handled by SF */
+    if ((layer->flags & HWC_SKIP_LAYER) || !handle)
+        return 0;
+
+    if (!omap4_hwc_is_valid_format(handle->iFormat))
+        return 0;
+
+    /* 1D buffers: no transform, must fit in TILER slot */
+    if (!is_NV12(handle)) {
+        if (layer->transform)
+            return 0;
+        if (mem1d(handle) > limits.tiler1d_slot_size)
+            return 0;
+    }
+
+    return omap4_hwc_can_scale_layer(hwc_dev, layer, handle);
+}
 
 //static __u32 add_scaling_score(__u32 score,
 //                               __u32 xres, __u32 yres, __u32 refresh,
@@ -1110,20 +1111,20 @@ omap4_hwc_adjust_primary_display_layer(omap4_hwc_device_t *hwc_dev, struct dss2_
 //    return 0;
 //}
 
-//static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *num, hwc_layer_list_t *list)
-//{
-//    unsigned int i;
-//
-//    /* Figure out how many layers we can support via DSS */
-//    for (i = 0; list && i < list->numHwLayers; i++) {
-//        hwc_layer_t *layer = &list->hwLayers[i];
-//        IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
+static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *num, hwc_layer_list_t *list)
+{
+    unsigned int i;
+
+    /* Figure out how many layers we can support via DSS */
+    for (i = 0; list && i < list->numHwLayers; i++) {
+        hwc_layer_t *layer = &list->hwLayers[i];
+        IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
 //        __u32 s3d_layout_type = get_s3d_layout_type(layer);
-//
-//        layer->compositionType = HWC_FRAMEBUFFER;
-//
-//        if (omap4_hwc_is_valid_layer(hwc_dev, layer, handle)) {
-//
+
+        layer->compositionType = HWC_FRAMEBUFFER;
+
+        if (omap4_hwc_is_valid_layer(hwc_dev, layer, handle)) {
+
 //            if (s3d_layout_type != eMono) {
 //                /* For now we can only handle 1 S3D layer, skip any additional ones */
 //                if (num->s3d > 0 || !hwc_dev->ext.dock.enabled || !hwc_dev->ext.s3d_capable) {
@@ -1139,31 +1140,31 @@ omap4_hwc_adjust_primary_display_layer(omap4_hwc_device_t *hwc_dev, struct dss2_
 //                    hwc_dev->s3d_input_order = get_s3d_layout_order(layer);
 //                }
 //            }
-//
-//            num->possible_overlay_layers++;
-//
-//            /* NV12 layers can only be rendered on scaling overlays */
-//            if (scaled(layer) || is_NV12(handle) || hwc_dev->primary_transform)
-//                num->scaled_layers++;
-//
-//            if (is_BGR(handle))
-//                num->BGR++;
-//            else if (is_RGB(handle))
-//                num->RGB++;
-//            else if (is_NV12(handle))
-//                num->NV12++;
-//
+
+            num->possible_overlay_layers++;
+
+            /* NV12 layers can only be rendered on scaling overlays */
+            if (scaled(layer) || is_NV12(handle) || hwc_dev->primary_transform)
+                num->scaled_layers++;
+
+            if (is_BGR(handle))
+                num->BGR++;
+            else if (is_RGB(handle))
+                num->RGB++;
+            else if (is_NV12(handle))
+                num->NV12++;
+
 //            if (dockable(layer))
 //                num->dockable++;
-//
-//            if (is_protected(layer))
-//                num->protected++;
-//
-//            num->mem += mem1d(handle);
-//        }
-//    }
-//    hwc_dev->stats = *num;
-//}
+
+            if (is_protected(layer))
+                num->protected++;
+
+            num->mem += mem1d(handle);
+        }
+    }
+    hwc_dev->stats = *num;
+}
 
 //static void decide_supported_cloning(omap4_hwc_device_t *hwc_dev, struct counts *num)
 //{
@@ -1698,7 +1699,7 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
     memset(dsscomp, 0x0, sizeof(*dsscomp));
     dsscomp->sync_id = sync_id++;
 
-//    gather_layer_statistics(hwc_dev, &num, list);
+    gather_layer_statistics(hwc_dev, &num, list);
 
     hwc_dev->force_sgx = 0;
     hwc_dev->use_sgx = 0;
