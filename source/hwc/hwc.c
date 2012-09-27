@@ -1276,6 +1276,27 @@ static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *
 //           !(on_tv && is_BGR(handle));
 //}
 
+static int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
+{
+    return  !hwc_dev->force_sgx &&
+            num->possible_overlay_layers &&
+            num->possible_overlay_layers <= num->max_hw_overlays &&
+            num->possible_overlay_layers == num->composited_layers &&
+            num->scaled_layers <= num->max_scaling_overlays &&
+            num->NV12 <= num->max_scaling_overlays &&
+            num->mem <= limits.tiler1d_slot_size &&
+            (num->BGR == 0 || (num->RGB == 0 ) || !hwc_dev->flags_rgb_order);
+}
+
+static inline int can_dss_render_layer(omap4_hwc_device_t *hwc_dev,
+            hwc_layer_t *layer)
+{
+    IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
+    return omap4_hwc_is_valid_layer(hwc_dev, layer, handle) &&
+           (!hwc_dev->flags_nv12_only || (!hwc_dev->use_sgx || is_NV12(handle))) &&
+           (!(hwc_dev->swap_rb ? is_RGB(handle) : is_BGR(handle)) || !hwc_dev->flags_rgb_order) ;
+}
+
 static inline int display_area(struct dss2_ovl_info *o)
 {
     return o->cfg.win.w * o->cfg.win.h;
@@ -1701,25 +1722,22 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 
     gather_layer_statistics(hwc_dev, &num, list);
 
-    hwc_dev->force_sgx = 0;
-    hwc_dev->use_sgx = 0;
-    hwc_dev->swap_rb = num.BGR != 0;
-
 //    decide_supported_cloning(hwc_dev, &num);
-//    /* Disable the forced SGX rendering if there is only one layer */
-//    if (hwc_dev->force_sgx && num.composited_layers <= 1)
-//        hwc_dev->force_sgx = 0;
-//
-//    /* phase 3 logic */
-//    if (can_dss_render_all(hwc_dev, &num)) {
-//        /* All layers can be handled by the DSS -- don't use SGX for composition */
-//        hwc_dev->use_sgx = 0;
-//        hwc_dev->swap_rb = num.BGR != 0;
-//    } else {
-//        /* Use SGX for composition plus first 3 layers that are DSS renderable */
-//        hwc_dev->use_sgx = 1;
-//        hwc_dev->swap_rb = is_BGR_format(hwc_dev->fb_dev->base.format);
-//    }
+
+    /* Disable the forced SGX rendering if there is only one layer */
+    if (hwc_dev->force_sgx && num.composited_layers <= 1)
+        hwc_dev->force_sgx = 0;
+
+    /* phase 3 logic */
+    if (can_dss_render_all(hwc_dev, &num)) {
+        /* All layers can be handled by the DSS -- don't use SGX for composition */
+        hwc_dev->use_sgx = 0;
+        hwc_dev->swap_rb = num.BGR != 0;
+    } else {
+        /* Use SGX for composition plus first 3 layers that are DSS renderable */
+        hwc_dev->use_sgx = 1;
+        hwc_dev->swap_rb = is_BGR_format(hwc_dev->fb_dev->base.format);
+    }
 
     /* setup pipes */
     int z = 0;
@@ -1756,20 +1774,17 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
         hwc_layer_t *layer = &list->hwLayers[i];
         IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
 
-	if (dsscomp->num_ovls < num.max_hw_overlays &&
-	    mem_used + mem1d(handle) <= limits.tiler1d_slot_size &&
-	    !(is_BLENDED(layer) && fb_z >= 0)) {
-
-//        if (dsscomp->num_ovls < num.max_hw_overlays &&
-//            can_dss_render_layer(hwc_dev, layer) &&
-//            (!hwc_dev->force_sgx ||
-//             /* render protected and dockable layers via DSS */
-//             is_protected(layer) ||
+        if (dsscomp->num_ovls < num.max_hw_overlays &&
+            can_dss_render_layer(hwc_dev, layer) &&
+            (!hwc_dev->force_sgx ||
+            /* render protected and dockable layers via DSS */
+            is_protected(layer) ||
+            is_upscaled_NV12(hwc_dev, layer)) &&
 //             is_upscaled_NV12(hwc_dev, layer) ||
 //             (hwc_dev->ext.current.docking && hwc_dev->ext.current.enabled && dockable(layer))) &&
-//            mem_used + mem1d(handle) <= limits.tiler1d_slot_size &&
-//            /* can't have a transparent overlay in the middle of the framebuffer stack */
-//            !(is_BLENDED(layer) && fb_z >= 0)) {
+            mem_used + mem1d(handle) <= limits.tiler1d_slot_size &&
+            /* can't have a transparent overlay in the middle of the framebuffer stack */
+            !(is_BLENDED(layer) && fb_z >= 0)) {
 
             /* render via DSS overlay */
             mem_used += mem1d(handle);
