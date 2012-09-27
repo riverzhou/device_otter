@@ -15,6 +15,4 @@ LOCAL_MODULE := hwcomposer.otter
 LOCAL_CFLAGS := -DLOG_TAG=\"ti_hwc\"
 LOCAL_C_INCLUDES += external/zlib
 
-PRODUCT_VENDOR_KERNEL_HEADERS := hardware/ti/omap4xxx/kernel-headers
-
 include $(BUILD_SHARED_LIBRARY)
