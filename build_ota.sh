@@ -121,8 +121,6 @@ cd ${OTA_DIR}/
 zip -ry ${OTA_FILE}.zip .
 cd ${TOP_DIR}
 
-echo java -Xmx2048m -jar ${TOOLS_DIR}/signapk.jar -w ${TESTKEY_PEM} ${TESTKEY_PK8} ${OTA_FILE}.zip ${OTA_FILE}-signed.zip
 java -Xmx2048m -jar ${TOOLS_DIR}/signapk.jar -w ${TESTKEY_PEM} ${TESTKEY_PK8} ${OTA_FILE}.zip ${OTA_FILE}-signed.zip
-echo  ${OTA_FILE}-signed.zip
 ls -l ${OTA_FILE}-signed.zip
 
