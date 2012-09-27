@@ -174,7 +174,7 @@ struct omap4_hwc_device {
     int fb_fd;                  /* file descriptor for /dev/fb0 */
     int dsscomp_fd;             /* file descriptor for /dev/dsscomp */
     int hdmi_fb_fd;             /* file descriptor for /dev/fb1 */
-    int pipe_fds[2];            /* pipe to event thread */
+//    int pipe_fds[2];            /* pipe to event thread */
 
     int img_mem_size;           /* size of fb for hdmi */
     void *img_mem_ptr;          /* start of fb for hdmi */
@@ -184,9 +184,9 @@ struct omap4_hwc_device {
     float upscaled_nv12_limit;
 
 //    int on_tv;                  /* using a tv */
-    int force_sgx;
+//    int force_sgx;
 //    omap4_hwc_ext_t ext;        /* external mirroring data */
-    int idle;
+//    int idle;
 
     float primary_m[2][3];          /* internal transformation matrix */
     int primary_transform;
@@ -1278,8 +1278,7 @@ static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *
 
 static int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
 {
-    return  !hwc_dev->force_sgx &&
-            num->possible_overlay_layers &&
+    return  num->possible_overlay_layers &&
             num->possible_overlay_layers <= num->max_hw_overlays &&
             num->possible_overlay_layers == num->composited_layers &&
             num->scaled_layers <= num->max_scaling_overlays &&
@@ -1558,7 +1557,8 @@ static void blit_reset(omap4_hwc_device_t *hwc_dev, int flags)
 static int blit_layers(omap4_hwc_device_t *hwc_dev, hwc_layer_list_t *list, int bufoff)
 {
     /* Do not blit if this frame will be composed entirely by the GPU */
-    if (!list || hwc_dev->force_sgx)
+//    if (!list || hwc_dev->force_sgx)
+    if (!list )
         goto err_out;
 
     int rgz_in_op;
@@ -1724,9 +1724,9 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 
 //    decide_supported_cloning(hwc_dev, &num);
 
-    /* Disable the forced SGX rendering if there is only one layer */
-    if (hwc_dev->force_sgx && num.composited_layers <= 1)
-        hwc_dev->force_sgx = 0;
+//    /* Disable the forced SGX rendering if there is only one layer */
+//    if (hwc_dev->force_sgx && num.composited_layers <= 1)
+//        hwc_dev->force_sgx = 0;
 
     /* phase 3 logic */
     if (can_dss_render_all(hwc_dev, &num)) {
@@ -1776,10 +1776,9 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 
         if (dsscomp->num_ovls < num.max_hw_overlays &&
             can_dss_render_layer(hwc_dev, layer) &&
-            (!hwc_dev->force_sgx ||
-            /* render protected and dockable layers via DSS */
-            is_protected(layer) ||
-            is_upscaled_NV12(hwc_dev, layer)) &&
+//            (!hwc_dev->force_sgx ||
+//            /* render protected and dockable layers via DSS */
+//             is_protected(layer) ||
 //             is_upscaled_NV12(hwc_dev, layer) ||
 //             (hwc_dev->ext.current.docking && hwc_dev->ext.current.enabled && dockable(layer))) &&
             mem_used + mem1d(handle) <= limits.tiler1d_slot_size &&
@@ -2071,10 +2070,10 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
 
         //dump_dsscomp(dsscomp);
 
-        // signal the event thread that a post has happened
-        write(hwc_dev->pipe_fds[1], "s", 1);
-        if (hwc_dev->force_sgx > 0)
-            hwc_dev->force_sgx--;
+//        // signal the event thread that a post has happened
+//        write(hwc_dev->pipe_fds[1], "s", 1);
+//        if (hwc_dev->force_sgx > 0)
+//            hwc_dev->force_sgx--;
 
         hwc_dev->comp_data.blit_data.rgz_flags = hwc_dev->blit_flags;
         hwc_dev->comp_data.blit_data.rgz_items = hwc_dev->blit_num;
@@ -2138,7 +2137,7 @@ static void omap4_hwc_dump(struct hwc_composer_device *dev, char *buff, int buff
     int i;
 
     dump_printf(&log, "omap4_hwc %d:\n", dsscomp->num_ovls);
-    dump_printf(&log, "  idle timeout: %dms\n", hwc_dev->idle);
+//    dump_printf(&log, "  idle timeout: %dms\n", hwc_dev->idle);
 
     for (i = 0; i < dsscomp->num_ovls; i++) {
         struct dss2_ovl_cfg *cfg = &dsscomp->ovls[i].cfg;
@@ -2829,11 +2828,11 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
 //
     set_primary_display_transform_matrix(hwc_dev);
 
-    if (pipe(hwc_dev->pipe_fds) == -1) {
-            ALOGE("failed to event pipe (%d): %m", errno);
-            err = -errno;
-            goto done;
-    }
+//    if (pipe(hwc_dev->pipe_fds) == -1) {
+//            ALOGE("failed to event pipe (%d): %m", errno);
+//            err = -errno;
+//            goto done;
+//    }
 
     if (pthread_mutex_init(&hwc_dev->lock, NULL)) {
         ALOGE("failed to create mutex (%d): %m", errno);
@@ -2855,8 +2854,8 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
     hwc_dev->flags_rgb_order = atoi(value);
     property_get("debug.hwc.nv12_only", value, "0");
     hwc_dev->flags_nv12_only = atoi(value);
-    property_get("debug.hwc.idle", value, "250");
-    hwc_dev->idle = atoi(value);
+//    property_get("debug.hwc.idle", value, "250");
+//    hwc_dev->idle = atoi(value);
 
 //    /* get the board specific clone properties */
 //    /* 0:0:1280:720 */
