@@ -57,7 +57,7 @@
 #define DIV_ROUND_UP(a, b) (((a) + (b) - 1) / (b))
 
 #include "video/dsscomp.h"
-#include "video/omap_hwc.h"
+//#include "video/omap_hwc.h"
 
 #include "hal_public.h"
 //#include "rgz_2d.h"
@@ -348,14 +348,15 @@ static void dump_set_info(omap4_hwc_device_t *hwc_dev, hwc_layer_list_t* list)
             dump_printf(&log, " ");
         hwc_layer_t *layer = &list->hwLayers[i];
         IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
-        if (hwc_dev->post2_blit_buffers) {
-            if ((i + 1) < hwc_dev->post2_layers)
-                dump_printf(&log, "%p:%s,", handle, "DSS");
-            else
-                dump_printf(&log, "%p:%s,", handle, "BV2D");
-        }
-        else
-            dump_printf(&log, "%p:%s,", handle, layer->compositionType == HWC_OVERLAY ? "DSS" : "SGX");
+//        if (hwc_dev->post2_blit_buffers) {
+//            if ((i + 1) < hwc_dev->post2_layers)
+//                dump_printf(&log, "%p:%s,", handle, "DSS");
+//            else
+//                dump_printf(&log, "%p:%s,", handle, "BV2D");
+//        }
+//        else
+//            dump_printf(&log, "%p:%s,", handle, layer->compositionType == HWC_OVERLAY ? "DSS" : "SGX");
+	dump_printf(&log, "%p:%s,", handle, layer->compositionType == HWC_OVERLAY ? "DSS" : "SGX");
         if ((layer->flags & HWC_SKIP_LAYER) || !handle) {
             dump_printf(&log, "SKIP");
             continue;
@@ -1747,8 +1748,8 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 //    int ix_docking = -1;
 //    int ix_s3d = -1;
 
-    int blit_all = 0;
-    blit_reset(hwc_dev, list ? list->flags : 0);
+//    int blit_all = 0;
+//    blit_reset(hwc_dev, list ? list->flags : 0);
 
     /* If the SGX is used or we are going to blit something we need a framebuffer
      * and a DSS pipe
@@ -1771,7 +1772,8 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
 
     /* set up if DSS layers */
     unsigned int mem_used = 0;
-    for (i = 0; list && i < list->numHwLayers && !blit_all; i++) {
+//    for (i = 0; list && i < list->numHwLayers && !blit_all; i++) {
+    for (i = 0; list && i < list->numHwLayers ; i++) {
         hwc_layer_t *layer = &list->hwLayers[i];
         IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
 
@@ -2079,6 +2081,7 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
 //        int omaplfb_comp_data_sz = sizeof(hwc_dev->comp_data) +
 //            (hwc_dev->comp_data.blit_data.rgz_items * sizeof(struct rgz_blt_entry));
 
+        int omaplfb_comp_data_sz = sizeof(hwc_dev->comp_data);
 
         unsigned int nbufs = hwc_dev->post2_layers;
 //        if (hwc_dev->post2_blit_buffers) {
