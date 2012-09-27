@@ -40,7 +40,7 @@ GCC_PREFIX=${PWD}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi-
 
 SGX_BASE=${TOP_DIR}/hardware/ti/sgx540/eurasia_km/eurasiacon/
 SGX_SOURCE=${SGX_BASE}/build/linux2/omap4430_android
-SGX_DIR=${SGX_BASE}/binary2_540_120_omap4430_android_release/target/
+SGX_DIR=${PRODUCT_DIR}/target/
 
 WLAN_DIR=${TOP_DIR}/hardware/ti/wlan/mac80211/compat_wl12xx/
 
