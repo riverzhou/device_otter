@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 case "$1" in
 	onlyboot ) 	ONLYBOOT_BUILD=true ;; 	 	
