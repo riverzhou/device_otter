@@ -215,7 +215,7 @@ struct omap4_hwc_device {
     struct rgz_blt_entry blit_ops[RGZ_MAX_BLITS];
     struct counts stats;
     int    ion_fd;
-    struct ion_handle *ion_handles[2];
+//    struct ion_handle *ion_handles[2];
 
 };
 typedef struct omap4_hwc_device omap4_hwc_device_t;
@@ -2787,10 +2787,10 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
         ALOGE("failed to open ion driver (%d)", errno);
     }
 
-    int i;
-    for (i = 0; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
-        hwc_dev->ion_handles[i] = NULL;
-    }
+//    int i;
+//    for (i = 0; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
+//        hwc_dev->ion_handles[i] = NULL;
+//    }
 
 //    /* use default value in case some of requested display parameters missing */
 //    hwc_dev->ext.lcd_xpy = 1.0;
