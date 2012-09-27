@@ -28,6 +28,7 @@ PRODUCT_PACKAGES += \
     audio.primary.otter\
     audio_policy.default \
     hwcomposer.default \
+    hwcomposer.omap4.so \
     hwcomposer.otter \
     power.otter \
 
@@ -162,7 +163,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
     $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
     $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX_Core.so:/system/vendor/lib/libOMX_Core.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/hw/hwcomposer.omap4.so:/system/vendor/lib/hw/hwcomposer.omap4.so \
+
+//    $(LOCAL_PATH)/vendor/ti/vendor/lib/hw/hwcomposer.omap4.so:/system/vendor/lib/hw/hwcomposer.omap4.so \
 
 # wifi
 PRODUCT_COPY_FILES += \

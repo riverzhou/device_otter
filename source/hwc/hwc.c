@@ -22,7 +22,7 @@
 #include <poll.h>
 #include <sys/ioctl.h>
 #include <linux/fb.h>
-#include "linux/omapfb.h"
+#include <linux/omapfb.h>
 #include <sys/mman.h>
 #include <sys/resource.h>
 #include <stdbool.h>
