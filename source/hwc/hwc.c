@@ -34,7 +34,7 @@
 #include <hardware/hwcomposer.h>
 #include <EGL/egl.h>
 #include <hardware_legacy/uevent.h>
-#include <png.h>
+//#include <png.h>
 #include <utils/Timers.h>
 
 #include <system/graphics.h>
