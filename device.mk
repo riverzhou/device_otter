@@ -28,7 +28,7 @@ PRODUCT_PACKAGES += \
     audio.primary.otter\
     audio_policy.default \
     hwcomposer.default \
-    hwcomposer.omap4.so \
+    hwcomposer.omap4 \
     hwcomposer.otter \
     power.otter \
 
