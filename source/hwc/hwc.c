@@ -62,9 +62,9 @@
 #include "hal_public.h"
 //#include "rgz_2d.h"
 
-#include "linux/ion.h"
-#include "linux/omap_ion.h"
-#include "ion.h"
+//#include "linux/ion.h"
+//#include "linux/omap_ion.h"
+//#include "ion.h"
 
 #define MAX_HW_OVERLAYS 4
 
@@ -219,7 +219,7 @@ struct omap4_hwc_device {
     struct omap_hwc_data comp_data; /* This is a kernel data structure */
 //    struct rgz_blt_entry blit_ops[RGZ_MAX_BLITS];
     struct counts stats;
-    int    ion_fd;
+//    int    ion_fd;
 //    struct ion_handle *ion_handles[2];
 
 };
@@ -2294,8 +2294,8 @@ static int omap4_hwc_device_close(hw_device_t* device)
 //            close(hwc_dev->hdmi_fb_fd);
         if (hwc_dev->fb_fd >= 0)
             close(hwc_dev->fb_fd);
-        if (hwc_dev->ion_fd >= 0)
-            ion_close(hwc_dev->ion_fd);
+//        if (hwc_dev->ion_fd >= 0)
+//            ion_close(hwc_dev->ion_fd);
 
         /* pthread will get killed when parent process exits */
         pthread_mutex_destroy(&hwc_dev->lock);
@@ -2802,10 +2802,10 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
         goto done;
     }
 
-    hwc_dev->ion_fd = ion_open();
-    if (hwc_dev->ion_fd < 0) {
-        ALOGE("failed to open ion driver (%d)", errno);
-    }
+//    hwc_dev->ion_fd = ion_open();
+//    if (hwc_dev->ion_fd < 0) {
+//        ALOGE("failed to open ion driver (%d)", errno);
+//    }
 
 //    int i;
 //    for (i = 0; i < NUM_EXT_DISPLAY_BACK_BUFFERS; i++) {
