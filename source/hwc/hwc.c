@@ -214,8 +214,8 @@ struct omap4_hwc_device {
 //    enum bltmode blt_mode;
     enum bltpolicy blt_policy;
 
-    int blit_flags;
-    int blit_num;
+//    int blit_flags;
+//    int blit_num;
     struct omap_hwc_data comp_data; /* This is a kernel data structure */
 //    struct rgz_blt_entry blit_ops[RGZ_MAX_BLITS];
     struct counts stats;
@@ -1883,9 +1883,9 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
          * This is needed because if we blit all we would lose the handle of
          * the first layer
          */
-        if (hwc_dev->blit_num == 0) {
-            hwc_dev->buffers[0] = NULL;
-        }
+//        if (hwc_dev->blit_num == 0) {
+//            hwc_dev->buffers[0] = NULL;  // XXX XXX XXX
+//        }
         omap4_hwc_setup_layer_base(&dsscomp->ovls[0].cfg, fb_z,
                                    hwc_dev->fb_dev->base.format,
                                    1,   /* FB is always premultiplied */
