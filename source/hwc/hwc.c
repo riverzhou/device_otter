@@ -2048,7 +2048,7 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
     omap4_hwc_device_t *hwc_dev = (omap4_hwc_device_t *)dev;
     struct dsscomp_setup_dispc_data *dsscomp = &hwc_dev->comp_data.dsscomp_data;
     int err = 0;
-    int invalidate;
+//    int invalidate;
 
     pthread_mutex_lock(&hwc_dev->lock);
 
@@ -2079,15 +2079,13 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
 //        write(hwc_dev->pipe_fds[1], "s", 1);
 //        if (hwc_dev->force_sgx > 0)
 //            hwc_dev->force_sgx--;
-
+//
 //        hwc_dev->comp_data.blit_data.rgz_flags = hwc_dev->blit_flags;
 //        hwc_dev->comp_data.blit_data.rgz_items = hwc_dev->blit_num;
 //        int omaplfb_comp_data_sz = sizeof(hwc_dev->comp_data) +
 //            (hwc_dev->comp_data.blit_data.rgz_items * sizeof(struct rgz_blt_entry));
-
-        int omaplfb_comp_data_sz = sizeof(hwc_dev->comp_data);
-
-        unsigned int nbufs = hwc_dev->post2_layers;
+//
+//        unsigned int nbufs = hwc_dev->post2_layers;
 //        if (hwc_dev->post2_blit_buffers) {
 //            /*
 //             * We don't want to pass a NULL entry in the Post2, but we need to
@@ -2110,12 +2108,19 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
 //            "Post2, blits %d, ovl_buffers %d, blit_buffers %d sgx %d",
 //            hwc_dev->blit_num, hwc_dev->post2_layers, hwc_dev->post2_blit_buffers,
 //            hwc_dev->use_sgx);
+//
+//        debug_post2(hwc_dev, nbufs);
+//        err = hwc_dev->fb_dev->Post2((framebuffer_device_t *)hwc_dev->fb_dev,
+//                                 hwc_dev->buffers,
+//                                 nbufs,
+//                                 dsscomp, omaplfb_comp_data_sz);
 
-        debug_post2(hwc_dev, nbufs);
+        debug_post2(hwc_dev, hwc_dev->post2_layers);
         err = hwc_dev->fb_dev->Post2((framebuffer_device_t *)hwc_dev->fb_dev,
                                  hwc_dev->buffers,
-                                 nbufs,
-                                 dsscomp, omaplfb_comp_data_sz);
+                                 hwc_dev->post2_layers,
+                                 dsscomp, sizeof(hwc_dev->comp_data));
+
         showfps();
     }
 //    hwc_dev->last_ext_ovls = hwc_dev->ext_ovls;
@@ -2499,34 +2504,34 @@ static void set_primary_display_transform_matrix(omap4_hwc_device_t *hwc_dev)
 //            hwc_dev->procs->invalidate(hwc_dev->procs);
 //}
 
-static void handle_uevents(omap4_hwc_device_t *hwc_dev, const char *buff, int len)
-{
-    int vsync;
-    int state = 0;
-    uint64_t timestamp = 0;
-    const char *s = buff;
-
-    vsync = !strcmp(s, "change@/devices/platform/omapfb") ||
-        !strcmp(s, "change@/devices/virtual/switch/omapfb-vsync");
-
-    if (!vsync)
-       return;
-
-    s += strlen(s) + 1;
-
-    while(*s) {
-        if (!strncmp(s, "VSYNC=", strlen("VSYNC=")))
-            timestamp = strtoull(s + strlen("VSYNC="), NULL, 0);
-        s += strlen(s) + 1;
-        if (s - buff >= len)
-            break;
-    }
-
-    if (vsync) {
-        if (hwc_dev->procs && hwc_dev->procs->vsync) {
-            hwc_dev->procs->vsync(hwc_dev->procs, 0, timestamp);
-        }
-    } 
+//static void handle_uevents(omap4_hwc_device_t *hwc_dev, const char *buff, int len)
+//{
+//    int vsync;
+//    int state = 0;
+//    uint64_t timestamp = 0;
+//    const char *s = buff;
+//
+//    vsync = !strcmp(s, "change@/devices/platform/omapfb") ||
+//        !strcmp(s, "change@/devices/virtual/switch/omapfb-vsync");
+//
+//    if (!vsync)
+//       return;
+//
+//    s += strlen(s) + 1;
+//
+//    while(*s) {
+//        if (!strncmp(s, "VSYNC=", strlen("VSYNC=")))
+//            timestamp = strtoull(s + strlen("VSYNC="), NULL, 0);
+//        s += strlen(s) + 1;
+//        if (s - buff >= len)
+//            break;
+//    }
+//
+//    if (vsync) {
+//        if (hwc_dev->procs && hwc_dev->procs->vsync) {
+//            hwc_dev->procs->vsync(hwc_dev->procs, 0, timestamp);
+//        }
+//    } 
 
 //    int dock;
 //    int hdmi;
@@ -2569,7 +2574,7 @@ static void handle_uevents(omap4_hwc_device_t *hwc_dev, const char *buff, int le
 //            hwc_dev->ext.hdmi_state = state == 1;
 //        handle_hotplug(hwc_dev);
 //    }
-}
+//}
 
 //static void *omap4_hwc_hdmi_thread(void *data)
 //{
