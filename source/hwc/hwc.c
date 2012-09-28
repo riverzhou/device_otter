@@ -64,9 +64,13 @@
 
 #include "linux/ion.h"
 #include "linux/omap_ion.h"
-#include "ion/ion.h"
+#include "ion.h"
 
 #define MAX_HW_OVERLAYS 4
+
+struct omap_hwc_data {
+ struct dsscomp_setup_dispc_data dsscomp_data;
+};
 
 //#define NUM_NONSCALING_OVERLAYS 1
 //#define NUM_EXT_DISPLAY_BACK_BUFFERS 2
