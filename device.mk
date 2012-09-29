@@ -51,9 +51,10 @@ PRODUCT_PACKAGES += \
     calibrator \
     crda \
     regulatory.bin \
-    libwpa_client \
-    wpa_cli \
-    wpa_supplicant \
+
+#    libwpa_client \
+#    wpa_cli \
+#    wpa_supplicant \
 
 # Sound
 PRODUCT_PACKAGES += \
@@ -174,7 +175,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-plt.bin \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin:system/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin \
-
+    $(LOCAL_PATH)/vendor/ti/bin/wpa_cli:/system/bin/wpa_cli \
+    $(LOCAL_PATH)/vendor/ti/bin/wpa_supplicant:/system/bin/wpa_supplicant \
+    $(LOCAL_PATH)/vendor/ti/lib/libwpa_client.so:system/lib/libwpa_client.so \
+    
 # wfd
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/vendor/lib/libwfdservice.so:system/vendor/lib/libwfdservice.so \
