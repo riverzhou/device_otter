@@ -138,9 +138,9 @@ typedef struct omap4_hwc_device omap4_hwc_device_t;
                     (f) == OMAP_DSS_COLOR_ARGB32 ? "ARGB32" : \
                     (f) == OMAP_DSS_COLOR_RGB16 ? "RGB565" : "??")
 
-static int debug = 1;
-static int debugpost2 = 1;
-static int debugblt = 1;
+static int debug = 0;
+static int debugpost2 = 0;
+static int debugblt = 0;
 
 static void showfps(void)
 {
