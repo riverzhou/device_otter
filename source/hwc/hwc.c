@@ -782,9 +782,6 @@ static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *
 
 static int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
 {
-    int on_tv = 0 ;  // XXX
-    int tform = 0 ;
-
     return  !hwc_dev->force_sgx &&
             /* must have at least one layer if using composition bypass to get sync object */
             num->possible_overlay_layers &&
@@ -794,11 +791,7 @@ static int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
             num->NV12 <= num->max_scaling_overlays &&
             /* fits into TILER slot */
             num->mem <= limits.tiler1d_slot_size &&
-            /* we cannot clone non-NV12 transformed layers */
-            (!tform || (num->NV12 == num->possible_overlay_layers) ||
-            (num->NV12 && 0)) &&
-            /* HDMI cannot display BGR */
-            (num->BGR == 0 || (num->RGB == 0 && !on_tv) || !hwc_dev->flags_rgb_order);
+            (num->BGR == 0 || num->RGB == 0 || !hwc_dev->flags_rgb_order);
 }
 
 static inline int can_dss_render_layer(omap4_hwc_device_t *hwc_dev,
