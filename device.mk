@@ -32,27 +32,15 @@ PRODUCT_PACKAGES += \
     power.otter \
 
 PRODUCT_PACKAGES += \
-    libinvensense_mpl \
     libaudioutils \
     libion \
     libhwui \
 
 # Wifi
 PRODUCT_PACKAGES += \
-    smc_pa_ctrl \
-    tf_daemon \
-    libtf_crypto_sst \
-    ti_wfd_libs \
-    lib_driver_cmd_wl12xx \
     dhcpcd.conf \
     hostapd.conf \
     wpa_supplicant.conf \
-    calibrator \
-    crda \
-    regulatory.bin \
-    libwpa_client \
-    wpa_cli \
-    wpa_supplicant \
 
 # Sound
 PRODUCT_PACKAGES += \
@@ -62,9 +50,7 @@ PRODUCT_PACKAGES += \
 
 # Misc
 PRODUCT_PACKAGES += \
-    librs_jni \
     com.android.future.usb.accessory \
-    libjni_pinyinime \
     make_ext4fs \
     setup_fs \
     busybox \
