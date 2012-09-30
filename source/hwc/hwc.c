@@ -780,7 +780,7 @@ static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *
         num->max_scaling_overlays = num->max_hw_overlays - NUM_NONSCALING_OVERLAYS;
 }
 
-static int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
+static inline int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
 {
     return  !hwc_dev->force_sgx &&
             /* must have at least one layer if using composition bypass to get sync object */
@@ -789,7 +789,6 @@ static int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
             num->possible_overlay_layers == num->composited_layers &&
             num->scaled_layers <= num->max_scaling_overlays &&
             num->NV12 <= num->max_scaling_overlays &&
-            /* fits into TILER slot */
             num->mem <= limits.tiler1d_slot_size &&
             (num->BGR == 0 || num->RGB == 0 || !hwc_dev->flags_rgb_order);
 }
