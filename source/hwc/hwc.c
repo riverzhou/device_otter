@@ -805,21 +805,11 @@ static inline int can_dss_render_layer(omap4_hwc_device_t *hwc_dev,
             hwc_layer_t *layer)
 {
     IMG_native_handle_t *handle = (IMG_native_handle_t *)layer->handle;
-
-    int cloning = 0 ;   // XXX
-    int on_tv = 0 ;
-    int tform = 0 ;
-
     return omap4_hwc_is_valid_layer(hwc_dev, layer, handle) &&
-           /* cannot rotate non-NV12 layers on external display */
-           (!tform || is_NV12(handle)) &&
            /* skip non-NV12 layers if also using SGX (if nv12_only flag is set) */
            (!hwc_dev->flags_nv12_only || (!hwc_dev->use_sgx || is_NV12(handle))) &&
            /* make sure RGB ordering is consistent (if rgb_order flag is set) */
-           (!(hwc_dev->swap_rb ? is_RGB(handle) : is_BGR(handle)) ||
-            !hwc_dev->flags_rgb_order) &&
-           /* TV can only render RGB */
-           !(on_tv && is_BGR(handle));
+           (!(hwc_dev->swap_rb ? is_RGB(handle) : is_BGR(handle)) || !hwc_dev->flags_rgb_order) ;
 }
 
 static inline int display_area(struct dss2_ovl_info *o)
