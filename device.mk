@@ -172,10 +172,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl127x-fw-4-sr.bin \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ti-connectivity/wl1271-nvs_127x.bin:system/etc/firmware/ti-connectivity/wl1271-nvs.bin \
 
-#    $(LOCAL_PATH)/vendor/ti/bin/wpa_cli:/system/bin/wpa_cli \
-#    $(LOCAL_PATH)/vendor/ti/bin/wpa_supplicant:/system/bin/wpa_supplicant \
-#    $(LOCAL_PATH)/vendor/ti/lib/libwpa_client.so:system/lib/libwpa_client.so \
-    
 # wfd
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/vendor/lib/libwfdservice.so:system/vendor/lib/libwfdservice.so \
@@ -210,7 +206,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.sf.lcd_density=160 \
     ro.sf.hwrotation=270 \
     wifi.interface=wlan0 \
-    wifi.supplicant_scan_interval=120 \
 
 ##############################################
 
