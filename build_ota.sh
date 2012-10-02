@@ -85,7 +85,6 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 		make   -j ${CPU_NUMBER} TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
         	mkdir  -p ${RAMDISK_DIR}/modules
 		cp     ${SGX_DIR}/pvrsrvkm_sgx540_120.ko ${RAMDISK_DIR}/modules
-		make   clean 
 		cd     ${TOP_DIR}
 
 		rm     -rf ${KERNEL_MODULES_OUT}
