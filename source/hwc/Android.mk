@@ -11,7 +11,7 @@ LOCAL_SRC_FILES := hwc.c
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_MODULE := hwcomposer.t_otter
+LOCAL_MODULE := hwcomposer.otter
 LOCAL_CFLAGS := -DLOG_TAG=\"ti_hwc\"
 
 include $(BUILD_SHARED_LIBRARY)

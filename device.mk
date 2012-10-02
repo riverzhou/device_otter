@@ -31,7 +31,6 @@ PRODUCT_PACKAGES += \
     hwcomposer.default \
     hwcomposer.otter \
     power.otter \
-    hwcomposer.t_otter \
 
 # OMAP4
 PRODUCT_PACKAGES += \
