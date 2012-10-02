@@ -68,7 +68,7 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 	mkdir -p  ${BOOT_DIR}
 
 	if [ "$OLDKERNEL_BUILD" != "true" ] || [ ! -f ${KERNEL_OUT}/arch/arm/boot/zImage ] ; then
-		cp -f ${DEVICE_SOURCE}/river_defconfig  ${KERNEL_SOURCE}/arch/arm/configs/river_defconfig
+		#cp -f ${DEVICE_SOURCE}/river_defconfig  ${KERNEL_SOURCE}/arch/arm/configs/river_defconfig
 
 		rm     -rf ${KERNEL_OUT}
 		mkdir  -p  ${KERNEL_OUT}
