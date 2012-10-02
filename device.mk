@@ -24,18 +24,13 @@
 
 # Hardware HALs
 PRODUCT_PACKAGES += \
+    libion \
     lights.otter \
     audio.primary.otter\
     audio_policy.default \
     hwcomposer.default \
     hwcomposer.otter \
     power.otter \
-
-# 
-PRODUCT_PACKAGES += \
-    libaudioutils \
-    libion \
-    libhwui \
 
 # OMAP4
 PRODUCT_PACKAGES += \
