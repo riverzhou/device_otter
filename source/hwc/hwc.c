@@ -870,68 +870,13 @@ static void gather_layer_statistics(omap4_hwc_device_t *hwc_dev, struct counts *
         }
     }
     hwc_dev->stats = *num;
-}
 
-static void decide_supported_cloning(omap4_hwc_device_t *hwc_dev, struct counts *num)
-{
-    omap4_hwc_ext_t *ext = &hwc_dev->ext;
-    int nonscaling_ovls = NUM_NONSCALING_OVERLAYS;
-    num->max_hw_overlays = MAX_HW_OVERLAYS;
-
-    /*
-     * We cannot atomically switch overlays from one display to another.  First, they
-     * have to be disabled, and the disabling has to take effect on the current display.
-     * We keep track of the available number of overlays here.
-     */
-    if (ext->dock.enabled && !(ext->mirror.enabled && !(num->dockable || ext->force_dock))) {
-        /* some overlays may already be used by the external display, so we account for this */
-
-        /* reserve just a video pipeline for HDMI if docking */
-        hwc_dev->ext_ovls = (num->dockable || ext->force_dock) ? 1 : 0;
-
-        num->max_hw_overlays -= max(hwc_dev->ext_ovls, hwc_dev->last_ext_ovls);
-
-        /* use mirroring transform if we are auto-switching to docking mode while mirroring*/
-        if (ext->mirror.enabled) {
-            ext->current = ext->mirror;
-            ext->current.docking = 1;
-        } else {
-            ext->current = ext->dock;
-        }
-    } else if (ext->mirror.enabled) {
-        /*
-         * otherwise, manage just from half the pipelines.  NOTE: there is
-         * no danger of having used too many overlays for external display here.
-         */
-        num->max_hw_overlays >>= 1;
-        nonscaling_ovls >>= 1;
-        hwc_dev->ext_ovls = MAX_HW_OVERLAYS - num->max_hw_overlays;
-        ext->current = ext->mirror;
-    } else {
-        num->max_hw_overlays -= hwc_dev->last_ext_ovls;
-        hwc_dev->ext_ovls = 0;
-        ext->current.enabled = 0;
-    }
-
-    /*
-     * :TRICKY: We may not have enough overlays on the external display.  We "reserve" them
-     * here to figure out if mirroring is supported, but may not do mirroring for the first
-     * frame while the overlays required for it are cleared.
-     */
-    hwc_dev->ext_ovls_wanted = hwc_dev->ext_ovls;
-    hwc_dev->ext_ovls = min(MAX_HW_OVERLAYS - hwc_dev->last_int_ovls, hwc_dev->ext_ovls);
-
-    /* if mirroring, we are limited by both internal and external overlays.  However,
-       ext_ovls is always <= MAX_HW_OVERLAYS / 2 <= max_hw_overlays */
-    if (!num->protected && hwc_dev->ext_ovls && ext->current.enabled && !ext->current.docking)
-        num->max_hw_overlays = hwc_dev->ext_ovls;
-
-    /* If FB is not same resolution as LCD don't use GFX pipe line*/
     if (hwc_dev->primary_transform) {
-        num->max_hw_overlays -= NUM_NONSCALING_OVERLAYS;
+        num->max_hw_overlays = MAX_HW_OVERLAYS - NUM_NONSCALING_OVERLAYS;
         num->max_scaling_overlays = num->max_hw_overlays;
     } else
-        num->max_scaling_overlays = num->max_hw_overlays - nonscaling_ovls;
+        num->max_hw_overlays = MAX_HW_OVERLAYS;
+        num->max_scaling_overlays = num->max_hw_overlays - NUM_NONSCALING_OVERLAYS;
 }
 
 static inline int can_dss_render_all(omap4_hwc_device_t *hwc_dev, struct counts *num)
@@ -1017,8 +962,6 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
     dsscomp->sync_id = sync_id++;
 
     gather_layer_statistics(hwc_dev, &num, list);
-
-    decide_supported_cloning(hwc_dev, &num);
 
     /* phase 3 logic */
     if (can_dss_render_all(hwc_dev, &num)) {
@@ -1171,8 +1114,6 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
                 omap4_hwc_adjust_primary_display_layer(hwc_dev, &dsscomp->ovls[i]);
         }
 
-    ext->last = ext->current;
-
     if (z != dsscomp->num_ovls || dsscomp->num_ovls > MAX_HW_OVERLAYS)
         ALOGE("**** used %d z-layers for %d overlays\n", z, dsscomp->num_ovls);
 
@@ -1192,21 +1133,6 @@ static int omap4_hwc_prepare(struct hwc_composer_device *dev, hwc_layer_list_t* 
     dsscomp->mgrs[0].alpha_blending = 1;
     dsscomp->mgrs[0].swap_rb = hwc_dev->swap_rb;
     dsscomp->num_mgrs = 1;
-
-    if (ext->current.enabled || hwc_dev->last_ext_ovls) {
-        dsscomp->mgrs[1] = dsscomp->mgrs[0];
-        dsscomp->mgrs[1].ix = 1;
-        dsscomp->num_mgrs++;
-        hwc_dev->ext_ovls = dsscomp->num_ovls - hwc_dev->post2_layers;
-    }
-
-    /*
-     * Whilst the mode of the display is being changed drop compositions to the
-     * display
-     */
-    if (ext->last_mode == 0 && hwc_dev->on_tv) {
-        dsscomp->num_ovls = 0;
-    }
 
     if (debug) {
         ALOGD("prepare (%d) - %s (comp=%d, poss=%d/%d scaled, RGB=%d,BGR=%d,NV12=%d) (ext=%s%s%ddeg%s %dex/%dmx (last %dex,%din)\n",
@@ -1260,7 +1186,6 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
     omap4_hwc_device_t *hwc_dev = (omap4_hwc_device_t *)dev;
     struct dsscomp_setup_dispc_data *dsscomp = &hwc_dev->comp_data.dsscomp_data;
     int err = 0;
-    int invalidate;
 
     pthread_mutex_lock(&hwc_dev->lock);
 
@@ -1326,7 +1251,6 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
                                  dsscomp, omaplfb_comp_data_sz);
         showfps();
     }
-    hwc_dev->last_ext_ovls = hwc_dev->ext_ovls;
     hwc_dev->last_int_ovls = hwc_dev->post2_layers;
     if (err)
         ALOGE("Post2 error");
@@ -1678,14 +1602,6 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
         ALOGE("failed to get display info (%d): %m", errno);
         err = -errno;
         goto done;
-    }
-
-    /* use default value in case some of requested display parameters missing */
-    hwc_dev->ext.lcd_xpy = 1.0;
-    if (hwc_dev->fb_dis.timings.x_res && hwc_dev->fb_dis.height_in_mm) {
-        hwc_dev->ext.lcd_xpy = (float)
-            hwc_dev->fb_dis.width_in_mm / hwc_dev->fb_dis.timings.x_res /
-            hwc_dev->fb_dis.height_in_mm * hwc_dev->fb_dis.timings.y_res;
     }
 
     set_primary_display_transform_matrix(hwc_dev);
