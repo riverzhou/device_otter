@@ -31,10 +31,17 @@ PRODUCT_PACKAGES += \
     hwcomposer.otter \
     power.otter \
 
+# 
 PRODUCT_PACKAGES += \
     libaudioutils \
     libion \
     libhwui \
+
+# OMAP4
+PRODUCT_PACKAGES += \
+    smc_pa_ctrl \
+    tf_daemon \
+    libtf_crypto_sst
 
 # Wifi
 PRODUCT_PACKAGES += \
