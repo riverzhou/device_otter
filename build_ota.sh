@@ -22,7 +22,6 @@ TESTKEY_PK8=${PWD}/build/target/product/security/testkey.pk8
 PRODUCT_DIR=${PWD}/out/target/product/${PRODUCT_NAME}/
 OTA_DIR=${PRODUCT_DIR}/OTA/
 RAMDISK_DIR=${PRODUCT_DIR}/ramdisk/
-BOOT_DIR=${PRODUCT_DIR}/boot/
 KERNEL_OUT=${PRODUCT_DIR}/kernel/
 ROOT_DIR=${PRODUCT_DIR}/root/
 
@@ -67,8 +66,9 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 	mkdir -p  ${RAMDISK_DIR}/system
 	cp    -f  ${ROOT_DIR}/init      ${RAMDISK_DIR}/init
 	cp    -f  ${ROOT_DIR}/sbin/adbd ${RAMDISK_DIR}/sbin/adbd
-	rm    -rf ${BOOT_DIR}
-	mkdir -p  ${BOOT_DIR}
+        cd        ${RAMDISK_DIR}/sbin
+        ln    -s  ../init ueventd
+        cd        ${TOP_DIR}
 
 	if [ "$OLDKERNEL_BUILD" != "true" ] || [ ! -f ${KERNEL_OUT}/arch/arm/boot/zImage ] ; then
 		#cp -f ${DEVICE_SOURCE}/river_defconfig  ${KERNEL_SOURCE}/arch/arm/configs/river_defconfig
@@ -104,8 +104,8 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 		cd     ${TOP_DIR}
 	fi 
 
-	${TOOLS_DIR}/mkbootfs ${RAMDISK_DIR} | gzip > ${BOOT_DIR}/ramdisk.gz
-	${TOOLS_DIR}/mkbootimg --cmdline "${KERNEL_CMDLINE}" --kernel ${KERNEL_OUT}/arch/arm/boot/zImage --ramdisk ${BOOT_DIR}/ramdisk.gz -o ${PRODUCT_DIR}/boot.img --base ${KERNEL_BASE} --pagesize ${KERNEL_PAGESIZE}
+	${TOOLS_DIR}/mkbootfs ${RAMDISK_DIR} | gzip > ${PRODUCT_DIR}/ramdisk.gz
+	${TOOLS_DIR}/mkbootimg --cmdline "${KERNEL_CMDLINE}" --kernel ${KERNEL_OUT}/arch/arm/boot/zImage --ramdisk ${PRODUCT_DIR}/ramdisk.gz -o ${PRODUCT_DIR}/boot.img --base ${KERNEL_BASE} --pagesize ${KERNEL_PAGESIZE}
 fi 
 cp ${PRODUCT_DIR}/boot.img ${OTA_DIR}/boot.img
 
