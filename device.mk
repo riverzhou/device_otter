@@ -172,8 +172,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
     dalvik.vm.heapstartsize=5m \
     dalvik.vm.heapgrowthlimit=42m \
     dalvik.vm.heapsize=128m \
-    com.ti.omap_enhancement=true \
-    omap.enhancement=true \
     persist.lab126.chargeprotect=1 \
     persist.service.adb.enable=1 \
     persist.sys.purgeable_assets=1 \
@@ -188,6 +186,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.sf.lcd_density=160 \
     ro.sf.hwrotation=270 \
     wifi.interface=wlan0 \
+    wifi.supplicant_scan_interval=15 \
 
 ##############################################
 
