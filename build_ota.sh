@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+PRODUCT_NAME=otter
+MANUFACTURER=amazon
+
 case "$1" in
 	onlyboot ) 	ONLYBOOT_BUILD=true ;; 	 	
 	oldboot ) 	OLDBOOT_BUILD=true ;;   	
@@ -16,7 +19,7 @@ TOOLS_DIR=${PWD}/tools/
 TESTKEY_PEM=${PWD}/build/target/product/security/testkey.x509.pem
 TESTKEY_PK8=${PWD}/build/target/product/security/testkey.pk8
 
-PRODUCT_DIR=${PWD}/out/target/product/otter/
+PRODUCT_DIR=${PWD}/out/target/product/${PRODUCT_NAME}/
 OTA_DIR=${PRODUCT_DIR}/OTA/
 RAMDISK_DIR=${PRODUCT_DIR}/ramdisk/
 BOOT_DIR=${PRODUCT_DIR}/boot/
@@ -25,10 +28,10 @@ ROOT_DIR=${PRODUCT_DIR}/root/
 
 KERNEL_MODULES_OUT=${OTA_DIR}/modules/
 
-RAMDISK_SOURCE=${PWD}/device/amazon/otter/ramdisk/
-DEVICE_SOURCE=${PWD}/device/amazon/otter/
-KERNEL_SOURCE=${PWD}/kernel/amazon/otter/
-METAINF_SOURCE=${PWD}/device/amazon/otter/OTA/
+RAMDISK_SOURCE=${PWD}/device/${MANUFACTURER}/${PRODUCT_NAME}/ramdisk/
+DEVICE_SOURCE=${PWD}/device/${MANUFACTURER}/${PRODUCT_NAME}/
+KERNEL_SOURCE=${PWD}/kernel/${MANUFACTURER}/${PRODUCT_NAME}/
+METAINF_SOURCE=${PWD}/device/${MANUFACTURER}/${PRODUCT_NAME}/OTA/
 
 KERNEL_BASE=0x80000000
 KERNEL_PAGESIZE=4096
@@ -108,10 +111,10 @@ cp ${PRODUCT_DIR}/boot.img ${OTA_DIR}/boot.img
 
 if [ "$ONLYBOOT_BUILD" != "true" ] && [ "$OLDKERNEL_BUILD" != "true" ] ; then
 	${TOOLS_DIR}/simg2img ${PRODUCT_DIR}/system.img ${OTA_DIR}/system.img
-	OTA_FILE=${PRODUCT_DIR}/full_otter-ota
+	OTA_FILE=${PRODUCT_DIR}/full_${PRODUCT_NAME}-ota
 	cp    -f ${METAINF_SOURCE}/updater-script_full ${OTA_DIR}/META-INF/com/google/android/updater-script 
 else
-	OTA_FILE=${PRODUCT_DIR}/boot_otter-ota
+	OTA_FILE=${PRODUCT_DIR}/boot_${PRODUCT_NAME}-ota
 	cp    -f ${METAINF_SOURCE}/updater-script_boot ${OTA_DIR}/META-INF/com/google/android/updater-script 
 fi
 
