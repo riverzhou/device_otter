@@ -91,7 +91,4 @@ ADDITIONAL_DEFAULT_PROPERTIES 		+= \
     ro.debuggable=1 \
     persist.sys.usb.config=mass_storage,adb \
 
-# Bootanimation
-TARGET_BOOTANIMATION_PRELOAD 		:= true
-TARGET_BOOTANIMATION_TEXTURE_CACHE 	:= true
 
