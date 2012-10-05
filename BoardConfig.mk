@@ -85,10 +85,4 @@ endif
 # Misc.
 BOARD_NEEDS_CUTILS_LOG 			:= true
 
-ADDITIONAL_DEFAULT_PROPERTIES 		+= \
-    ro.secure=0 \
-    ro.allow.mock.location=0 \
-    ro.debuggable=1 \
-    persist.sys.usb.config=mass_storage,adb \
-
 
