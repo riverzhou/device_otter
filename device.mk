@@ -172,11 +172,13 @@ PRODUCT_PROPERTY_OVERRIDES := \
     dalvik.vm.heapstartsize=5m \
     dalvik.vm.heapgrowthlimit=42m \
     dalvik.vm.heapsize=128m \
+    drm.service.enabled=true \
     persist.lab126.chargeprotect=1 \
     persist.service.adb.enable=1 \
     persist.sys.purgeable_assets=1 \
     persist.sys.root_access=3 \
     persist.sys.usb.config=mass_storage,adb \
+    ro.carrier=wifi-only \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1 \
     ro.crypto.state=unencrypted \
@@ -187,6 +189,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.sf.hwrotation=270 \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=15 \
+    tf.enable=y \
 
 ##############################################
 
