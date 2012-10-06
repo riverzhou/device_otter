@@ -78,6 +78,9 @@ ENHANCED_DOMX				:= true
 # bionic
 TARGET_USE_OMAP4_BIONIC_OPTIMIZATION	:= true
 
+# libion
+TARGET_HAS_CUSTOM_LIBION		:= true
+
 # Misc.
 BOARD_NEEDS_CUTILS_LOG 			:= true
 BOARD_USES_SECURE_SERVICES		:= true
