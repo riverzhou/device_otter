@@ -21,6 +21,9 @@
 #ifndef __SYS_CORE_ION_H
 #define __SYS_CORE_ION_H
 
+#include "linux/ion.h"
+#include "linux/omap_ion.h"
+
 __BEGIN_DECLS
 
 int ion_open();

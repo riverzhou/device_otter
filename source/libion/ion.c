@@ -27,8 +27,6 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 
-#include "linux/ion.h"
-#include "linux/omap_ion.h"
 #include "ion.h"
 
 int ion_open()
