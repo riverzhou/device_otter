@@ -65,6 +65,18 @@ PRODUCT_PACKAGES += \
     FileManager \
     Superuser \
 
+# OMX
+PRODUCT_PACKAGES += \
+    libdomx \
+    libmm_osal \
+    libOMX_Core \
+    libOMX.TI.DUCATI1.VIDEO.DECODER.secure \
+    libOMX.TI.DUCATI1.VIDEO.DECODER \
+    libOMX.TI.DUCATI1.VIDEO.H264E \
+    libOMX.TI.DUCATI1.VIDEO.MPEG4E \
+
+#    libmemmgr_rpc \
+
 ##############################################
 
 # Permissions
@@ -140,17 +152,17 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/imgtec/vendor/bin/pvrsrvctl_SGX540_120:/system/vendor/bin/pvrsrvctl_SGX540_120 \
     $(LOCAL_PATH)/vendor/imgtec/etc/powervr.ini:/system/vendor/etc/powervr.ini \
 
-# TI OMX # TODO : build from source
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libdomx.so:/system/vendor/lib/libdomx.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libmm_osal.so:/system/vendor/lib/libmm_osal.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
-    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX_Core.so:/system/vendor/lib/libOMX_Core.so \
+# TI OMX 
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libdomx.so:/system/vendor/lib/libdomx.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libmm_osal.so:/system/vendor/lib/libmm_osal.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
+#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX_Core.so:/system/vendor/lib/libOMX_Core.so \
 
 # wifi
 PRODUCT_COPY_FILES += \

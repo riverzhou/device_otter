@@ -72,8 +72,10 @@ WIFI_FIRMWARE_LOADER             	:= ""
 COMMON_GLOBAL_CFLAGS 		 	+= -DUSES_TI_MAC80211
 endif
 
-#ENHANCED_DOMX				:= true
+# OMX
+ENHANCED_DOMX				:= true
 
+# bionic
 TARGET_USE_OMAP4_BIONIC_OPTIMIZATION	:= true
 
 # Misc.
