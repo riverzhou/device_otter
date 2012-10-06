@@ -152,7 +152,7 @@ struct omap4_hwc_device {
     /* static data */
     hwc_composer_device_t base;
     hwc_procs_t *procs;
-    pthread_t hdmi_thread;
+    pthread_t uevent_thread;
     pthread_mutex_t lock;
 
     IMG_framebuffer_device_public_t *fb_dev;
@@ -1209,16 +1209,7 @@ static int omap4_hwc_set(struct hwc_composer_device *dev, hwc_display_t dpy,
 
         //dump_dsscomp(dsscomp);
 
-        // signal the event thread that a post has happened
-        write(hwc_dev->pipe_fds[1], "s", 1);
-        if (hwc_dev->force_sgx > 0)
-            hwc_dev->force_sgx--;
-
-        hwc_dev->comp_data.blit_data.rgz_flags = hwc_dev->blit_flags;
-        hwc_dev->comp_data.blit_data.rgz_items = hwc_dev->blit_num;
-        int omaplfb_comp_data_sz = sizeof(hwc_dev->comp_data) +
-            (hwc_dev->comp_data.blit_data.rgz_items * sizeof(struct rgz_blt_entry));
-
+	int omaplfb_comp_data_sz = sizeof(hwc_dev->comp_data);
 
         unsigned int nbufs = hwc_dev->post2_layers;
         if (hwc_dev->post2_blit_buffers) {
@@ -1303,8 +1294,6 @@ static int omap4_hwc_device_close(hw_device_t* device)
     if (hwc_dev) {
         if (hwc_dev->dsscomp_fd >= 0)
             close(hwc_dev->dsscomp_fd);
-        if (hwc_dev->hdmi_fb_fd >= 0)
-            close(hwc_dev->hdmi_fb_fd);
         if (hwc_dev->fb_fd >= 0)
             close(hwc_dev->fb_fd);
 
@@ -1396,13 +1385,11 @@ static inline void handle_uevents(omap4_hwc_device_t *hwc_dev, const char *buff,
         hwc_dev->procs->vsync(hwc_dev->procs, 0, timestamp);
 }
 
-static void *omap4_hwc_hdmi_thread(void *data)
+static void *omap4_hwc_uevent_thread(void *data)
 {
     omap4_hwc_device_t *hwc_dev = data;
     static char uevent_desc[4096];
-    struct pollfd fds[2];
-    int invalidate = 0;
-    int timeout;
+    struct pollfd fds[1];
     int err;
 
     setpriority(PRIO_PROCESS, 0, HAL_PRIORITY_URGENT_DISPLAY);
@@ -1411,47 +1398,16 @@ static void *omap4_hwc_hdmi_thread(void *data)
 
     fds[0].fd = uevent_get_fd();
     fds[0].events = POLLIN;
-    fds[1].fd = hwc_dev->pipe_fds[0];
-    fds[1].events = POLLIN;
-
-    timeout = hwc_dev->idle ? hwc_dev->idle : -1;
 
     memset(uevent_desc, 0, sizeof(uevent_desc));
 
     do {
-        err = poll(fds, hwc_dev->idle ? 2 : 1, timeout);
-
-        if (err == 0) {
-            if (hwc_dev->idle) {
-                if (hwc_dev->procs && hwc_dev->procs->invalidate) {
-                    pthread_mutex_lock(&hwc_dev->lock);
-                    invalidate = hwc_dev->last_int_ovls > 1 && !hwc_dev->force_sgx;
-                    if (invalidate) {
-                        hwc_dev->force_sgx = 2;
-                    }
-                    pthread_mutex_unlock(&hwc_dev->lock);
-
-                    if (invalidate) {
-                        hwc_dev->procs->invalidate(hwc_dev->procs);
-                        timeout = -1;
-                    }
-                }
-
-                continue;
-            }
-        }
+        err = poll(fds, 1, -1);
 
         if (err == -1) {
             if (errno != EINTR)
                 ALOGE("event error: %m");
             continue;
-        }
-
-        if (hwc_dev->idle && fds[1].revents & POLLIN) {
-            char c;
-            read(hwc_dev->pipe_fds[0], &c, 1);
-            if (!hwc_dev->force_sgx)
-                timeout = hwc_dev->idle ? hwc_dev->idle : -1;
         }
 
         if (fds[0].revents & POLLIN) {
@@ -1606,18 +1562,13 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
 
     set_primary_display_transform_matrix(hwc_dev);
 
-    if (pipe(hwc_dev->pipe_fds) == -1) {
-            ALOGE("failed to event pipe (%d): %m", errno);
-            err = -errno;
-            goto done;
-    }
-
     if (pthread_mutex_init(&hwc_dev->lock, NULL)) {
         ALOGE("failed to create mutex (%d): %m", errno);
         err = -errno;
         goto done;
     }
-    if (pthread_create(&hwc_dev->hdmi_thread, NULL, omap4_hwc_hdmi_thread, hwc_dev))
+
+    if (pthread_create(&hwc_dev->uevent_thread, NULL, omap4_hwc_uevent_thread, hwc_dev))
     {
         ALOGE("failed to create HDMI listening thread (%d): %m", errno);
         err = -errno;
@@ -1625,14 +1576,11 @@ static int omap4_hwc_device_open(const hw_module_t* module, const char* name,
     }
 
     /* get debug properties */
-
     /* see if hwc is enabled at all */
     property_get("debug.hwc.rgb_order", value, "1");
     hwc_dev->flags_rgb_order = atoi(value);
     property_get("debug.hwc.nv12_only", value, "0");
     hwc_dev->flags_nv12_only = atoi(value);
-    property_get("debug.hwc.idle", value, "250");
-    hwc_dev->idle = atoi(value);
 
     ALOGI("omap4_hwc_device_open(rgb_order=%d nv12_only=%d)",
         hwc_dev->flags_rgb_order, hwc_dev->flags_nv12_only);
@@ -1651,8 +1599,6 @@ done:
     if (err && hwc_dev) {
         if (hwc_dev->dsscomp_fd >= 0)
             close(hwc_dev->dsscomp_fd);
-        if (hwc_dev->hdmi_fb_fd >= 0)
-            close(hwc_dev->hdmi_fb_fd);
         if (hwc_dev->fb_fd >= 0)
             close(hwc_dev->fb_fd);
         pthread_mutex_destroy(&hwc_dev->lock);
