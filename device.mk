@@ -183,7 +183,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1 \
     ro.crypto.state=unencrypted \
-    ro.hwc.legacy_api=true \
     ro.kernel.android.bootanim=1 \
     ro.opengles.version=131072 \
     ro.sf.lcd_density=160 \
@@ -191,6 +190,8 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=15 \
     tf.enable=y \
+
+#    ro.hwc.legacy_api=true \
 
 ##############################################
 
