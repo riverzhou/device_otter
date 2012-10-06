@@ -23,8 +23,6 @@ ARCH_ARM_HAVE_TLS_REGISTER 		:= true
 
 TARGET_GLOBAL_CFLAGS 			+= -mtune=cortex-a9 -mcpu=cortex-a9 -mfpu=neon 
 TARGET_GLOBAL_CPPFLAGS 			+= -mtune=cortex-a9 -mcpu=cortex-a9 -mfpu=neon 
-#TARGET_arm_CFLAGS 			:= -O2 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops fmodulo-sched -fmodulo-sched-allow-regmoves
-#TARGET_thumb_CFLAGS 			:= -mthumb -Os -fomit-frame-pointer -fstrict-aliasing
 
 TARGET_BOARD_PLATFORM 			:= omap4
 TARGET_BOOTLOADER_BOARD_NAME 		:= otter
