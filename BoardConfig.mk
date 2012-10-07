@@ -23,6 +23,7 @@ ARCH_ARM_HAVE_TLS_REGISTER 		:= true
 
 TARGET_GLOBAL_CFLAGS 			+= -mtune=cortex-a9 -mcpu=cortex-a9 -mfpu=neon 
 TARGET_GLOBAL_CPPFLAGS 			+= -mtune=cortex-a9 -mcpu=cortex-a9 -mfpu=neon 
+TARGET_SPECIFIC_HEADER_PATH 		:= device/amazon/otter/include
 
 TARGET_BOARD_PLATFORM 			:= omap4
 TARGET_BOOTLOADER_BOARD_NAME 		:= otter
