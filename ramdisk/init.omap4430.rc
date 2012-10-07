@@ -1,14 +1,12 @@
 on early-init
-# mount debugfs
-    mount debugfs /sys/kernel/debug /sys/kernel/debug
+    mount debugfs debugfs /sys/kernel/debug
 
-# create storage
+    # for backwards compatibility
+    export EXTERNAL_STORAGE /storage/sdcard0
     mkdir /storage 0050 system sdcard_r
     mkdir /storage/sdcard0 0000 system system
     symlink /storage/sdcard0 /sdcard
     symlink /storage/sdcard0 /mnt/sdcard
-    export DOWNLOAD_CACHE /cache/download
-    export EXTERNAL_STORAGE /storage/sdcard0
 
 on init
 # power management
@@ -51,12 +49,13 @@ on post-fs-data
     symlink /data/tmp /tmp
     mkdir /data/trace 0777 system system
     chmod 0777 /data/trace
+    mkdir /data/media 0770 media_rw media_rw
+    chown media_rw media_rw /data/media
 
 #Give system ownership and permission to boost clock for specified timeout
 #Note boost_timeout cannot be changed from application because of dynamic sysfs creation. It will have default value of 3 sec.
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/boost_cpufreq
     chmod 0664  /sys/devices/system/cpu/cpu0/cpufreq/boost_cpufreq
-
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
@@ -70,28 +69,23 @@ on post-fs-data
     chmod 0664  /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     chmod 0664  /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
 
-# Boost the CPU for 5 sec for boot optimization
-    write /sys/devices/system/cpu/cpufreq/hotplug/boost_timeout 5000000
+# Boost the CPU for 30 sec for boot optimization
+    write /sys/devices/system/cpu/cpufreq/hotplug/boost_timeout 30000000
     write /sys/devices/system/cpu/cpu0/cpufreq/boost_cpufreq 1
 
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
     chmod 0644 /dev/xt_qtaguid
 
-# make dir for cache
-    mkdir /cache/download 0777 system system
-
-# We chown/chmod /data again so because mount is run as root + defaults
-    chown system system /data
-    chmod 0771 /data
-
-#   chmod 0666 /dev/dce
     chmod 0666 /dev/ion
-#   chmod 0666 /dev/i2c-1
-#   chmod 0666 /dev/i2c-2
-#   chmod 0666 /dev/i2c-3
-#   chmod 0666 /dev/i2c-4
-#   chmod 0666 /dev/mtp_usb
+
+    chmod 0666 /dev/mtp_usb
+
+    chmod 0660 /dev/mtd/mtd0
+    chown media media /dev/mtd/mtd0
+
+    chmod 0660 /dev/i2c-2
+    chown media media /dev/i2c-2
 
 # change permissions for alsa nodes
     chmod 0777 /dev/snd/controlC0
@@ -107,7 +101,7 @@ on post-fs-data
     chmod 0777 /dev/snd/pcmC0D4p
     chmod 0777 /dev/snd/pcmC0D5c
     chmod 0777 /dev/snd/pcmC0D5p
-    chmod 0777 /dev/snd/pcmC0D7p
+#    chmod 0777 /dev/snd/pcmC0D7p
     chmod 0777 /dev/snd/timer
 
 # change permissions for Sensors
@@ -120,47 +114,34 @@ on post-fs-data
     chmod 0777 /sys/class/hwmon/hwmon0/device/temp1_max
     chmod 0777 /sys/class/hwmon/hwmon0/device/temp1_max_hyst
 
-    chown system system /system/bin/omapconf
-    chown root root /system/bin/omapconf2
-
 # change permissions for overlay managers and display devices
     chown system system /sys/devices/platform/omapdss/display0/enabled
-    chown system system /sys/devices/platform/omapdss/display1/enabled
-    chown system system /sys/devices/platform/omapdss/display2/enabled
-    chown system system /sys/devices/platform/omapdss/display3/enabled
     chown system system /sys/devices/platform/omapdss/display0/name
-    chown system system /sys/devices/platform/omapdss/display1/name
-    chown system system /sys/devices/platform/omapdss/display2/name
-    chown system system /sys/devices/platform/omapdss/display3/name
+    chown system system /sys/devices/platform/omapdss/display0/timings
     chown system system /sys/devices/platform/omapdss/overlay0/manager
-    chown system system /sys/devices/platform/omapdss/overlay1/manager
-    chown system system /sys/devices/platform/omapdss/overlay2/manager
-    chown system system /sys/devices/platform/omapdss/overlay3/manager
     chown system system /sys/devices/platform/omapdss/overlay0/zorder
+    chown system system /sys/devices/platform/omapdss/overlay0/enabled
+    chown system system /sys/devices/platform/omapdss/overlay1/manager
     chown system system /sys/devices/platform/omapdss/overlay1/zorder
+    chown system system /sys/devices/platform/omapdss/overlay1/enabled
+    chown system system /sys/devices/platform/omapdss/overlay2/manager
     chown system system /sys/devices/platform/omapdss/overlay2/zorder
+    chown system system /sys/devices/platform/omapdss/overlay2/enabled
+    chown system system /sys/devices/platform/omapdss/overlay3/manager
     chown system system /sys/devices/platform/omapdss/overlay3/zorder
-# change permissions for manager tranparency parameters
+    chown system system /sys/devices/platform/omapdss/overlay3/enabled
     chown system system /sys/devices/platform/omapdss/manager0/name
     chown system system /sys/devices/platform/omapdss/manager0/display
     chown system system /sys/devices/platform/omapdss/manager1/name
     chown system system /sys/devices/platform/omapdss/manager1/display
     chown system system /sys/devices/platform/omapdss/manager2/name
     chown system system /sys/devices/platform/omapdss/manager2/display
-    chown system system /sys/devices/platform/omapdss/overlay0/enabled
-    chown system system /sys/devices/platform/omapdss/overlay1/enabled
-    chown system system /sys/devices/platform/omapdss/overlay2/enabled
-    chown system system /sys/devices/platform/omapdss/overlay3/enabled
-    # change permissions for display timings to get the resolutions
-    chown system system /sys/devices/platform/omapdss/display0/timings
-    chown system system /sys/devices/platform/omapdss/display1/timings
-    chown system system /sys/devices/platform/omapdss/display2/timings
-    chown system system /sys/devices/platform/omapdss/display3/timings
-    chown system system /sys/devices/platform/omapdss/display2/code
-     # change permissions for Tiler driver
+
+# change permissions for Tiler driver
     chown media media /dev/tiler
     chmod 0666 /dev/tiler
     chmod 0666 /dev/dmm
+
 # LEDs
     chmod 0777 /dev/ilitek_ctrl
     chmod 0777 /sys/class/leds/lcd-backlight/brightness
@@ -184,11 +165,15 @@ on post-fs-data
 on boot
     setprop ro.radio.noril yes
 
+# Default Read Ahead value for sdcards
+    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
+    write /sys/block/mmcblk1/queue/read_ahead_kb 2048
+
 # fake some battery state
-    setprop status.battery.state Slow
-    setprop status.battery.level 5
-    setprop status.battery.level_raw  50
-    setprop status.battery.level_scale 9
+#    setprop status.battery.state Slow
+#    setprop status.battery.level 5
+#    setprop status.battery.level_raw  50
+#    setprop status.battery.level_scale 9
 
 # wi-fi
 service fixmac /system/bin/fix-mac.sh
