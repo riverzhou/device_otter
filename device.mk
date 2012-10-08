@@ -153,18 +153,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/imgtec/vendor/bin/pvrsrvctl_SGX540_120:/system/vendor/bin/pvrsrvctl_SGX540_120 \
     $(LOCAL_PATH)/vendor/imgtec/etc/powervr.ini:/system/vendor/etc/powervr.ini \
 
-# TI OMX 
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libdomx.so:/system/vendor/lib/libdomx.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libmm_osal.so:/system/vendor/lib/libmm_osal.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so:/system/vendor/lib/libOMX.TI.DUCATI1.MISC.SAMPLE.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.CAMERA.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.secure.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.DECODER.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.H264E.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:/system/vendor/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
-#    $(LOCAL_PATH)/vendor/ti/vendor/lib/libOMX_Core.so:/system/vendor/lib/libOMX_Core.so \
-
 # wifi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/ti/etc/firmware/ducati-m3.512MB.bin:/system/etc/firmware/ducati-m3.512MB.bin \
