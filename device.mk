@@ -102,6 +102,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/battery_log.sh:/system/bin/battery_log.sh \
     $(LOCAL_PATH)/prebuilt/bin/klog.sh:/system/bin/klog.sh \
     $(LOCAL_PATH)/prebuilt/bin/fix-mac.sh:/system/bin/fix-mac.sh \
+    $(LOCAL_PATH)/prebuilt/bin/mount-ro.sh:/system/bin/mount-ro.sh \
 
 #PRODUCT_COPY_FILES += \
 #    $(LOCAL_PATH)/prebuilt/etc/init.d/01sysctl:system/etc/init.d/01sysctl \

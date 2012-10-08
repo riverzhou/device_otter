@@ -22,6 +22,7 @@ on init
     insmod /modules/pvrsrvkm_sgx540_120.ko
 
 on fs
+    setprop ro.crypto.umount_sd false
     mount_all /fstab.omap4430
 
 on post-fs
@@ -167,6 +168,13 @@ on boot
 #    setprop status.battery.level 5
 #    setprop status.battery.level_raw  50
 #    setprop status.battery.level_scale 9
+
+# remount to ro
+service remount /system/bin/mount-ro.sh
+    class core
+    user root
+    group root
+    oneshot
 
 # wi-fi
 service fixmac /system/bin/fix-mac.sh
