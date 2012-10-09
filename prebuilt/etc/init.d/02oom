@@ -15,7 +15,6 @@ adj_modified="0,3,6,10,12,15";
 minfree_modified="2048,3072,11776,14080,16128,18432";
 
 if [ "$adj_current" != "$adj_modified" ]; then
-  chmod 777 /sys/module/lowmemorykiller/parameters/adj;
   echo $adj_modified > /sys/module/lowmemorykiller/parameters/adj;
   if [ $? -ne 0 ]; then
     $LOG_ERROR "Failed to modify /sys/module/lowmemorykiller/parameters/adj";
@@ -27,7 +26,6 @@ else
 fi
 
 if [ "$minfree_current" != "$minfree_modified" ]; then
-  chmod 777 /sys/module/lowmemorykiller/parameters/minfree;
   echo $minfree_modified > /sys/module/lowmemorykiller/parameters/minfree;
   if [ $? -ne 0 ]; then
     $LOG_ERROR "Failed to modify /sys/module/lowmemorykiller/parameters/minfree";
@@ -36,6 +34,14 @@ if [ "$minfree_current" != "$minfree_modified" ]; then
   fi
 else
   $LOG_INFO "/sys/module/lowmemorykiller/parameters/minfree already set to $minfree_modified";
+fi
+
+$LOG_INFO "Changing lowmemorykiller parameter file permissions";
+chmod 0644 /sys/module/lowmemorykiller/parameters/adj /sys/module/lowmemorykiller/parameters/minfree
+if [ $? -ne 0 ]; then
+  $LOG_ERROR "Failed to change lowmemorykiller file permissions";
+else
+  $LOG_INFO "Successfully changed lowmemorykiller file permissions";
 fi
 
 $LOG_INFO "/sys/module/lowmemorykiller/parameters/adj = `cat /sys/module/lowmemorykiller/parameters/adj`";
