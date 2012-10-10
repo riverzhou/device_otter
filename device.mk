@@ -192,7 +192,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.supplicant_scan_interval=15 \
     tf.enable=y \
 
-#    ro.hwc.legacy_api=true \
+#    ro.sf.lcd_density=133 \
 
 ##############################################
 
