@@ -24,6 +24,7 @@ on init
 on fs
     setprop ro.crypto.umount_sd false
     mount_all /fstab.omap4430
+    mount ext4 /dev/block/mmcblk0p9 /system wait ro remount
 
 on post-fs
 # Load Modules
@@ -175,11 +176,11 @@ on boot
 #    setprop status.battery.level_scale 9
 
 # remount to ro
-service remount /system/bin/mount-ro.sh
-    class core
-    user root
-    group root
-    oneshot
+#service remount /system/bin/mount-ro.sh
+#    class core
+#    user root
+#    group root
+#    oneshot
 
 # wi-fi
 service fixmac /system/bin/fix-mac.sh
