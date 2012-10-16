@@ -227,7 +227,7 @@ static void omap_power_hint(struct power_module *module, power_hint_t hint, void
 
     switch (hint) {
     case POWER_HINT_INTERACTION:
-    case POWER_HINT_CPU_BOOST:
+//    case POWER_HINT_CPU_BOOST:
         if (get_scaling_governor(governor, sizeof(governor)) < 0) {
             ALOGE("Can't read scaling governor.");
             omap_device->boostpulse_warned = 1;
