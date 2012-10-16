@@ -27,6 +27,7 @@
 
 #define CPUFREQ_INTERACTIVE "/sys/devices/system/cpu/cpufreq/interactive/"
 #define CPUFREQ_CPU0 "/sys/devices/system/cpu/cpu0/cpufreq/"
+#define SCALING_GOVERNOR_PATH (CPUFREQ_CPU0 "scaling_governor")
 #define BOOSTPULSE_PATH (CPUFREQ_INTERACTIVE "boostpulse")
 
 #define MAX_FREQ_NUMBER 10
@@ -113,6 +114,23 @@ static int sysfs_read(char *path, char *s, int s_size) {
     return len;
 }
 
+static int get_scaling_governor(char governor[], int size) {
+    if (sysfs_read(SCALING_GOVERNOR_PATH, governor, size) < 0) {
+        // Can't obtain the scaling governor. Return.
+        return -1;
+    } else {
+        // Strip newline at the end.
+        int len = strlen(governor);
+
+        len--;
+
+        while (len >= 0 && (governor[len] == '\n' || governor[len] == '\r'))
+            governor[len--] = '\0';
+    }
+
+    return 0;
+}
+
 static void omap_power_init(struct power_module *module) {
     struct omap_power_module *omap_device = (struct omap_power_module *) module;
     int tmp;
@@ -144,19 +162,29 @@ static void omap_power_init(struct power_module *module) {
 
 static int boostpulse_open(struct omap_power_module *omap_device) {
     char buf[80];
+    char governor[80];
 
     pthread_mutex_lock(&omap_device->lock);
 
     if (omap_device->boostpulse_fd < 0) {
-        omap_device->boostpulse_fd = open(BOOSTPULSE_PATH, O_WRONLY);
+        if (get_scaling_governor(governor, sizeof(governor)) < 0) {
+            ALOGE("Can't read scaling governor.");
+            omap_device->boostpulse_warned = 1;
+        } else {
+            if (strncmp(governor, "interactive", 11) == 0) {
+                omap_device->boostpulse_fd = open(BOOSTPULSE_PATH, O_WRONLY);
 
-        if (omap_device->boostpulse_fd < 0) {
-            if (!omap_device->boostpulse_warned) {
-                strerror_r(errno, buf, sizeof(buf));
-                ALOGE("Error opening %s: %s\n", BOOSTPULSE_PATH, buf);
-                omap_device->boostpulse_warned = 1;
-            }
-        }
+                if (omap_device->boostpulse_fd < 0) {
+                    if (!omap_device->boostpulse_warned) {
+                        strerror_r(errno, buf, sizeof(buf));
+                        ALOGE("Error opening %s: %s\n", BOOSTPULSE_PATH, buf);
+                        omap_device->boostpulse_warned = 1;
+                    } else if (omap_device->boostpulse_fd > 0)
+                        ALOGD("Opened %s boostpulse interface", governor);
+                }
+            } else
+                ALOGD("%s boostpulse not supported", governor);
+        }    
     }
 
     pthread_mutex_unlock(&omap_device->lock);
@@ -190,20 +218,35 @@ static void omap_power_set_interactive(struct power_module *module, int on) {
 static void omap_power_hint(struct power_module *module, power_hint_t hint, void *data) {
     struct omap_power_module *omap_device = (struct omap_power_module *) module;
     char buf[80];
+    char governor[80];
     int len;
+    int duration = 1;
 
     if (!omap_device->inited)
         return;
 
     switch (hint) {
     case POWER_HINT_INTERACTION:
-        if (boostpulse_open(omap_device) >= 0) {
-            len = write(omap_device->boostpulse_fd, "1", 1);
+    case POWER_HINT_CPU_BOOST:
+        if (get_scaling_governor(governor, sizeof(governor)) < 0) {
+            ALOGE("Can't read scaling governor.");
+            omap_device->boostpulse_warned = 1;
+        } else {
+            if (strncmp(governor, "interactive", 11) == 0) {
+                if (data != NULL)
+                    duration = (int) data;
 
-            if (len < 0) {
-                strerror_r(errno, buf, sizeof(buf));
-                ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
-            }
+                if (boostpulse_open(omap_device) >= 0) {
+                    snprintf(buf, sizeof(buf), "%d", duration);
+                    len = write(omap_device->boostpulse_fd, buf, strlen(buf));
+
+                    if (len < 0) {
+                        strerror_r(errno, buf, sizeof(buf));
+                        ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
+                    }
+                }
+            }/* else
+                ALOGD("%s boostpulse not supported", governor);*/
         }
         break;
 
