@@ -64,8 +64,12 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 	mkdir -p  ${RAMDISK_DIR}/sbin
 	mkdir -p  ${RAMDISK_DIR}/sys
 	mkdir -p  ${RAMDISK_DIR}/system
-	cp    -f  ${ROOT_DIR}/init      ${RAMDISK_DIR}/init
-	cp    -f  ${ROOT_DIR}/sbin/adbd ${RAMDISK_DIR}/sbin/adbd
+	if [ -f ${ROOT_DIR}/init ] ; then
+		cp    -f  ${ROOT_DIR}/init      ${RAMDISK_DIR}/init
+	fi
+	if [ -f ${ROOT_DIR}/sbin/adbd ] ; then
+		cp    -f  ${ROOT_DIR}/sbin/adbd ${RAMDISK_DIR}/sbin/adbd
+	fi
         cd        ${RAMDISK_DIR}/sbin
         ln    -s  ../init ueventd
         cd        ${TOP_DIR}
