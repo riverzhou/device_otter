@@ -227,22 +227,27 @@ static void omap_power_hint(struct power_module *module, power_hint_t hint, void
 
     switch (hint) {
     case POWER_HINT_INTERACTION:
-//    case POWER_HINT_CPU_BOOST:
-        if (get_scaling_governor(governor, sizeof(governor)) < 0) {
-            ALOGE("Can't read scaling governor.");
-            omap_device->boostpulse_warned = 1;
-        } else {
-            if (strncmp(governor, "interactive", 11) == 0) {
-                if (data != NULL)
-                    duration = (int) data;
+        if (boostpulse_open(omap_device) >= 0) {
+            if (get_scaling_governor(governor, sizeof(governor)) < 0) {
+                ALOGE("Can't read scaling governor.");
+                omap_device->boostpulse_warned = 1;
+            } else {
+                if (strncmp(governor, "interactive", 11) == 0) {
+                    if (data != NULL)
+                        duration = (int) data;
 
-                if (boostpulse_open(omap_device) >= 0) {
                     snprintf(buf, sizeof(buf), "%d", duration);
                     len = write(omap_device->boostpulse_fd, buf, strlen(buf));
 
                     if (len < 0) {
                         strerror_r(errno, buf, sizeof(buf));
                         ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
+
+                        pthread_mutex_lock(&omap_device->lock);	
+                        close(omap_device->boostpulse_fd);
+                        omap_device->boostpulse_fd = -1;
+                        omap_device->boostpulse_warned = 0;
+                        pthread_mutex_unlock(&omap_device->lock);
                     }
                 }
             }/* else
