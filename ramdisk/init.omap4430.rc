@@ -175,13 +175,6 @@ on boot
 #    setprop status.battery.level_raw  50
 #    setprop status.battery.level_scale 9
 
-# remount to ro
-#service remount /system/bin/mount-ro.sh
-#    class core
-#    user root
-#    group root
-#    oneshot
-
 # wi-fi
 service fixmac /system/bin/fix-mac.sh
     class core
