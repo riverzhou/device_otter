@@ -200,24 +200,24 @@ service pvrsrvinit /system/vendor/bin/pvrsrvinit
 # MSHIELD SMC Daemon - component required to store persistent data coming
 #   from the SMC PA to the device persistent storage
 ###################################################
-service tf_daemon /system/bin/tf_daemon \
-    -d -c /vendor/etc/smc_normal_world_android_cfg.ini
-    class main
-    user root
-    group root
-    oneshot
-    disabled
+#service tf_daemon /system/bin/tf_daemon \
+#    -d -c /vendor/etc/smc_normal_world_android_cfg.ini
+#    class main
+#    user root
+#    group root
+#    oneshot
+#    disabled
 
 ###################################################
 # MSHIELD SMC PA Control - installs the SMC PA into the Secure Environment
 ###################################################
-service smc_pa /system/bin/smc_pa_ctrl \
-    -c /vendor/etc/smc_normal_world_android_cfg.ini \
-    start /vendor/firmware/smc_pa.ift
-    class core
-    user root
-    group root
-    oneshot
+#service smc_pa /system/bin/smc_pa_ctrl \
+#    -c /vendor/etc/smc_normal_world_android_cfg.ini \
+#    start /vendor/firmware/smc_pa.ift
+#    class core
+#    user root
+#    group root
+#    oneshot
 
 # wifi services
 service p2p_supplicant /system/bin/wpa_supplicant \

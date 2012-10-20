@@ -33,10 +33,10 @@ PRODUCT_PACKAGES += \
     power.otter \
 
 # OMAP4
-PRODUCT_PACKAGES += \
-    smc_pa_ctrl \
-    tf_daemon \
-    libtf_crypto_sst
+#PRODUCT_PACKAGES += \
+#    smc_pa_ctrl \
+#    tf_daemon \
+#    libtf_crypto_sst
 
 # Wifi
 PRODUCT_PACKAGES += \
