@@ -69,9 +69,6 @@ static void omap_power_init(struct power_module *module)
     sysfs_write(CPUFREQ_INTERACTIVE "go_hispeed_load",
                 "85");
 
-    sysfs_write(CPUFREQ_INTERACTIVE "boost_factor",
-		"0");
-
     sysfs_write(CPUFREQ_INTERACTIVE "input_boost",
 		"1");
 
@@ -89,9 +86,6 @@ static void omap_power_set_interactive(struct power_module *module, int on)
 
     sysfs_write(CPUFREQ_INTERACTIVE "input_boost",
                 on ? "1" : "0");
-
-    sysfs_write(CPUFREQ_INTERACTIVE "boost_factor",
-                on ? "0" : "2");
 
 }
 
