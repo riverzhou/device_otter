@@ -94,7 +94,7 @@ if [ "$OLDBOOT_BUILD" != "true" ] || [ ! -f ${PRODUCT_DIR}/boot.img ] ; then
 		export KERNELSRC=${KERNEL_SOURCE}
 		cd     ${SGX_SOURCE}
 		make   clean 
-		make   -j ${CPU_NUMBER} TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
+		make   -j ${CPU_NUMBER} BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1.2
         	mkdir  -p ${RAMDISK_DIR}/modules
 		cp     ${SGX_DIR}/pvrsrvkm_sgx540_120.ko ${RAMDISK_DIR}/modules
 		cd     ${TOP_DIR}
