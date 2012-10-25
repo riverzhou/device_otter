@@ -180,6 +180,8 @@ static int boostpulse_open(struct omap_power_module *omap_device) {
 
 static void omap_power_set_interactive(struct power_module *module, int on) {
     struct omap_power_module *omap_device = (struct omap_power_module *) module;
+    char governor[80];
+    char buf[80];
 
     if (!omap_device->inited)
         return;
@@ -195,25 +197,25 @@ static void omap_power_set_interactive(struct power_module *module, int on) {
 
     if (boostpulse_open(omap_device) >= 0) {
         if (get_scaling_governor(governor, sizeof(governor)) < 0) {
-        ALOGE("Can't read scaling governor.");
-        omap_device->boostpulse_warned = 1;
-    } else {
-        int len = -1;
-        if (strncmp(governor, "interactive", 11) == 0) {
-            len = write(omap_device->boostpulse_fd, 		on ? BOOSTPUSLE_DEFAULT_TIME : "0", strlen(on ? BOOSTPUSLE_DEFAULT_TIME : "0"));
-            if (len < 0) {
-                strerror_r(errno, buf, sizeof(buf));
-                ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
+            ALOGE("Can't read scaling governor.");
+            omap_device->boostpulse_warned = 1;
+        } else {
+            int len = -1;
+            if (strncmp(governor, "interactive", 11) == 0) {
+                len = write(omap_device->boostpulse_fd, 		on ? BOOSTPUSLE_DEFAULT_TIME : "0", strlen(on ? BOOSTPUSLE_DEFAULT_TIME : "0"));
+                if (len < 0) {
+                    strerror_r(errno, buf, sizeof(buf));
+                    ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
 
-                pthread_mutex_lock(&omap_device->lock);
-                close(omap_device->boostpulse_fd);
-                omap_device->boostpulse_fd = -1;
-                omap_device->boostpulse_warned = 0;
-                pthread_mutex_unlock(&omap_device->lock);
+                    pthread_mutex_lock(&omap_device->lock);
+                    close(omap_device->boostpulse_fd);
+                    omap_device->boostpulse_fd = -1;
+                    omap_device->boostpulse_warned = 0;
+                    pthread_mutex_unlock(&omap_device->lock);
+                }
             }
         }
     }
-
 }
 
 static void omap_power_hint(struct power_module *module, power_hint_t hint, void *data) {
