@@ -33,14 +33,10 @@
 
 #define INTERACTIVE_MAX_FREQ		"1200000"
 #define SLEEP_MAX_FREQ			"300000"
-//#define BOOSTPUSLE_DEFAULT_TIME	"5"
 
 #define CPUFREQ_INTERACTIVE		"/sys/devices/system/cpu/cpufreq/interactive/"
 #define CPUFREQ_CPU0			"/sys/devices/system/cpu/cpu0/cpufreq/"
 #define BOOSTPULSE_PATH			(CPUFREQ_INTERACTIVE "boostpulse")
-
-#define MAX_FREQ_NUMBER			10
-#define NOM_FREQ_INDEX			2
 
 struct power_module_device {
     pthread_mutex_t lock;
