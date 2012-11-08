@@ -54,27 +54,6 @@ static struct power_module_device power_module_omap_device = {
 
 static struct power_module_device *omap_device = &power_module_omap_device;
 
-static int str_to_tokens(char *str, char **token, int max_token_idx)
-{
-    char *pos, *start_pos = str;
-    char *token_pos;
-    int token_idx = 0;
-
-    if (!str || !token || !max_token_idx) {
-        return 0;
-    }
-
-    do {
-        token_pos = strtok_r(start_pos, " \t\r\n", &pos);
-
-        if (token_pos)
-            token[token_idx++] = strdup(token_pos);
-        start_pos = NULL;
-    } while (token_pos && token_idx < max_token_idx);
-
-    return token_idx;
-}
-
 static void sysfs_write(char *path, char *s)
 {
     char buf[80];
