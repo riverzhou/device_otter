@@ -1525,10 +1525,10 @@ static int start_output_stream(struct omap_stream_out *out)
         port = PORT_MM;
 
     adev->active_output = out;
-//    if (adev->devices & AUDIO_DEVICE_OUT_ALL_SCO)
+    if (adev->devices & AUDIO_DEVICE_OUT_ALL_SCO)
         out->config.rate = MM_FULL_POWER_SAMPLING_RATE;
-//    else
-//        out->config.rate = DEFAULT_OUT_SAMPLING_RATE;
+    else
+        out->config.rate = DEFAULT_OUT_SAMPLING_RATE;
 
     if (adev->mode != AUDIO_MODE_IN_CALL) {
         /* FIXME: only works if only one output can be active at a time */
@@ -3413,6 +3413,7 @@ static int adev_open(const hw_module_t* module, const char* name,
         return -EINVAL;
     }
 
+#if 0
     if (!adev->mixer_ctls.mm_dl1 || !adev->mixer_ctls.vx_dl1 ||
         !adev->mixer_ctls.dl1_mono ||
         !adev->mixer_ctls.dl1_headset || !adev->mixer_ctls.dl1_bt ||
@@ -3422,13 +3423,12 @@ static int adev_open(const hw_module_t* module, const char* name,
         !adev->mixer_ctls.speaker_volume || !adev->mixer_ctls.dmic1_ul_volume ||
         !adev->mixer_ctls.dl1_eq || !adev->mixer_ctls.voice_ul_volume ||
         !adev->mixer_ctls.mm2_dl1_capture) {
-#if 0
         mixer_close(adev->mixer);
         free(adev);
         ALOGE("Unable to locate all mixer controls, aborting.");
         return -EINVAL;
-#endif
     }
+#endif
 
     pthread_mutexattr_init(&mta);
     pthread_mutexattr_settype(&mta, PTHREAD_MUTEX_NORMAL);
